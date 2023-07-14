@@ -1,0 +1,26 @@
+<div class="form-group">
+    <input
+      [value]="value"
+      type="text"
+      placeholder="Enter value"
+      [nbAutocomplete]="auto"
+      placeholder="{{'searchDestinationInput.searchForDestination' | translate}}"
+      class="form-control"
+
+      #input/>
+
+    <nb-autocomplete #auto (selectedChange)="destinationSelected($event)" [activeFirst]="true">
+
+      <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option.displayName">
+        <div class="row div-item-option">
+          <div class="col-10">{{ option.displayName }}</div>
+          <div class="col-2" *ngIf="option.destination.type !== 'popular_destinations'"
+          [class.item-option-city] = "option.destination.type === 'city'"
+          [class.item-option-country] = "option.destination.type === 'country'"
+          >{{'searchDestinationInput.' + option.destination.type | translate}} </div>
+        </div>
+
+      </nb-option>
+
+    </nb-autocomplete>
+</div>

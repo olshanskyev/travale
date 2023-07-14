@@ -1,0 +1,103 @@
+@import '../../../@theme/styles/themes';
+
+@import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+
+  ::ng-deep .leaflet-top, ::ng-deep .leaflet-bottom {
+    z-index: 997;
+  }
+
+  ::ng-deep .leaflet-container {
+    width: 100%;
+    min-height: nb-theme(card-height-giant);
+    height: 100%;
+  }
+
+  .leaflet-div {
+    z-index: 1;
+  }
+
+  .layers-checkbox-container {
+    display: grid;
+    white-space: nowrap;
+  }
+
+  ::ng-deep .leaflet-div-icon {
+    background: none;
+    border: none;
+  }
+
+  ::ng-deep .leaflet-control-zoom a {
+    text-decoration: none;
+  }
+
+  @include media-breakpoint-down(md) {
+    .leaflet-container {
+      width: 100%;
+      min-height: nb-theme(card-height-large);
+    }
+  }
+  ::ng-deep .leaflet-marker-icon { // route icons
+    z-index: 601 !important;
+  }
+
+  ::ng-deep img.leaflet-marker-icon { // another icons
+    z-index: 600 !important;
+  }
+
+  nb-accordion {
+    box-shadow: none;
+  }
+  nb-accordion-item {
+    background: none;
+  }
+  ::ng-deep nb-accordion-item-header.accordion-header {
+      padding: 0;
+      border: none;
+      nb-icon {
+        position: relative !important;
+        right: 0;
+        margin-left: 1rem;
+      }
+  }
+
+  ::ng-deep nb-accordion-item-body.accordion-checkbox-body .item-body {
+    padding: 5px 5px 5px 5px;
+  }
+
+  .map-wrapper {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+  }
+
+  travale-search-place-control {
+    position: absolute;
+    top: 10px;
+    z-index: 4;
+    opacity: 0.9;
+  }
+
+  .layers-button {
+    position: absolute;
+    z-index: 4;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255,255,255,0.8);
+    border-color: var(--color-basic-600);
+  }
+
+  .layers-button:hover {
+
+    background-color: rgba(255,255,255,0.9);
+  }
+
+  .layers-icon {
+    width: 2rem;
+    height: 2rem;
+
+  }
+
+
+}

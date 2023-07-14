@@ -1,0 +1,43 @@
+@import '../../../../@theme/styles/themes';
+@import '../../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+    img {
+        object-fit: cover;
+        width: 100%;
+        height: var(--thumb-default-height);
+        margin-bottom: 0.5rem;
+        border-radius: var(--picture-border-radius);
+        filter: drop-shadow(2px 4px 6px gray);
+    }
+
+    img:hover, img.selected {
+        cursor: pointer;
+        border-style: solid;
+        border-radius: var(--picture-border-radius);
+        border-color: var(--color-info-default-border);
+        border-width: 3px;
+    }
+
+    .checkbox-selected {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        z-index: 2
+    }
+
+    .img-container {
+        position: relative;
+    }
+
+
+    @include media-breakpoint-down(md) {
+        img {
+            height: 190px;
+        }
+    }
+    nb-icon {
+        color: var(--checkbox-basic-checked-checkmark-color);
+    }
+}
+

@@ -1,0 +1,18 @@
+<nb-icon
+[hidden]="(!toggled && disableManualOpen) || (toggled && disableManualClose)"
+[icon]="toggled ? 'arrow-forward-outline' : 'arrow-back-outline'"
+pack="eva"
+class="show-hide-toggle"
+(click)="toggle()">
+</nb-icon>
+<div class="slide-out-container"
+  [class.expanded-from-right]="mode === 'from_right' && toggled"
+  [class.collapsed-from-right]="mode === 'from_right' && !toggled"
+  [class.expanded-to-right]="mode === 'to_right' && toggled"
+  [class.collapsed-to-right]="mode === 'to_right' && !toggled">
+  <div class="content-wrapper">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+

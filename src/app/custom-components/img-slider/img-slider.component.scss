@@ -1,0 +1,58 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+  img {
+    cursor: pointer;
+    border-radius: var(--picture-border-radius);
+    filter: drop-shadow(2px 4px 6px gray);
+    object-fit: cover;
+    width: 100%;
+    height: var(--thumb-default-height);
+  }
+
+  swiper-slide {
+    width: auto;
+    margin-right: 1.5rem !important;
+  }
+
+  swiper-container {
+    max-height: var(--thumb-default-height);
+  }
+}
+
+
+
+
+.control-div {
+  position: absolute;
+  background-color: rgba(255,255,255,0.8);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-around;
+  button:hover {
+    background-color: rgba(211,211,211,0.5);
+  }
+  z-index: 1;
+
+}
+
+nb-card {
+  margin-bottom: 0;
+  border: none;
+}
+
+nb-card-body {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+nb-card-footer {
+  padding: 0.5rem 0 0 0;
+  border: none;
+}
+
+
+

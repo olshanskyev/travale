@@ -1,0 +1,33 @@
+@import '../../../@theme/styles/themes';
+@import '../../../@theme/styles/custom_styles.scss';
+
+@include nb-install-component() {
+
+    nb-card {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+
+    nb-card-body {
+        padding: 1rem;
+    }
+
+    .upload-img-button {
+        margin-top: 1rem;
+    }
+
+    .thumb-photo {
+        height: var(--thumb-default-height);
+        border-radius: var(--picture-border-radius);
+        filter: drop-shadow(2px 4px 6px gray);
+        object-fit: cover;
+    }
+
+    textarea {
+        max-height: 60px;
+        min-height: 40px;
+    }
+
+}
+

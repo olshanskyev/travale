@@ -1,0 +1,133 @@
+@import '../../../@theme/styles/themes';
+@import '../../../@theme/styles/custom_styles.scss';
+
+travale-place-card {
+    width: 100%;
+    margin-left: 5px;
+}
+
+nb-card-body {
+    padding: 0;
+}
+
+nb-card {
+    margin: 0;
+    border: none;
+}
+
+nb-card-header {
+    position: relative;
+    min-height: 400px;
+    display: block;
+    border-bottom: none;
+}
+
+nb-accordion {
+    box-shadow: none;
+}
+nb-accordion-item-header {
+    padding: 30px 0 0 0.2rem;
+    border: none;
+}
+::ng-deep nb-accordion-item-body.accordion-textarea-body .item-body {
+    padding: 5px 20px 5px 5px;
+}
+
+textarea {
+    max-height: 150px;
+    min-height: 40px;
+}
+
+
+.places-list {
+    overflow: hidden;
+    border-top: none;
+}
+
+
+.place-item {
+    border-top: none;
+    padding: 0.8rem 0.2rem;
+}
+
+.place-item:last-child {
+    border-bottom: none;
+}
+
+.drag-handle {
+    cursor: move;
+}
+
+.drag-handle-button {
+    cursor: default;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.places-list.cdk-drop-list-dragging .place-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+@include nb-install-component() {
+
+    .caption-img {
+        height: 320px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: var(--picture-border-radius);
+    }
+
+    .route-caption-picture-container {
+        width: 100% !important;
+        min-height: 240px;
+        top: 0;
+        left: 0;
+        position: absolute !important;
+    }
+
+    .route-caption {
+        background-color: var(--card-background-color);
+        border-radius: var(--picture-border-radius);
+        bottom: 0;
+        box-shadow: 0 4px 24px rgba(0,0,0,.2);
+        left: 32px;
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 160px;
+        padding: 16px 16px 16px 24px;
+        position: absolute;
+        right: 32px;
+    }
+
+    .upload-img-button, .upload-img-button:focus {
+        position: absolute;
+        z-index: 2;
+        top: 1rem;
+        right: 1rem;
+        background-color: rgba(0,0,0,0.3);
+        color: white;
+        box-shadow: none !important;
+    }
+    .upload-img-button:hover {
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+    }
+
+}
+
+

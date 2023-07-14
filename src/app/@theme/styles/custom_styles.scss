@@ -1,0 +1,79 @@
+
+.title-input {
+  font-size: var(--text-heading-6-font-size);
+  font-family: var(--text-heading-6-font-family);
+  font-weight: var(--text-heading-6-font-weight);
+  line-height: var(--text-heading-6-line-height);
+}
+
+.subtitle-input {
+  font-size: var(--text-subtitle-font-size);
+  font-family: var(--text-subtitle-font-family);
+  font-weight: var(--text-subtitle-font-weight);
+  line-height: var(--text-subtitle-line-height);
+}
+
+.subheading-input {
+  color: var(--text-hint-color);
+  font-family: var(--text-caption-font-family);
+  font-size: var(--text-caption-font-size);
+  font-weight: var(--text-caption-font-weight);
+  line-height: var(--text-caption-line-height);
+  padding-left: 0.8rem !important;
+
+}
+
+.title-input, .subtitle-input, .subheading-input {
+  background-color: inherit;
+  border: none;
+  max-width: 100% !important;
+  padding: 0.2rem;
+}
+
+.subheading-input::-webkit-input-placeholder {
+  font-size: var(--text-caption-font-size);
+  opacity: 0.5;
+}
+
+.title-input:hover, .subtitle-input:hover, .subheading-input:hover {
+  border: none;
+  background-color: var(--input-basic-background-color);
+}
+
+
+.title-form-field, .subtitle-form-field, .subheading-form-field {
+  max-width: 100%;
+  nb-icon {
+    display: none;
+  }
+}
+
+.title-form-field:hover, .subtitle-form-field:hover, .subheading-form-field:hover {
+  nb-icon {
+    display: block;
+  }
+}
+
+.title-form-field {
+  height: 30px;
+}
+
+.subtitle-form-field {
+  height: 30px;
+}
+
+.subheading-form-field {
+  height: 20px;
+}
+
+.textarea-input {
+  font-size: var(--input-small-text-font-size) !important;
+  font-weight: var(--input-small-text-font-weight) !important;
+  line-height: var(--input-small-text-line-height) !important;
+}
+
+.textarea-input::-webkit-input-placeholder {
+  font-size: var(--input-small-text-font-size) !important;
+}
+
+

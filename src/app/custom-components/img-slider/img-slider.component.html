@@ -1,0 +1,31 @@
+
+
+<nb-card>
+    <nb-card-body>
+        <swiper-container *ngIf="images" mytSwiper [config]="config" init="false">
+            <swiper-slide
+                *ngFor="let item of images; let i=index">
+
+                    <div class="control-div" *ngIf="editable">
+                        <button nbButton ghost size="small" (click)="deleteItem(i)">
+                            <nb-icon icon="trash-2-outline" pack="eva"></nb-icon>
+                        </button>
+                        <button nbButton ghost size="small" (click)="moveToLeft(i)">
+                            <nb-icon icon="arrow-ios-back-outline" pack="eva"></nb-icon>
+                        </button>
+                        <button nbButton ghost size="small" (click)="moveToRight(i)">
+                            <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon>
+                        </button>
+                    </div>
+
+                    <img [src]="item.thumb" (click)="openImage(i)">
+
+            </swiper-slide>
+        </swiper-container>
+    </nb-card-body>
+</nb-card>
+
+
+
+
+

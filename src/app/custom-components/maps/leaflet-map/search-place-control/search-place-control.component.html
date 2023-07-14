@@ -1,0 +1,16 @@
+<div>
+    <input
+      [value]="value"
+      type="text"
+      placeholder="Enter value"
+      placeholder="{{'searchPlaceControl.searchForPlace' | translate}}"
+      class="form-control"
+      #input/>
+
+    <nb-list *ngIf="foundPlaces" class="scrollable-container">
+      <nb-list-item *ngFor="let displayData of foundPlaces" (mouseover)="onMouseOverPlace(displayData)"
+      (click)="placeSelected(displayData)">
+        <div *ngIf="displayData.feature" class="col-10">{{ displayData.displayName }}</div>
+      </nb-list-item>
+    </nb-list>
+</div>

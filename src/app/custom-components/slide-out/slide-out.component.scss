@@ -1,0 +1,140 @@
+@import '../../@theme/styles/themes';
+@import '../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+
+
+  $slide-out-container-width: var(--init-width);
+  $slide-out-container-width-md: var(--md-width);
+  $collapsed-width: var(--collapsed-width);
+  $background-opacity: var(--background-opacity);
+
+  .show-hide-toggle {
+    display: block;
+    position: absolute;
+    top: 1.5rem;
+    @include nb-ltr(right, 1.5rem);
+    @include nb-rtl(left, 1.5rem);
+    cursor: pointer;
+    background-color: transparent;
+    z-index: 6;
+  }
+
+  .slide-out-container {
+    @include nb-ltr {
+      border-top-right-radius: nb-theme(card-border-radius);
+      border-bottom-right-radius: nb-theme(card-border-radius);
+    }
+    @include nb-rtl {
+      border-top-left-radius: nb-theme(card-border-radius);
+      border-bottom-left-radius: nb-theme(card-border-radius);
+    }
+    position: absolute;
+    padding: 1.5rem;
+    width: $slide-out-container-width;
+  }
+
+  .slide-out-container,
+  .slide-out-container::before {
+    display: block;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-out;
+    z-index: 5;
+  }
+
+  .slide-out-container::before {
+    content: '';
+    @include nb-ltr(right, 0);
+    @include nb-rtl(left, 0);
+    width: 100%;
+    position: absolute;
+    background: nb-theme(slide-out-background);
+    box-shadow: nb-theme(slide-out-shadow-color);
+    @include nb-rtl(box-shadow, nb-theme(slide-out-shadow-color-rtl));
+    opacity: $background-opacity;
+
+  }
+
+  .slide-out-container.collapsed-from-right {
+    @include nb-ltr(left, calc(100% - #{$collapsed-width}));
+    @include nb-rtl(right, calc(100% - #{$collapsed-width}));
+  }
+
+  .slide-out-container.expanded-from-right {
+    left: calc(100% + 1px - #{$slide-out-container-width});
+    @include nb-rtl(left, auto);
+    @include nb-rtl(right, calc(100% - #{$slide-out-container-width}));
+  }
+
+
+  .slide-out-container.collapsed-to-right {
+    left: calc(0px - #{$slide-out-container-width});
+    @include nb-rtl(left, auto);
+    @include nb-rtl(right, calc(100% - #{$slide-out-container-width}));
+  }
+
+  .slide-out-container.expanded-to-right {
+    @include nb-ltr(left, calc(#{$collapsed-width}));
+    @include nb-rtl(right, calc(100% - #{$collapsed-width}));
+  }
+
+  .content-wrapper {
+    z-index: 5;
+    position: relative;
+    width: 100%;
+    margin: 0 #{$collapsed-width};
+    transition: all 0.2s ease-out;
+  }
+
+  .expanded-from-right .content-wrapper  {
+    margin: 0;
+  }
+
+  @include media-breakpoint-down(md) {
+    $slide-out-container-width: $slide-out-container-width-md;
+
+    .slide-out-container {
+      width: $slide-out-container-width;
+    }
+
+    .slide-out-container.expanded-from-right {
+      left: calc(100% + 1px - #{$slide-out-container-width});
+      @include nb-rtl(right, calc(100% + 1px - #{$slide-out-container-width}));
+    }
+
+    .slide-out-container.expanded-to-right {
+      @include nb-ltr(left, calc(#{$collapsed-width}));
+      @include nb-rtl(right, calc(100% - #{$collapsed-width}));
+    }
+
+  }
+
+  @include media-breakpoint-down(is) {
+    $slide-out-container-width: 100%;
+
+    .show-hide-toggle {
+      right: 0.5rem;
+    }
+
+    .slide-out-container {
+      width: $slide-out-container-width;
+    }
+
+    .slide-out-container.collapsed-from-right {
+      left: calc(100% + 1px - 3rem);
+      @include nb-rtl(right, calc(100% - 3rem));
+    }
+
+    .slide-out-container.expanded-from-right {
+      left: calc(100% + 1px - #{$slide-out-container-width});
+      @include nb-rtl(right, calc(100% - #{$slide-out-container-width}));
+    }
+
+    .slide-out-container.expanded-to-right {
+      @include nb-ltr(left, calc(#{$collapsed-width}));
+      @include nb-rtl(right, calc(100% - #{$collapsed-width}));
+    }
+  }
+}

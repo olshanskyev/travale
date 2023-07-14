@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-xl-6">
+        <nb-card>
+            <travale-slide-out
+            [toggled]="false"
+            [disableManualOpen]="true"
+            [disableManualClose]="true"
+            #sideComponent
+            initWidth="100%"
+            mdWidth="100%"
+            collapsedWidth="0rem"
+            backgroundOpacity="0.95"
+            mode="to_right"
+            #slideOut
+            >
+                <travale-place-card mode="full" [editable]="true" [place]="placeToChange" (savePlace)="onSavePlace($event); sideComponent.close()"></travale-place-card>
+            </travale-slide-out>
+            <travale-route-card [route]="route"
+                (changePlaceClicked)="onChangePlaceClicked($event); sideComponent.open()"
+                (placesSequenceChanged)="onPlacesSequenceChanged($event)"
+                (routeTitleChanged)="onRouteTitleChanged()"
+                ></travale-route-card>
+        </nb-card>
+    </div>
+    <div class="col-xl-6">
+        <nb-card [class.hide-map]="!showMapOver" [class]="(showMapOver && sizeLessThanXl)? 'map-container-show-over' : 'map-container'" >
+            <travale-leaflet-map-component (addToRoute)="onAddToRoute($event)" #leafletMap class="h-100"></travale-leaflet-map-component>
+        </nb-card>
+    </div>
+
+</div>
+
+<div class="toggle-map-button-container">
+    <button nbButton (click)="toggleMapClicked()">{{(!showMapOver)? 'Open Map': 'Close Map'}}</button>
+</div>
+
+

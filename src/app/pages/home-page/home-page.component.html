@@ -1,0 +1,17 @@
+<nb-card>
+    <travale-select-destination-map
+    (countrySelect)="sideComponent.open(); onDestinationSelect($event)"
+    (citySelect)="sideComponent.open(); onDestinationSelect($event)"></travale-select-destination-map>
+    <travale-slide-out [toggled]="false" #sideComponent>
+        <div *ngIf="selectedCountry">
+            <travale-country-info-card #countryCard [country]="selectedCountry"></travale-country-info-card>
+        </div>
+        <div *ngIf="selectedCity">
+            <travale-city-info-card #cityCard [city]="selectedCity"></travale-city-info-card>
+        </div>
+
+    </travale-slide-out>
+</nb-card>
+
+
+

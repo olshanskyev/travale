@@ -1,0 +1,10 @@
+
+    <div class="search-destination-div">
+        <travale-search-destination-input (destianationSelect)="onSelectDestinationByInput($event)" [value]="inputValue"></travale-search-destination-input>
+    </div>
+    <div echarts [options]="options" (chartClick)="onSelectCountryByMap($event)" #map (chartInit)="onChartInit($event)" class="select-country-map">
+    </div>
+
+
+
+

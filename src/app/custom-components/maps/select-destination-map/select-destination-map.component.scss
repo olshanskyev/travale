@@ -1,0 +1,13 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+    .select-country-map {
+      width: 100%;
+      height: nb-theme(card-height-large);
+    }
+    .search-destination-div {
+      padding: 1.5rem;
+      padding-bottom: 0.2rem;
+    }
+  }

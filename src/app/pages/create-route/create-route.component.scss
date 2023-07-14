@@ -1,0 +1,61 @@
+@import '../../@theme/styles/themes';
+@import '../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin-top: -2.25rem;
+
+  nb-card {
+    position: relative;
+    padding: 5px;
+  }
+
+  travale-leaflet-map-component {
+    z-index: 0;
+  }
+
+  .map-container {
+    position: fixed;
+    right: 0;
+    top: calc(var(--header-height));
+    width: calc((100% - var(--side-menu-width)) / 2);
+    height: calc(100%);
+  }
+
+  .map-container-show-over {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    position: fixed !important;
+    z-index: 9999 !important;
+  }
+
+  .toggle-map-button-container {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    display: none;
+    z-index: 999999;
+    width: 100%;
+    justify-content: center !important
+  }
+
+
+  @include media-breakpoint-down(lg) {
+    margin-top: 0;
+
+    .hide-map {
+      display: none;
+   }
+   .toggle-map-button-container {
+      display: flex;
+   }
+  }
+
+}
+
+
+

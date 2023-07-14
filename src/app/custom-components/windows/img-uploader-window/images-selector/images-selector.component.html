@@ -1,0 +1,13 @@
+
+<div class="row">
+    <div class="col-6 col-lg-4" *ngFor="let itemSrc of imageUrls; let i=index">
+        <div class="img-container">
+            <nb-checkbox [disabled]="true" status="info" [checked]="true" class="checkbox-selected" [hidden]="!selectedArray[i]"></nb-checkbox>
+             <img [src]="itemSrc" (click)="onSelectImage(i)"
+             [class.selected] = "selectedArray[i]"
+             />
+        </div>
+    </div>
+</div>
+
+

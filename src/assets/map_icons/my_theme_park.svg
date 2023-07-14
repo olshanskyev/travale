@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="132.088 50.785 240.885 382.321" xmlns="http://www.w3.org/2000/svg" stroke-width="2">
+  <g id="SVGRepo_iconCarrier" transform="matrix(0.558758, 0, 0, 0.558758, 61.369915, 50.784622)" style="">
+    <g>
+      <g>
+        <g>
+          <path style="fill: rgb(94, 159, 29);" d="M 342.122 0 C 223.063 0 126.563 96.49 126.563 215.549 C 126.563 334.598 342.122 684.234 342.122 684.234 C 342.122 684.234 557.671 334.599 557.671 215.549 C 557.681 96.49 461.162 0 342.122 0 Z M 342.122 382.326 C 250.146 382.326 175.345 307.516 175.345 215.549 C 175.345 123.582 250.145 48.763 342.122 48.763 C 434.079 48.763 508.899 123.583 508.899 215.549 C 508.899 307.515 434.079 382.326 342.122 382.326 Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g id="g-9" transform="matrix(3.072622, 0, 0, 3.072622, 178.374588, 89.102928)" style="">
+    <path class="d" d="m40.9815,17.2575c.6418,1.8494.9905,3.8357.9905,5.9036,0,6.2336-3.1689,11.727-7.9836,14.9573" style="fill: none; stroke: rgb(94, 159, 29); stroke-width=50; stroke-linecap: round; stroke-linejoin: round;"/>
+    <path class="d" d="m6.9149,28.9182c-.6098-1.8076-.9404-3.7438-.9404-5.7571C5.9745,13.2207,14.0328,5.1623,23.9733,5.1623c2.6296,0,5.1275.5639,7.3793,1.5774" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <path class="d" d="m21.1053,27.4812c-1.3965-.929-2.3169-2.5171-2.3169-4.3201,0-2.8635,2.3213-5.1848,5.1848-5.1848s5.1848,2.3213,5.1848,5.1848c0,1.7822-.8992,3.3545-2.2687,4.2877" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <rect class="d" x="30.385" y="6.0193" width="11.7837" height="11.7837" rx="2.8593" ry="2.8593" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <g>
+      <circle class="c" cx="33.8797" cy="9.9472" r=".75" style="fill: rgb(94, 159, 29);"/>
+      <circle class="c" cx="38.674" cy="9.9472" r=".75" style="fill: rgb(94, 159, 29);"/>
+    </g>
+    <rect class="d" x="6.5865" y="27.3664" width="11.7837" height="11.7837" rx="2.8593" ry="2.8593" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <g>
+      <circle class="c" cx="10.0812" cy="31.2943" r=".75" style="fill: rgb(94, 159, 29);"/>
+      <circle class="c" cx="14.8755" cy="31.2943" r=".75" style="fill: rgb(94, 159, 29);"/>
+    </g>
+    <path class="d" d="m13.3413,39.1501l-1.516,2.2785c-.7779,1.1692.0603,2.7337,1.4646,2.7337h21.4362c1.4044,0,2.2426-1.5645,1.4646-2.7337l-10.7181-16.1089c-.6961-1.0463-2.2331-1.0463-2.9293,0l-4.1732,6.2722" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <line class="d" x1="23.9733" y1="17.9763" x2="23.9733" y2="5.169" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <line class="d" x1="29.1581" y1="23.1611" x2="41.972" y2="23.1611" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+    <line class="d" x1="18.7884" y1="23.1611" x2="5.9745" y2="23.1611" style="fill: none; stroke: rgb(94, 159, 29); stroke-linecap: round; stroke-linejoin: round;"/>
+  </g>
+</svg>

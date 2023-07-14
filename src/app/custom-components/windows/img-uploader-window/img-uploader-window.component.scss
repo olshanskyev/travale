@@ -1,0 +1,27 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+    ngx-file-drop ::ng-deep > div {
+      margin: auto;
+      height: 80px;
+      border: 2px dotted var(--color-info-default);
+      border-radius: 30px;
+      height: 80px;
+
+      > div {
+        height: 80px !important;
+        color: var(--color-info-default);
+      }
+    }
+
+    .browse-file {
+      margin-left: 1rem;
+  }
+
+  nb-card {
+    width: 600px;
+    max-height: 80vh;
+  }
+}
+
+

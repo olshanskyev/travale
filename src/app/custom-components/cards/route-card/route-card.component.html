@@ -1,0 +1,62 @@
+<nb-card *ngIf="route">
+
+    <nb-card-header>
+      <div class="route-caption-picture-container">
+        <button nbButton ghost size="small" (click)="onUploadImgClick()" class="upload-img-button">
+          <nb-icon class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+        </button>
+        <img [src]="(route.image)? route.image.src: 'assets/no-photo-available.png'" class="caption-img">
+
+      </div>
+      <div class="route-caption">
+
+        <nb-form-field class="title-form-field">
+          <input nbInput type="text" [(ngModel)]="route.title" (ngModelChange)="titleUpdate.next($event)" class="title-input" placeholder="{{'createRoute.routeTitle' | translate}}">
+          <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+        </nb-form-field>
+
+        <nb-form-field class="subheading-form-field">
+          <input nbInput type="text" [(ngModel)]="route.subheading" class="subheading-input" placeholder="{{'createRoute.addRouteSubheading' | translate}}">
+          <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+        </nb-form-field>
+
+        <nb-accordion>
+          <nb-accordion-item>
+           <nb-accordion-item-header>
+            <div class="subtitle">
+              {{'createRoute.generalInformation' | translate}}
+            </div>
+           </nb-accordion-item-header>
+           <nb-accordion-item-body class="accordion-textarea-body">
+            <textarea nbInput fullWidth [(ngModel)]="route.generalInfo" placeholder="{{'createRoute.writeGeneralInformationHere' | translate}}" class="textarea-input"></textarea>
+           </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </div>
+
+    </nb-card-header>
+
+
+    <nb-card-body>
+      <div *ngIf="!route.places || route.places.length === 0" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>
+
+        <nb-list class="places-list mt-2" cdkDropList (cdkDropListDropped)="drop($event)">
+            <nb-list-item class="place-item" cdkDrag *ngFor="let item of route.places; let i=index">
+                <button nbButton class="drag-handle-button" ghost size="small">
+                  <nb-icon class="drag-handle" cdkDragHandle icon="menu-outline" pack="eva"></nb-icon>
+                </button>
+                <travale-marker-icon markerColor="rgb(200,200,200)" textColor="white">{{i + 1}}</travale-marker-icon>
+
+                <travale-place-card [place]="item"></travale-place-card>
+                <div class="d-flex flex-column">
+                  <button nbButton ghost size="small" (click)="onChangePlaceClick(item)">
+                    <nb-icon icon="edit-outline" pack="eva"></nb-icon>
+                  </button>
+                  <button nbButton ghost size="small" (click)="onDeletePlaceClick(i)">
+                    <nb-icon icon="trash-outline" pack="eva"></nb-icon>
+                  </button>
+                </div>
+            </nb-list-item>
+          </nb-list>
+    </nb-card-body>
+</nb-card>
