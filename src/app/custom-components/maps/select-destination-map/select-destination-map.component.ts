@@ -108,7 +108,7 @@ export class SelectDestinationMapComponent implements OnDestroy {
           areaColor: this.bubbleTheme.areaColor,
           borderColor: this.bubbleTheme.areaBorderColor,
         },
-        zoom: (zoom)? zoom : 2,
+        zoom: (zoom)? zoom : 0,
       },
       series: [
       ],

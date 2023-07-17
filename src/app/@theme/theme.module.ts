@@ -6,8 +6,7 @@ import { NbActionsModule, NbContextMenuModule, NbIconModule, NbLayoutModule, NbS
 import { OneColumnLayoutComponent } from './layouts';
 
 import { DEFAULT_THEME } from './styles/theme.default';
-import { COSMIC_THEME } from './styles/theme.cosmic';
-import { DARK_THEME } from './styles/theme.dark';
+import { GRAY_THEME } from './styles/theme.gray';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -39,9 +38,9 @@ export class ThemeModule {
       providers: [
         ...<[]>NbThemeModule.forRoot(
           {
-            name: 'default',
+            name: 'gray',
           },
-          [ DEFAULT_THEME, COSMIC_THEME, DARK_THEME ],
+          [ DEFAULT_THEME, GRAY_THEME ],
         ).providers,
       ],
     };

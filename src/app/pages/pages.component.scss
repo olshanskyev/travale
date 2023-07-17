@@ -20,4 +20,22 @@
     align-items: center;
   }
 
+  ::ng-deep nb-sidebar.expanded nb-menu .menu-items > .menu-item a {
+      justify-content: center;
+  }
+
+  ::ng-deep nb-sidebar.expanded nb-menu .menu-item a.active {
+      position: relative;
+  }
+
+  ::ng-deep nb-sidebar.expanded nb-menu .menu-item a.active::before {
+    left: 0;
+    top: 0;
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 4px;
+    background: var(--sidebar-menu-item-highlight-color);
+  }
+
 }

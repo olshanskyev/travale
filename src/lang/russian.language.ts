@@ -66,6 +66,7 @@ export class RussianLanguage {
                 Destinations: 'Места',
                 NewDestination: 'Добавить новое место',
                 Map: 'Карта',
+                CreateRoute: 'Создать маршрут'
             },
             searchDestinationInput: {
                 searchForDestination: 'Ищем куда поехать',

@@ -11,10 +11,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'Destinations',
-    link: '/pages/destinations',
+    title: 'CreateRoute',
+    link: '/pages/create-route',
     icon: {
-      icon: 'ios-business',
+      icon: 'ios-navigate',
       pack: 'ion'
     },
   },

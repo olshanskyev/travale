@@ -14,7 +14,7 @@ export class SlideOutComponent {
   @HostBinding('style.--init-width') @Input() initWidth = '40%';
   @HostBinding('style.--md-width') @Input() mdWidth = '50%';
   @HostBinding('style.--collapsed-width') @Input() collapsedWidth = '6rem';
-  @HostBinding('style.--background-opacity') @Input() backgroundOpacity = '0.9';
+  @HostBinding('style.--background-opacity') @Input() backgroundOpacity = '0.8';
 
   @Input() disableManualOpen = false;
   @Input() disableManualClose = false;

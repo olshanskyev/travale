@@ -9,7 +9,7 @@
             initWidth="100%"
             mdWidth="100%"
             collapsedWidth="0rem"
-            backgroundOpacity="0.95"
+            backgroundOpacity="0.9"
             mode="to_right"
             #slideOut
             >
@@ -31,7 +31,7 @@
 </div>
 
 <div class="toggle-map-button-container">
-    <button nbButton (click)="toggleMapClicked()">{{(!showMapOver)? 'Open Map': 'Close Map'}}</button>
+    <button nbButton status="primary" (click)="toggleMapClicked()">{{(!showMapOver)? 'Open Map': 'Close Map'}}</button>
 </div>
 
 

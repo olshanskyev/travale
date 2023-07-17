@@ -11,13 +11,23 @@
   .logo-container {
     display: flex;
     align-items: center;
-    //width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
   }
 
   nb-action {
     height: auto;
     display: flex;
     align-content: center;
+  }
+
+  .fill-color-primary-600 {
+    fill: var(--color-primary-600);
+  }
+  .fill-color-primary-500 {
+    fill: var(--color-primary-500);
+  }
+
+  .fill-color-basic-800 {
+    fill: var(--color-basic-800);
   }
 
   nb-user {
@@ -59,6 +69,8 @@
         font-size: inherit;
       }
     }
+
+
   }
 
   @include media-breakpoint-down(sm) {
