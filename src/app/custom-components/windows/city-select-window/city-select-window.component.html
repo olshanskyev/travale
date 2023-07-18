@@ -1,0 +1,15 @@
+<nb-card size="medium" style="width: 400px;">
+    <nb-card-header>
+        {{'citySelectWindow.selectCity' | translate}}
+    </nb-card-header>
+    <nb-card-body>
+        <div>
+            <travale-search-destination-input mode="only_cities" (destianationSelect)="onSelectCity($event)"></travale-search-destination-input>
+        </div>
+    </nb-card-body>
+    <nb-card-footer class="d-flex justify-content-center">
+        <button nbButton status="info" [disabled]="!city" (click)="done()">{{'common.done' | translate}}</button>
+        <button nbButton status="info" (click)="ref.close(); router.navigate(['/']);" class="ms-4">{{'common.back' | translate}}</button>
+    </nb-card-footer>
+</nb-card>
+

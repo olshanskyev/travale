@@ -24,6 +24,7 @@ import { MarkerIconComponent } from './marker-icon/marker-icon.component';
 import { ImgUploaderWindowComponent } from './windows/img-uploader-window/img-uploader-window.component';
 import { ImagesSelectorComponent } from './windows/img-uploader-window/images-selector/images-selector.component';
 import { SearchPlaceComponent } from './maps/leaflet-map/search-place-control/search-place-control.component';
+import { CitySelectWindowComponent } from './windows/city-select-window/city-select-window.component';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { SearchPlaceComponent } from './maps/leaflet-map/search-place-control/se
     ImgUploaderWindowComponent,
     ImagesSelectorComponent,
     SearchPlaceComponent,
+    CitySelectWindowComponent,
 
   ],
   exports:[
@@ -83,7 +85,7 @@ import { SearchPlaceComponent } from './maps/leaflet-map/search-place-control/se
   schemas:[CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: [
     ImgUploaderWindowComponent,
-
+    CitySelectWindowComponent,
   ]
 })
 export class CustomComponentsModule { }

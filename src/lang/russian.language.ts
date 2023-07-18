@@ -6,7 +6,9 @@ export class RussianLanguage {
             common: {
                 error: 'Ошибка',
                 warning: 'Внимание',
-                info: 'Информация'
+                info: 'Информация',
+                done: 'OK',
+                back: 'Назад'
             },
 
             login: {
@@ -69,7 +71,7 @@ export class RussianLanguage {
                 CreateRoute: 'Создать маршрут'
             },
             searchDestinationInput: {
-                searchForDestination: 'Ищем куда поехать',
+                searchForDestination: 'Поиск места',
                 popularDestinations: 'Популярные места',
                 city: 'город',
                 country: 'страна'
@@ -125,6 +127,9 @@ export class RussianLanguage {
             placeCard: {
                 placeTitle: 'Заголовок места',
                 placeDescription: 'Описание места'
+            },
+            citySelectWindow: {
+                selectCity: 'Выберите город'
             }
 
 

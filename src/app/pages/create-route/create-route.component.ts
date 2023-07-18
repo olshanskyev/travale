@@ -4,10 +4,12 @@ import { Route, Place } from 'src/app/@core/data/route.data';
 
 import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
-import { NbMediaBreakpointsService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbDialogService, NbMediaBreakpointsService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { TranslateService } from '@ngx-translate/core';
+import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
+import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 
 
 
@@ -22,6 +24,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
   @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
 
   @HostBinding('style.--side-menu-width') sideMenuWidth = '16rem';
+
   menuCollapsed = false;
 
   cityName: string;
@@ -36,7 +39,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private themeService: NbThemeService,
     private sideBarService: NbSidebarService,
-    private translateService: TranslateService) {
+    private translateService: TranslateService,
+    private dialogService: NbDialogService) {
   }
 
   onChangePlaceClicked(place: Place) {
@@ -85,7 +89,67 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private buildInitRoute(): Route {
+    return {
+      id: 'route_' + this.cityName + Math.random(),
+      title: this.translateService.instant('createRoute.newRouteIn') + this.cityName,
+      places: [{
+        id: 123,
+        name: 'Test attraction',
+        description: 'Long description for attraction',
+        geoJson: {
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [40.640266, 22.939524]
+          },
+          properties: {
+            source: 'nominatim',
+            osm_type: 'node'
+          }
+        },
+        images: [{
+          src: 'assets/test_images/white_tower1.jpg',
+          thumb: 'assets/test_images/white_tower1_thumb.jpg'
+        }]
+      }],
+      routeType: 'Main Attractions',
+      cityLatitude: 40.61939015,
+      cityLongitude: 22.959859730874502,
+      cityName: this.cityName,
+      country: this.country,
+    };
+  }
+
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+
+
+     if (!params['cityName'] || !params['country'] || !params['cityLatitude'] || !params['cityLongitude'] || !params['cityBoundingBox']) {
+        this.dialogService.open(CitySelectWindowComponent, {
+          closeOnBackdropClick: false,
+          closeOnEsc: false,
+          context: {
+          },
+          }).onClose.subscribe((result: any) => {
+            const city: City = result?.city as City;
+            const cityGeometry = result?.cityGeometry as CityGeometry;
+            if (city && cityGeometry) {
+              this.cityName = city.fullName;
+              this.country = city.country;
+              this.leafletMap.setBoundingBox(cityGeometry.cityBoundingBox);
+              this.leafletMap.setCityLatLong(cityGeometry.lat, cityGeometry.lon);
+              this.route = this.buildInitRoute();
+            }
+          });
+      } else {
+        this.cityName = params['cityName'];
+        this.country = params['country'];
+
+        this.route = this.buildInitRoute();
+      }
+    });
 
     this.sideBarService.onToggle()
     .pipe(takeUntil(this.destroy$))
@@ -93,7 +157,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
       this.menuCollapsed = !this.menuCollapsed;
       this.sideMenuWidth = (this.menuCollapsed)? '3.5rem': '16rem';
       setTimeout(() => { this.leafletMap.invalidate();}, 10);
-      });
+    });
 
     const { xl } = this.breakpointService.getBreakpointsMap();
 
@@ -106,41 +170,6 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
         this.sizeLessThanXl = (currentBreakpoint.width < xl);
 
     });
-
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-        this.cityName = params['cityName'];
-        this.country = params['country'];
-
-        this.route = {
-          id: 'route_' + this.cityName + Math.random(),
-          title: this.translateService.instant('createRoute.newRouteIn') + this.cityName,
-          places: [{
-            id: 123,
-            name: 'Test attraction',
-            description: 'Long description for attraction',
-            geoJson: {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: [40.640266, 22.939524]
-              },
-              properties: {
-                source: 'nominatim',
-                osm_type: 'node'
-              }
-            },
-            images: [{
-              src: 'assets/test_images/white_tower1.jpg',
-              thumb: 'assets/test_images/white_tower1_thumb.jpg'
-            }]
-          }],
-          routeType: 'Main Attractions',
-          cityLatitude: params['cityLatitude'],
-          cityLongitude: params['cityLongitude'],
-          cityName: this.cityName,
-          country: this.country,
-        };
-      });
   }
 
 

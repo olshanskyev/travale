@@ -1,3 +1,5 @@
+@import '../../../@theme/styles/themes';
+
 .div-item-option {
     width: 100%;
 }
@@ -10,6 +12,38 @@
 .item-option-country {
     color: #ffaa00;
     font-size: x-small;
+}
+
+@include nb-install-component() {
+    nb-list {
+        background-color: var(--option-list-background-color);
+        border-color: var(--option-list-border-color);
+        border-style: var(--option-list-border-style);
+        border-width: var(--option-list-border-width);
+        border-radius: var(--option-list-border-radius);
+        box-shadow: var(--option-list-shadow);
+        max-height: 400px;
+        margin-top: 5px;
+
+    }
+
+    nb-list-item {
+        font-family: var(--option-text-font-family);
+        font-size: var(--option-medium-text-font-size);
+        font-weight: var(--option-medium-text-font-weight);
+        line-height: var(--option-medium-text-line-height);
+        padding: var(--option-medium-padding);
+        transition-duration: .15s;
+        transition-property: background-color,color;
+        transition-timing-function: ease-in;
+    }
+
+    nb-list-item:hover {
+        background-color: var(--option-active-background-color);
+        color: var(--option-active-text-color);
+        cursor: pointer;
+    }
+
 }
 
 

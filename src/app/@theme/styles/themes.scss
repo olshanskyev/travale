@@ -45,15 +45,16 @@ $nb-themes: nb-register-theme((
   color-basic-transparent-600:	rgba(177, 177, 177, 0.48),
 
 
-  //color-primary-100: #faf7ff,
-  //color-primary-200: #ece3ff,
-  //color-primary-300: #d5bfff,
+
   color-primary-400: #a0c492,
   color-primary-500: #83b271,
   color-primary-600: #689c54,
   color-primary-700: #4d7a3c,
-  //color-primary-800: #3e2494,
-  //color-primary-900: #29157a,
+
+  color-info-400: #ca97db,
+  color-info-500: #a87ab7,
+  color-info-600: #775782,
+  color-info-700: #44324d,
 
   layout-padding-top: 1.25rem,
   menu-item-icon-width: 1.8rem,
@@ -71,8 +72,8 @@ $nb-themes: nb-register-theme((
   select-min-width: 6rem,
 
   slide-out-background: color-basic-300,
-  slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
-  slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
+  slide-out-shadow-color: 0 4px 14px 0 #92999e,
+  slide-out-shadow-color-rtl: 0 4px 14px 0 #92999e,
 
 
   layout-background-color: color-basic-200,
@@ -82,4 +83,4 @@ $nb-themes: nb-register-theme((
   menu-item-active-text-color: color-basic-100,
   menu-item-active-background-color: color-basic-700,
 
-), gray, default);
+), 'gray', default);

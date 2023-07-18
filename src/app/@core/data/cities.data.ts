@@ -8,7 +8,7 @@ export abstract class CitiesServiceData {
 }
 
 export interface CityGeometry {
-    cityBoundingBox: string[];
+    cityBoundingBox: number[];
     lat: number;
     lon: number;
 }

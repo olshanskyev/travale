@@ -8,13 +8,13 @@
         <nb-card-footer>
             <ngx-file-drop dropZoneLabel="Drop images here" (onFileDrop)="dropped($event)" accept="image/jpeg,image/png,image/webp,image/avif,image/tiff,image/gif,image/svg+xml">
                 <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" >
-                    <div class="browse-file">
-                        <label>{{'imgSlider.dropImagesHereOr' | translate}}</label>
-                        <button nbButton status="info" ghost (click)="openFileSelector()">{{'imgSlider.browseFiles' | translate}}</button>
+                    <div>
+                        <label style="color: var(--text-basic-color)">{{'imgSlider.dropImagesHereOr' | translate}}</label>
+                        <button nbButton class="ms-2" status="info" ghost (click)="openFileSelector()">{{'imgSlider.browseFiles' | translate}}</button>
                     </div>
                 </ng-template>
             </ngx-file-drop>
-            <button nbButton fullWidth status="info"  size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">done</button>
+            <button nbButton fullWidth status="info" size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">{{'common.done' | translate}}</button>
         </nb-card-footer>
     </nb-card>
 

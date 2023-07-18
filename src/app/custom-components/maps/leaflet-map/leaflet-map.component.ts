@@ -57,9 +57,22 @@ export class LeafletMapComponent implements OnInit {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
   });
 
+  baseLayerAlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+    maxZoom: 20,
+    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+  });
+
+  baseLayerJawgSunny = L.tileLayer('https://{s}.tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=Hz6HhCOMt0OzO6GEVWAEr928fxXqY2D7EtwQEreNGpKhMA25PWXurZeNm9yZanNn', {
+	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	minZoom: 0,
+	maxZoom: 22,
+	subdomains: 'abcd',
+	accessToken: 'Hz6HhCOMt0OzO6GEVWAEr928fxXqY2D7EtwQEreNGpKhMA25PWXurZeNm9yZanNn'
+});
+
   options = {
     layers: [
-      this.baseLayer
+      this.baseLayerJawgSunny
     ],
     zoom: this.zoom,
     center: this.center,
@@ -93,19 +106,27 @@ export class LeafletMapComponent implements OnInit {
       this.locale);
   }
 
+  public setBoundingBox(bbox: number[]) {
+    if (bbox && bbox.length === 4) {
+      const southWest = new L.LatLng(bbox[0], bbox[2]);
+      const northEast = new L.LatLng(bbox[1], bbox[3]);
+      this.cityBoundingBox = new L.LatLngBounds(southWest, northEast);
+    }
+  }
+
+  public setCityLatLong(lat: number, lon: number) {
+    if (lat && lon) {
+      this.center = L.latLng(lat, lon);
+      if (this.map) {
+        this.map.panTo(this.center);
+      }
+    }
+  }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-        if (params['cityLatitude'] && params['cityLongitude']) {
-          this.center = L.latLng(params['cityLatitude'], params['cityLongitude']);
-          if (this.map) {
-            this.map.panTo(this.center);
-          }
-        }
-        if (params['cityBoundingBox'] && params['cityBoundingBox'].length === 4) {
-          const southWest = new L.LatLng(params['cityBoundingBox'][0], params['cityBoundingBox'][2]);
-          const northEast = new L.LatLng(params['cityBoundingBox'][1], params['cityBoundingBox'][3]);
-          this.cityBoundingBox = new L.LatLngBounds(southWest, northEast);
-        }
+        this.setCityLatLong(params['cityLatitude'], params['cityLongitude']);
+        this.setBoundingBox(params['cityBoundingBox']);
       },
     );
   }
