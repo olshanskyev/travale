@@ -67,13 +67,14 @@
 }
 
 .textarea-input {
-  font-size: var(--input-small-text-font-size) !important;
-  font-weight: var(--input-small-text-font-weight) !important;
-  line-height: var(--input-small-text-line-height) !important;
+  font-size: var(--input-tiny-text-font-size) !important;
+  font-weight: var(--input-tiny-text-font-weight) !important;
+  line-height: var(--input-tiny-text-line-height) !important;
 }
 
 .textarea-input::-webkit-input-placeholder {
-  font-size: var(--input-small-text-font-size) !important;
+  font-size: var(--input-tiny-text-font-size) !important;
+  line-height: var(--input-tiny-text-line-height) !important;
 }
 
 

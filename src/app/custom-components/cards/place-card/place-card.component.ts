@@ -16,16 +16,10 @@ export class PlaceCardComponent {
   @Input() mode: ModeType = 'compact';
   @Input() editable = false;
   @Input() place: Place;
-  @Output() savePlace: EventEmitter<Place> = new EventEmitter();
 
   constructor(private dialogService: NbDialogService) {
 
   }
-
-  onSaveChanges() {
-    this.savePlace.emit(this.place);
-  }
-
   openImgUploaderWindow() {
     this.dialogService.open(ImgUploaderWindowComponent, {
       context: {

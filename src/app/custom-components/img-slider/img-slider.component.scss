@@ -8,7 +8,7 @@
     filter: drop-shadow(2px 4px 6px gray);
     object-fit: cover;
     width: 100%;
-    height: var(--thumb-default-height);
+    height: var(--thumb-xl-height);
   }
 
   swiper-slide {
@@ -17,7 +17,8 @@
   }
 
   swiper-container {
-    max-height: var(--thumb-default-height);
+    max-height: var(--thumb-xl-height);
+    max-width: var(--swiper-max-container-width);
   }
 }
 

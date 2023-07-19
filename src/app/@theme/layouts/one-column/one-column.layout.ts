@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
         <travale-header></travale-header>
       </nb-layout-header>
 
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive>
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive [compactedBreakpoints]="['xs', 'is', 'sm', 'md', 'lg']" [collapsedBreakpoints]="['is', 'xs', 'unknown']">
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
 

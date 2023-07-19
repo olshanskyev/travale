@@ -1,22 +1,8 @@
 <div class="row">
     <div class="col-xl-6">
         <nb-card>
-            <travale-slide-out
-            [toggled]="false"
-            [disableManualOpen]="true"
-            [disableManualClose]="true"
-            #sideComponent
-            initWidth="100%"
-            mdWidth="100%"
-            collapsedWidth="0rem"
-            backgroundOpacity="0.9"
-            mode="to_right"
-            #slideOut
-            >
-                <travale-place-card mode="full" [editable]="true" [place]="placeToChange" (savePlace)="onSavePlace($event); sideComponent.close()"></travale-place-card>
-            </travale-slide-out>
             <travale-route-card [route]="route"
-                (changePlaceClicked)="onChangePlaceClicked($event); sideComponent.open()"
+                (changePlaceClicked)="onChangePlaceClicked($event)"
                 (placesSequenceChanged)="onPlacesSequenceChanged($event)"
                 (routeTitleChanged)="onRouteTitleChanged()"
                 ></travale-route-card>

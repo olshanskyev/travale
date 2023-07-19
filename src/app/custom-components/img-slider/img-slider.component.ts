@@ -1,5 +1,5 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { Lightbox } from 'ngx-lightbox';
 import { ImageType } from 'src/app/@core/data/route.data';
 import { A11y, Mousewheel, Navigation, Pagination, SwiperOptions } from 'swiper';
@@ -8,14 +8,19 @@ import { A11y, Mousewheel, Navigation, Pagination, SwiperOptions } from 'swiper'
   selector: 'travale-img-slider',
   templateUrl: './img-slider.component.html',
   styleUrls: ['./img-slider.component.scss'],
+
 })
 export class ImgSliderComponent {
 
   @Input() editable = false;
   @Input() images?: ImageType[] = [];
 
+  // workaround. necessary because unknown breakpoint thrown if not set width
+  // ToDo extend NbSidebarComponent
+  @Input() @HostBinding('style.--swiper-max-container-width') swiperMaxContainerWidth = '516px';
 
-  constructor(private _lightbox: Lightbox) {}
+  constructor(private _lightbox: Lightbox) {
+  }
 
   public config: SwiperOptions = {
 

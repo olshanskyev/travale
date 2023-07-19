@@ -10,8 +10,7 @@ import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { TranslateService } from '@ngx-translate/core';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
-
-
+import { EditPlaceWindowComponent } from 'src/app/custom-components/windows/edit-place-window/edit-place-window.component';
 
 @Component({
   selector: 'travale-create-route',
@@ -30,7 +29,6 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
   cityName: string;
   country: string;
   route: Route;
-  placeToChange: Place;
   showMapOver = false;
   sizeLessThanXl = false;
   private destroy$: Subject<void> = new Subject<void>();
@@ -44,7 +42,13 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
   }
 
   onChangePlaceClicked(place: Place) {
-    this.placeToChange = place;
+    this.dialogService.open(EditPlaceWindowComponent, {
+      closeOnBackdropClick: false,
+      closeOnEsc: false,
+      context: {
+        place: place
+      },
+      });
   }
 
   onPlacesSequenceChanged(route: Route) {

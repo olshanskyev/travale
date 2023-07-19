@@ -5,7 +5,7 @@
     img {
         object-fit: cover;
         width: 100%;
-        height: var(--thumb-default-height);
+        height: var(--thumb-xl-height);
         margin-bottom: 0.5rem;
         border-radius: var(--picture-border-radius);
         filter: drop-shadow(2px 4px 6px gray);
@@ -31,9 +31,9 @@
     }
 
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(sm) {
         img {
-            height: 190px;
+           height: 100px;//var(--thumb-sm-height);
         }
     }
     nb-icon {

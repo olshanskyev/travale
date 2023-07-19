@@ -2,7 +2,7 @@ import {AfterViewInit, Directive, ElementRef, Input} from '@angular/core';
 import {SwiperOptions} from 'swiper';
 
 @Directive({
-  selector: '[mytSwiper]',
+  selector: '[travaleSwiper]',
   standalone: true,
 })
 export class SwiperDirective implements AfterViewInit {

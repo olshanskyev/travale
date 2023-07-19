@@ -49,11 +49,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.themeService.onMediaQueryChange()
       .pipe(
-        map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
+        map(([, currentBreakpoint]) => !currentBreakpoint.width || currentBreakpoint.width < xl),
         takeUntil(this.destroy$),
       )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
-
+      .subscribe((isLessThanXl: boolean) => {this.userPictureOnly = isLessThanXl;});
     this.themeService.onThemeChange()
       .pipe(
         map(({ name }) => name),

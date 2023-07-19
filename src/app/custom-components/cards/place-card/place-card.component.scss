@@ -1,6 +1,8 @@
 @import '../../../@theme/styles/themes';
 @import '../../../@theme/styles/custom_styles.scss';
 
+@import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
 @include nb-install-component() {
 
     nb-card {
@@ -18,7 +20,7 @@
     }
 
     .thumb-photo {
-        height: var(--thumb-default-height);
+        height: var(--thumb-xl-height);
         border-radius: var(--picture-border-radius);
         filter: drop-shadow(2px 4px 6px gray);
         object-fit: cover;
@@ -28,6 +30,12 @@
         max-height: 60px;
         min-height: 40px;
     }
+
+    @include media-breakpoint-down(sm) {
+        .thumb-photo {
+            height: var(--thumb-sm-height);
+        }
+      }
 
 }
 

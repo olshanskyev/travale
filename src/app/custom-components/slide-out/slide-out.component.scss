@@ -39,7 +39,7 @@
     display: block;
     height: 100%;
     top: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     transition: all 0.2s ease-out;
     z-index: 5;
   }

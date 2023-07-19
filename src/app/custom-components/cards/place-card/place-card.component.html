@@ -1,12 +1,13 @@
 <div *ngIf="place">
     <nb-card *ngIf="mode !== 'compact'" >
         <nb-card-body>
-            <div *ngIf="!place.images || place.images.length === 0; else showImgSlider" class="d-flex justify-content-center w-100">
+            <div *ngIf="!place.images || place.images.length === 0" class="d-flex justify-content-center w-100">
                 <img src="assets/no-photo-available.png" class="thumb-photo"/>
             </div>
-            <ng-template #showImgSlider>
+
+
                 <travale-img-slider [images]="place.images" [editable]="editable"></travale-img-slider>
-            </ng-template>
+
 
             <button nbButton status="info" fullWidth size="small" shape="round" class="mt-2" (click)="openImgUploaderWindow()">Upload Images</button>
         </nb-card-body>
@@ -18,24 +19,23 @@
             <div>
                 {{place.description}}
             </div>
-
-            <button nbButton (click)="onSaveChanges()">Close</button>
         </nb-card-body>
     </nb-card>
 
     <div *ngIf="mode === 'compact'">
-        <div class="d-flex">
-            <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo ms-2"/>
-            <div class="d-flex flex-column w-100 ms-3">
-                <nb-form-field class="subtitle-form-field">
-                    <input nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
-                    <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
-                </nb-form-field>
-
-                <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input"></textarea>
+        <div class="ms-2">
+            <div class="d-flex">
+                <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo me-3"/>
+                <div class="d-flex flex-column w-100">
+                    <nb-form-field class="subtitle-form-field">
+                        <input nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
+                        <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+                    </nb-form-field>
+                </div>
             </div>
-
+            <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-1"></textarea>
         </div>
+
 
     </div>
 

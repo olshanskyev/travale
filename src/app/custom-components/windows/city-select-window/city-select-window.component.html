@@ -1,4 +1,4 @@
-<nb-card size="medium" style="width: 400px;">
+<nb-card size="medium" style="width: var(--small-window-width)">
     <nb-card-header>
         {{'citySelectWindow.selectCity' | translate}}
     </nb-card-header>
@@ -8,8 +8,8 @@
         </div>
     </nb-card-body>
     <nb-card-footer class="d-flex justify-content-center">
-        <button nbButton status="info" [disabled]="!city" (click)="done()">{{'common.done' | translate}}</button>
-        <button nbButton status="info" (click)="ref.close(); router.navigate(['/']);" class="ms-4">{{'common.back' | translate}}</button>
+        <button nbButton status="info" (click)="ref.close(); router.navigate(['/']);">{{'common.back' | translate}}</button>
+        <button nbButton status="info" [disabled]="!city" (click)="done()" class="ms-4">{{'common.done' | translate}}</button>
     </nb-card-footer>
 </nb-card>
 
