@@ -95,7 +95,7 @@ textarea {
 @include nb-install-component() {
 
     .caption-img {
-        height: 320px;
+        height: var(--default-img-height);;
         object-fit: cover;
         width: 100%;
         border-radius: var(--picture-border-radius);

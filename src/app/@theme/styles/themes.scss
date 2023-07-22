@@ -84,4 +84,8 @@ $nb-themes: nb-register-theme((
   menu-item-active-background-color: color-basic-700,
   layout-small-padding: 0,
 
+  picture-default-shadow: drop-shadow(2px 4px 6px gray),
+
+
+
 ), 'gray', default);

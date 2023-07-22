@@ -2,28 +2,46 @@
 
 @include nb-install-component() {
 
-  img {
+  .thumb-swiper img {
     cursor: pointer;
     border-radius: var(--picture-border-radius);
-    filter: drop-shadow(2px 4px 6px gray);
+    filter: var(--picture-default-shadow);
     object-fit: cover;
     width: 100%;
     height: var(--thumb-xl-height);
   }
 
-  swiper-slide {
+  .thumb-swiper swiper-slide {
     width: auto;
-    margin-right: 1.5rem !important;
   }
 
-  swiper-container {
-    max-height: var(--thumb-xl-height);
-    max-width: var(--swiper-max-container-width);
+  .thumb-swiper {
+   max-height: var(--thumb-xl-height);
+   max-width: var(--swiper-max-width);
+
+   margin: 0;
   }
+
+  .full-img-swiper {
+   max-width: var(--swiper-max-width);
+   margin: 0;
+  }
+
+  .full-img-swiper img {
+    cursor: pointer;
+    border-radius: var(--picture-border-radius);
+    filter: var(--picture-default-shadow);
+    object-fit: cover;
+    width: 100%;
+    height: var(--default-img-height);
+  }
+
+  swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
 }
-
-
-
 
 .control-div {
   position: absolute;

@@ -1,27 +1,40 @@
 
-
 <nb-card>
     <nb-card-body>
-        <swiper-container *ngIf="images" travaleSwiper [config]="config" init="false">
+        <swiper-container travaleSwiper *ngIf="images" init="false" [config]="fullImgSwiperConfig"
+        style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+        class="full-img-swiper pb-3 ps-3 pe-3"
+        thumbs-swiper=".thumb-swiper">
             <swiper-slide
                 *ngFor="let item of images; let i=index">
-
-                    <div class="control-div" *ngIf="editable">
-                        <button nbButton ghost size="small" (click)="deleteItem(i)">
-                            <nb-icon icon="trash-2-outline" pack="eva"></nb-icon>
-                        </button>
-                        <button nbButton ghost size="small" (click)="moveToLeft(i)">
-                            <nb-icon icon="arrow-ios-back-outline" pack="eva"></nb-icon>
-                        </button>
-                        <button nbButton ghost size="small" (click)="moveToRight(i)">
-                            <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon>
-                        </button>
-                    </div>
-
-                    <img [src]="item.thumb" (click)="openImage(i)">
+                    <img [src]="item.src" (click)="openImage(i)">
 
             </swiper-slide>
         </swiper-container>
+
+        <div>
+            <swiper-container travaleSwiper *ngIf="images" [config]="configThumbSwiper" init="false" class="thumb-swiper" watch-slides-progress="true">
+                <swiper-slide
+                    *ngFor="let item of images; let i=index">
+
+                        <div class="control-div" *ngIf="editable">
+                            <button nbButton ghost size="small" (click)="deleteItem(i)">
+                                <nb-icon icon="trash-2-outline" pack="eva"></nb-icon>
+                            </button>
+                            <button nbButton ghost size="small" (click)="moveToLeft(i)">
+                                <nb-icon icon="arrow-ios-back-outline" pack="eva"></nb-icon>
+                            </button>
+                            <button nbButton ghost size="small" (click)="moveToRight(i)">
+                                <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon>
+                            </button>
+                        </div>
+
+                        <img [src]="item.thumb">
+
+                </swiper-slide>
+            </swiper-container>
+        </div>
+
     </nb-card-body>
 </nb-card>
 

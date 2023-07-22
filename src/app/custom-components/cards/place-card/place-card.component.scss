@@ -9,10 +9,11 @@
         width: 100%;
         padding: 0;
         margin-bottom: 1rem;
+        border: none;
     }
 
     nb-card-body {
-        padding: 1rem;
+        padding: 0rem;
     }
 
     .upload-img-button {
@@ -22,7 +23,7 @@
     .thumb-photo {
         height: var(--thumb-xl-height);
         border-radius: var(--picture-border-radius);
-        filter: drop-shadow(2px 4px 6px gray);
+        filter: var(--picture-default-shadow);
         object-fit: cover;
     }
 

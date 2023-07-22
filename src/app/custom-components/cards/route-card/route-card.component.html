@@ -38,7 +38,7 @@
 
 
     <nb-card-body>
-      <!--<div *ngIf="!route.places || route.places.length === 0" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>-->
+      <div *ngIf="!route.places || route.places.length === 0" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>
 
       <nb-list class="places-list mt-2" cdkDropList (cdkDropListDropped)="drop($event)">
         <nb-list-item class="place-item" cdkDrag *ngFor="let item of route.places; let i=index">
@@ -57,7 +57,7 @@
             </div>
             <travale-place-card [place]="item"></travale-place-card>
         </nb-list-item>
-          </nb-list>
+      </nb-list>
 
 
     </nb-card-body>

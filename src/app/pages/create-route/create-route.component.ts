@@ -115,7 +115,12 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
         images: [{
           src: 'assets/test_images/white_tower1.jpg',
           thumb: 'assets/test_images/white_tower1_thumb.jpg'
-        }]
+        },
+        {
+          src: 'assets/test_images/white_tower2.jpg',
+          thumb: 'assets/test_images/white_tower2_thumb.jpg'
+        }
+      ]
       }],
       routeType: 'Main Attractions',
       cityLatitude: 40.61939015,
@@ -167,11 +172,11 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
 
     this.themeService.onMediaQueryChange()
       .pipe(
-        //map(([, currentBreakpoint]) => currentBreakpoint.width < lg),
         takeUntil(this.destroy$),
       )
       .subscribe(([, currentBreakpoint]) => {
-        this.sizeLessThanXl = (currentBreakpoint.width < xl);
+        // !currentBreakpoint.width - beacaus of unknows breakpoint. ToDo extend NbSidebarComponent
+        this.sizeLessThanXl = (!currentBreakpoint.width || currentBreakpoint.width < xl);
 
     });
   }

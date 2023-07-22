@@ -8,7 +8,7 @@
         height: var(--thumb-xl-height);
         margin-bottom: 0.5rem;
         border-radius: var(--picture-border-radius);
-        filter: drop-shadow(2px 4px 6px gray);
+        filter: var(--picture-default-shadow);
     }
 
     img:hover, img.selected {
