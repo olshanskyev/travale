@@ -13,16 +13,7 @@
         </nb-card-body>
     </nb-card>
 
-    <nb-card *ngIf="mode !== 'compact'">
-        <nb-card-body>
-            {{place.name}} <br>
-            <div>
-                {{place.description}}
-            </div>
-        </nb-card-body>
-    </nb-card>
-
-    <div *ngIf="mode === 'compact'">
+    <div *ngIf="mode === 'compact'; else full">
         <div class="ms-2">
             <div class="d-flex">
                 <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo me-3"/>
@@ -33,10 +24,19 @@
                     </nb-form-field>
                 </div>
             </div>
-            <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-1"></textarea>
+            <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-2"></textarea>
         </div>
-
-
     </div>
+    <ng-template #full>
+        <nb-card *ngIf="mode !== 'compact'">
+            <nb-card-body>
+                <nb-form-field class="subtitle-form-field">
+                    <input nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
+                    <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+                </nb-form-field>
+                <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-1 text-area-full-mode"></textarea>
+            </nb-card-body>
+        </nb-card>
+    </ng-template>
 
 </div>

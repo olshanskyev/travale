@@ -4,7 +4,7 @@
 @include nb-install-component() {
   nb-card {
     width: 600px;
-    max-height: 80vh;
+    max-height: 100vh;
   }
 
   @include media-breakpoint-down(sm) {

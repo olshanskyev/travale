@@ -32,6 +32,10 @@
         min-height: 40px;
     }
 
+    .text-area-full-mode {
+        max-height: 120px;
+    }
+
     @include media-breakpoint-down(sm) {
         .thumb-photo {
             height: var(--thumb-sm-height);
