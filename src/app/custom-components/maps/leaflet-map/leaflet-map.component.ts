@@ -10,6 +10,7 @@ import { IconsService } from 'src/app/@core/service/icons.service';
 import { CustomLayersConfig } from './types';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { NominatimService } from 'src/app/@core/service/nominatim.service';
+import { PopupBuilder } from './popup-builder';
 
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
@@ -47,6 +48,7 @@ export class LeafletMapComponent implements OnInit {
   center: L.LatLng = L.latLng(40.640266, 22.939524);
   cityBoundingBox?: L.LatLngBounds;
   searchPlaceMarker: L.Marker;
+  popupBuilder: PopupBuilder;
 
   baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -97,12 +99,12 @@ export class LeafletMapComponent implements OnInit {
     private iconsService: IconsService,
     @Inject(LOCALE_ID) public locale: string
     ) {
-
+    this.popupBuilder = new PopupBuilder((feature) => this.onAddToRouteClick(feature), iconsService, translateService);
     this.overlayBuilder = new OverlaysBuilder(
       this.overpassapiService,
       this.translateService,
       this.iconsService,
-      (feature) => this.onAddToRouteClick(feature),
+      this.popupBuilder,
       this.locale);
   }
 
@@ -249,7 +251,7 @@ export class LeafletMapComponent implements OnInit {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.searchPlaceMarker.bindPopup(this.overlayBuilder.createPopupDiv(feature));
+      this.searchPlaceMarker.bindPopup(this.popupBuilder.buildPopupDiv(feature));
       this.searchPlaceMarker.addTo(this.map);
       if (centeredOnMarker)
         this.map.flyTo(position, this.selectPlaceZoom);

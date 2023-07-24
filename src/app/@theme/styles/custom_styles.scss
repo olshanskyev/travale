@@ -1,4 +1,19 @@
 
+
+.travale-badge {
+  color: var(--color-basic-100);
+  width: auto;
+  border-radius: 0.7rem;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  font-family: var(--option-text-font-family);
+  font-size: xx-small;
+  font-weight: var(--option-medium-text-font-weight);
+  line-height: var(--option-medium-text-line-height);
+  display: inline-block;
+}
+
+
 .title-input {
   font-size: var(--text-heading-6-font-size);
   font-family: var(--text-heading-6-font-family);

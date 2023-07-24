@@ -13,10 +13,11 @@
     (click)="destinationSelected(displayData)">
       <div class="row div-item-option">
         <div class="col-10">{{ displayData.displayName }}</div>
-        <div class="col-2" *ngIf="displayData.destination.type !== 'popular_destinations'"
-        [class.item-option-city] = "displayData.destination.type === 'city'"
-        [class.item-option-country] = "displayData.destination.type === 'country'"
-        >{{'searchDestinationInput.' + displayData.destination.type | translate}} </div>
+        <span travaleBadge
+        badgeColor="{{(displayData.destination.type === 'city')? 'var(--color-primary-600)': 'var(--color-info-600)'}}"
+         class="col-2" *ngIf="displayData.destination.type !== 'popular_destinations'"
+
+        >{{'searchDestinationInput.' + displayData.destination.type | translate}} </span>
       </div>
     </nb-list-item>
   </nb-list>

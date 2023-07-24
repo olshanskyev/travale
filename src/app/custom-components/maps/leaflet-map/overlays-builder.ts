@@ -5,28 +5,21 @@ import { Observable, map } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { IconsService } from 'src/app/@core/service/icons.service';
 import { CustomGeoJSONLayersMap, CustomGeoJsonLayer, FeaturesMap, LayersFeaturesMap } from './types';
+import { PopupBuilder } from './popup-builder';
 
 export class OverlaysBuilder {
-    overpassapiService: OverpassapiService;
-    translateService: TranslateService;
-    iconsService: IconsService;
     poiLayersFeaturesMap: LayersFeaturesMap = {}; // has format [layerName][feature.id] => layer
     routesLayersFeaturesMap: LayersFeaturesMap = {}; // has format [layerName][feature.id] => layer
 
     tourismLayersList: TourismKeyType[] = ['artwork', 'attraction', 'museum', 'viewpoint', 'gallery', 'theme_park', 'information', 'zoo'];
     historicLayersList: HistoricKeyType[] = ['castle', 'castle_wall', 'church', 'city_gate', 'citywalls', 'memorial', 'monument', 'tower'];
 
-    constructor(overpassapiService: OverpassapiService,
-        translateService: TranslateService,
-        iconsService: IconsService,
-        private addToRouteCallback: (feature: CustomFeature)=> void,
+    constructor(
+        private overpassapiService: OverpassapiService,
+        private translateService: TranslateService,
+        private iconsService: IconsService,
+        private popupBuilder: PopupBuilder,
         private locale: string) {
-        this.overpassapiService = overpassapiService;
-
-        this.translateService = translateService;
-        this.iconsService = iconsService;
-
-
     }
 
     private findPois$ = (bbox: LatLngBounds): Observable<FeaturesMap> => {
@@ -75,23 +68,6 @@ export class OverlaysBuilder {
         return marker(latlng, {icon: icon});
     }
 
-    public createPopupDiv(feature: CustomFeature): any {
-        const div = document.createElement('div');
-        const historicString = (feature.properties?.categories?.['historic'])?
-            '<h6>' + this.translateService.instant('leafletMap.' + feature.properties?.categories?.['historic']) + '</h6>' : '';
-        const tourismString = (feature.properties?.categories?.['tourism'])?
-            '<h6>' + this.translateService.instant('leafletMap.' + feature.properties?.categories?.['tourism']) + '</h6>' : '';
-        const nameString = (feature.properties?.['name'])? `${feature.properties?.['name']}<br><br>`: '';
-        div.innerHTML = historicString + tourismString + nameString;
-
-        const button = document.createElement('button');
-        button.setAttribute('class', 'btn btn-primary');
-        button.setAttribute('style', 'width: 100%; padding: 3px');
-        button.innerHTML = 'Add to Route';
-        button.onclick = () => this.addToRouteCallback(feature);
-        div.appendChild(button);
-        return div;
-    }
 
     private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
         if (!this.poiLayersFeaturesMap[layerKey]) {
@@ -101,7 +77,7 @@ export class OverlaysBuilder {
             this.poiLayersFeaturesMap[layerKey][feature.id] = layer;
 
         if (feature.properties) {
-            layer.bindPopup(this.createPopupDiv(feature));
+            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature));
         }
         const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
         const historicKey = feature.properties?.categories?.['historic'] as TourismKeyType;
@@ -135,7 +111,7 @@ export class OverlaysBuilder {
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
         if (feature.properties) {
-            layer.bindPopup(this.createPopupDiv(feature));
+            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature));
         }
     }
 

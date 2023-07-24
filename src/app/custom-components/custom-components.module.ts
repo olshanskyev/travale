@@ -26,6 +26,7 @@ import { ImagesSelectorComponent } from './windows/img-uploader-window/images-se
 import { SearchPlaceComponent } from './maps/leaflet-map/search-place-control/search-place-control.component';
 import { CitySelectWindowComponent } from './windows/city-select-window/city-select-window.component';
 import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place-window.component';
+import { BadgeDirective } from './directives/badge.directive';
 
 @NgModule({
   imports: [
@@ -70,6 +71,7 @@ import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place
     SearchPlaceComponent,
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
+    BadgeDirective
 
   ],
   exports:[
@@ -88,7 +90,7 @@ import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place
   entryComponents: [
     ImgUploaderWindowComponent,
     CitySelectWindowComponent,
-    EditPlaceWindowComponent,
+    EditPlaceWindowComponent
   ]
 })
 export class CustomComponentsModule { }

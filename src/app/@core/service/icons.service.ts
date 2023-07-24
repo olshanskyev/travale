@@ -26,7 +26,27 @@ export class IconsService extends IconsSericeData {
           });
     }
 
-    iconsDefaults: {[name in TourismKeyType | HistoricKeyType]?: Icon } = {
+
+    private iconColors: {[name in TourismKeyType | HistoricKeyType]?: string } = {
+        'attraction': '#6e63bf',
+        'viewpoint': '#109e33',
+        'artwork': '#d33109',
+        'museum': '#de9c0d',
+        'information': '#64aece',
+        'gallery': '#09244B',
+        'monument': '#963c3c',
+        'church': '#2da990',
+        'memorial': '#003b8f',
+        'castle': '#a1177c',
+        'theme_park': 'rgb(94, 159, 29)',
+        'zoo': 'rgb(37, 177, 105)',
+        'castle_wall': 'rgb(43, 131, 203)',
+        'citywalls': 'rgb(43, 131, 203)',
+        'city_gate': 'rgb(179, 0, 0)',
+        'tower': 'rgb(204, 179, 15)',
+    };
+
+    private iconsDefaults: {[name in TourismKeyType | HistoricKeyType]?: Icon } = {
         'attraction': this.createIcon('assets/map_icons/favourite-location-svgrepo-com.svg', this.iconDefaultSize, this.iconAnchorDefault),
         'viewpoint': this.createIcon('assets/map_icons/marker-flags-svgrepo-com.svg', this.iconDefaultSize, this.iconAnchorDefault),
         'artwork': this.createIcon('assets/map_icons/map-pin-svgrepo-com.svg', this.iconDefaultSize, this.iconAnchorDefault),
@@ -45,7 +65,7 @@ export class IconsService extends IconsSericeData {
         'tower': this.createIcon('assets/map_icons/my_tower.svg', this.iconDefaultSize, this.iconAnchorDefault),
     };
 
-    iconsMouseOver: {[name in TourismKeyType | HistoricKeyType]?: Icon} = {
+    private iconsMouseOver: {[name in TourismKeyType | HistoricKeyType]?: Icon} = {
         'attraction': this.createIcon('assets/map_icons/favourite-location-svgrepo-com.svg', this.iconMouseOverSize, this.iconAnchorMouseOver),
         'viewpoint': this.createIcon('assets/map_icons/marker-flags-svgrepo-com.svg', this.iconMouseOverSize, this.iconAnchorMouseOver),
         'artwork': this.createIcon('assets/map_icons/map-pin-svgrepo-com.svg', this.iconMouseOverSize, this.iconAnchorMouseOver),
@@ -118,6 +138,14 @@ export class IconsService extends IconsSericeData {
             return icon.options['iconUrl'];
         } else {
             return 'assets/img/markers/marker-icon.png';
+        }
+    }
+
+    override getIconColorByKey(key: string): string {
+        if ((this.iconColors as any)[key]) {
+            return (this.iconColors as any)[key];
+        } else {
+            return 'var(--color-basic-700)';
         }
     }
 

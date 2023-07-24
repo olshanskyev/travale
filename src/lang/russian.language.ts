@@ -101,7 +101,8 @@ export class RussianLanguage {
                 archaeological_site: 'Археологические раскопки',
                 select_all: 'Выбрать все',
                 pois: 'Объекты на карте',
-                routes: 'Маршруты'
+                routes: 'Маршруты',
+                addToRoute: 'ДОБАВИТЬ В МАРШРУТ'
             },
 
             imgSlider: {
