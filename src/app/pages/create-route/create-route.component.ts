@@ -112,13 +112,19 @@ export class CreateRouteComponent implements OnInit, OnDestroy {
             osm_type: 'node'
           }
         },
-        images: [{
-          src: 'assets/test_images/white_tower1.jpg',
-          thumb: 'assets/test_images/white_tower1_thumb.jpg'
-        },
+        images: [
         {
           src: 'assets/test_images/white_tower2.jpg',
           thumb: 'assets/test_images/white_tower2_thumb.jpg'
+        },
+        {
+          src: 'assets/test_images/white_tower1.jpg',
+          thumb: 'assets/test_images/white_tower1_thumb.jpg'
+        },
+
+        {
+          src: 'assets/test_images/white_tower3.jpg',
+          thumb: 'assets/test_images/white_tower3_thumb.jpg'
         }
       ]
       }],

@@ -3,37 +3,35 @@
     <nb-card-body>
         <swiper-container travaleSwiper *ngIf="images" init="false" [config]="fullImgSwiperConfig"
         style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
-        class="full-img-swiper pb-3 ps-3 pe-3"
+        class="full-img-swiper pb-4 ps-3 pe-3"
         thumbs-swiper=".thumb-swiper">
             <swiper-slide
                 *ngFor="let item of images; let i=index">
-                    <img [src]="item.src" (click)="openImage(i)">
-
+                    <img [src]="item.src" (click)="openImage(i)" loading="lazy">
+                    <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
             </swiper-slide>
         </swiper-container>
 
-        <div>
-            <swiper-container travaleSwiper *ngIf="images" [config]="configThumbSwiper" init="false" class="thumb-swiper" watch-slides-progress="true">
-                <swiper-slide
-                    *ngFor="let item of images; let i=index">
+        <swiper-container travaleSwiper *ngIf="images" [config]="configThumbSwiper" init="false" class="thumb-swiper" watch-slides-progress="true">
+            <swiper-slide
+                *ngFor="let item of images; let i=index">
 
-                        <div class="control-div" *ngIf="editable">
-                            <button nbButton ghost size="small" (click)="deleteItem(i)">
-                                <nb-icon icon="trash-2-outline" pack="eva"></nb-icon>
-                            </button>
-                            <button nbButton ghost size="small" (click)="moveToLeft(i)">
-                                <nb-icon icon="arrow-ios-back-outline" pack="eva"></nb-icon>
-                            </button>
-                            <button nbButton ghost size="small" (click)="moveToRight(i)">
-                                <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon>
-                            </button>
-                        </div>
+                    <div class="control-div" *ngIf="editable">
+                        <button nbButton ghost size="small" (click)="deleteItem(i)">
+                            <nb-icon icon="trash-2-outline" pack="eva"></nb-icon>
+                        </button>
+                        <button nbButton ghost size="small" (click)="moveToLeft(i)">
+                            <nb-icon icon="arrow-ios-back-outline" pack="eva"></nb-icon>
+                        </button>
+                        <button nbButton ghost size="small" (click)="moveToRight(i)">
+                            <nb-icon icon="arrow-ios-forward-outline" pack="eva"></nb-icon>
+                        </button>
+                    </div>
 
-                        <img [src]="item.thumb">
+                    <img [src]="item.thumb">
 
-                </swiper-slide>
-            </swiper-container>
-        </div>
+            </swiper-slide>
+        </swiper-container>
 
     </nb-card-body>
 </nb-card>
