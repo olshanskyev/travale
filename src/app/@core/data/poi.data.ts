@@ -14,6 +14,7 @@ export class CustomFeature implements Feature {
         name?: string;
         name_en?: string;
         name_loc?: string;
+        website?: string;
         categories?: {
             [category: string]: string // category: type
         }

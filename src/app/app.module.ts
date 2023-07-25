@@ -22,7 +22,7 @@ registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

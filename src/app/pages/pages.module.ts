@@ -11,6 +11,7 @@ import { CustomComponentsModule } from '../custom-components/custom-components.m
 import { MapPageComponent } from './map-page-component/map-page.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CreateRouteComponent } from './create-route/create-route.component';
+import { ShortUrlPipe } from '../pipes/short-domain.pipe';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { CreateRouteComponent } from './create-route/create-route.component';
     AllDestinationsPageComponent,
     MapPageComponent,
     CreateRouteComponent,
+    ShortUrlPipe
   ],
 })
 export class PagesModule {
