@@ -69,6 +69,23 @@ export class OverlaysBuilder {
     }
 
 
+    private onPoiPopup(e: any, feature: CustomFeature, layer: Layer) {
+        const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
+        const historicKey = feature.properties?.categories?.['historic'] as TourismKeyType;
+        const historicIcon = this.iconsService.getMouseOverIconByKey(historicKey);
+        const tourismIcon = this.iconsService.getMouseOverIconByKey(tourismKey);
+        if (historicIcon)
+            e.target.setIcon(historicIcon);
+        else if (tourismIcon) {
+            e.target.setIcon(tourismIcon);
+        }
+        if (feature.properties) {
+            layer.unbindPopup();
+            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
+            layer.openPopup();
+        }
+    }
+
     private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
         if (!this.poiLayersFeaturesMap[layerKey]) {
             this.poiLayersFeaturesMap[layerKey] = {};
@@ -76,23 +93,15 @@ export class OverlaysBuilder {
         if (feature.id)
             this.poiLayersFeaturesMap[layerKey][feature.id] = layer;
 
-        if (feature.properties) {
-            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature));
-        }
-        const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
-        const historicKey = feature.properties?.categories?.['historic'] as TourismKeyType;
-
+        layer.on('click', (e: any) => {
+            this.onPoiPopup(e, feature, layer);
+        });
         layer.on('mouseover', (e: any) => {
-            const historicIcon = this.iconsService.getMouseOverIconByKey(historicKey);
-            const tourismIcon = this.iconsService.getMouseOverIconByKey(tourismKey);
-            if (historicIcon)
-                e.target.setIcon(historicIcon);
-            else if (tourismIcon) {
-                    e.target.setIcon(tourismIcon);
-            }
-            layer.openPopup();
+            this.onPoiPopup(e, feature, layer);
         });
         layer.on('mouseout', (e: any) => {
+            const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
+            const historicKey = feature.properties?.categories?.['historic'] as TourismKeyType;
             const historicIcon = this.iconsService.getDefaultIconByKey(historicKey);
             const tourismIcon = this.iconsService.getDefaultIconByKey(tourismKey);
             if (historicIcon) {
@@ -110,8 +119,11 @@ export class OverlaysBuilder {
         if (feature.id)
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
+        /*layer.on('click', (e: any) => {
+            this.onPopup(e, feature, layer);
+        });*/
         if (feature.properties) {
-            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature));
+            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
         }
     }
 

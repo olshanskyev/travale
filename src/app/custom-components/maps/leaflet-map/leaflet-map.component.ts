@@ -251,7 +251,7 @@ export class LeafletMapComponent implements OnInit {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.searchPlaceMarker.bindPopup(this.popupBuilder.buildPopupDiv(feature));
+      this.searchPlaceMarker.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
       this.searchPlaceMarker.addTo(this.map);
       if (centeredOnMarker)
         this.map.flyTo(position, this.selectPlaceZoom);

@@ -21,8 +21,9 @@
     position: fixed;
     right: 0;
     top: calc(var(--header-height));
-    width: calc((100% - var(--side-menu-width)) / 2);
+    width: var(--map-width);
     height: calc(100% - var(--header-height));
+    transition: all 0.2s ease-out;
   }
 
   .map-container-show-over {

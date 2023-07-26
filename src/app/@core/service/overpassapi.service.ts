@@ -28,6 +28,10 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
             name_en: item.tags?.['name:en'],
             name_loc: item.tags?.[`name:${locale}`],
             website: item.tags?.website,
+            openingHours: item.tags?.opening_hours,
+            phone: item.tags?.phone,
+            wikipedia: item.tags?.wikipedia,
+            wikidata: item.tags?.wikidata,
             categories: {
               'tourism': item.tags?.tourism,
               'historic': item.tags?.historic,

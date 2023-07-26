@@ -40,7 +40,7 @@
     <nb-card-body>
       <div *ngIf="!route.places || route.places.length === 0" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>
 
-      <nb-list class="places-list mt-2" cdkDropList (cdkDropListDropped)="drop($event)">
+      <nb-list class="places-list mt-2 me-2" cdkDropList (cdkDropListDropped)="drop($event)">
         <nb-list-item class="place-item" cdkDrag *ngFor="let item of route.places; let i=index">
             <button nbButton class="drag-handle-button" ghost size="small">
               <nb-icon class="drag-handle" cdkDragHandle icon="menu-outline" pack="eva"></nb-icon>

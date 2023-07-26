@@ -15,6 +15,10 @@ export class CustomFeature implements Feature {
         name_en?: string;
         name_loc?: string;
         website?: string;
+        openingHours?: string;
+        phone?: string;
+        wikipedia?: string;
+        wikidata?: string;
         categories?: {
             [category: string]: string // category: type
         }
