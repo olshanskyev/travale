@@ -1,51 +1,44 @@
-import { Component, OnInit, ViewChild, OnDestroy, HostBinding, ElementRef, AfterContentInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Place, Route } from 'src/app/@core/data/route.data';
 
 import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
-import { NbDialogService, NbMediaBreakpointsService, NbSidebarService, NbThemeService } from '@nebular/theme';
-import { Observable, Subject, Subscription, debounceTime, distinctUntilChanged, filter, fromEvent, map, takeUntil } from 'rxjs';
+import { NbDialogService } from '@nebular/theme';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { TranslateService } from '@ngx-translate/core';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 import { EditPlaceWindowComponent } from 'src/app/custom-components/windows/edit-place-window/edit-place-window.component';
+import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 
 @Component({
   selector: 'travale-create-route',
   templateUrl: './create-route.component.html',
   styleUrls: ['./create-route.component.scss']
 })
-export class CreateRouteComponent implements OnInit, OnDestroy, AfterContentInit {
+export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('slideOut', {static: true}) slideOut: SlideOutComponent;
   @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
-
-  @HostBinding('style.--side-menu-width') sideMenuWidth = '16rem';
-
-  menuCollapsed = false;
 
   cityName: string;
   country: string;
   route: Route;
   showMapOver = false;
-  sizeLessThanXl = false;
   private destroy$: Subject<void> = new Subject<void>();
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
 
-  @HostBinding('style.--map-width') mapWidth: string;
-
   constructor(private activatedRoute: ActivatedRoute,
-    private breakpointService: NbMediaBreakpointsService,
-    private themeService: NbThemeService,
-    private sidebarService: NbSidebarService,
     private translateService: TranslateService,
     private dialogService: NbDialogService,
-    private elementRef: ElementRef
+    private mapSidebarService: MapSidebarService
+
     ) {
   }
+
 
   onChangePlaceClicked(place: Place) {
     this.dialogService.open(EditPlaceWindowComponent, {
@@ -87,9 +80,10 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterContentInit
 
   toggleMapClicked() {
     this.showMapOver = !this.showMapOver;
+    (this.showMapOver)? this.mapSidebarService.showMapOver(): this.mapSidebarService.hideMapOver();
+
     setTimeout(() => { this.leafletMap.invalidate();}, 10);
   }
-
 
   private buildInitRoute(): Route {
     return {
@@ -134,17 +128,14 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterContentInit
     };
   }
 
-  private calcMapWidthAndInvalidate() {
-    this.mapWidth = this.elementRef.nativeElement.clientWidth / 2 + 36 + 'px'; //(36 layout-padding-left)
-    setTimeout(() => {
-      this.leafletMap.invalidate();
-    }, 200);
-  }
 
-  ngAfterContentInit(): void { // workaround to calculate map width and invalidate map
-    setTimeout(() => {
-      this.calcMapWidthAndInvalidate();
-    }, 1);
+  ngAfterViewInit(): void {
+    setTimeout(() => { // init leaflet map
+      this.leafletMap = this.mapSidebarService.leafletMap;
+      this.leafletMap.addToRoute.subscribe(res => {
+        this.onAddToRoute(res);
+      });
+    }, 0);
   }
 
   ngOnDestroy() {
@@ -153,21 +144,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterContentInit
   }
 
   ngOnInit(): void {
-    this.resizeObservable$ = fromEvent(window, 'resize'); //ToDo how to implement auto resizable fixed?
-    this.resizeSubscription$ = this.resizeObservable$.pipe(
-      map(() => this.elementRef.nativeElement.clientWidth),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-      ).subscribe(() => {
-        setTimeout(() => {
-          this.calcMapWidthAndInvalidate();
-        }, 400);
-
-    });
-
     this.activatedRoute.queryParams.subscribe((params: Params) => {
-
-
      if (!params['cityName'] || !params['country'] || !params['cityLatitude'] || !params['cityLongitude'] || !params['cityBoundingBox']) {
         this.dialogService.open(CitySelectWindowComponent, {
           closeOnBackdropClick: false,
@@ -188,29 +165,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterContentInit
       } else {
         this.cityName = params['cityName'];
         this.country = params['country'];
-
         this.route = this.buildInitRoute();
       }
-    });
-
-    this.sidebarService.onToggle() // workaround another subscription to sidebarservice doesn't work
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(() => {
-      setTimeout(() => {
-        this.calcMapWidthAndInvalidate();
-      }, 400);
-    });
-
-    const { xl } = this.breakpointService.getBreakpointsMap();
-
-    this.themeService.onMediaQueryChange()
-      .pipe(
-        takeUntil(this.destroy$),
-      )
-      .subscribe(([, currentBreakpoint]) => {
-        // !currentBreakpoint.width - beacaus of unknows breakpoint. ToDo extend NbSidebarComponent
-        this.sizeLessThanXl = (!currentBreakpoint.width || currentBreakpoint.width < xl);
-
     });
   }
 

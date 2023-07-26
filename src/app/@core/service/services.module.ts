@@ -5,13 +5,15 @@ import { CitiesService } from './cities.service';
 import { OverpassapiService } from './overpassapi.service';
 import { IconsService } from './icons.service';
 import { NominatimService } from './nominatim.service';
+import { MapSidebarService } from './map-sidebar.service';
 
 const SERVICES = [
   CountriesService,
   CitiesService,
   OverpassapiService,
   IconsService,
-  NominatimService
+  NominatimService,
+  MapSidebarService,
 ];
 
 @NgModule({

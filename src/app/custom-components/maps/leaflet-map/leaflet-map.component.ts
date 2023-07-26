@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Inject, LOCALE_ID } from '@ang
 import * as L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { icon, Marker } from 'leaflet';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 import { OverlaysBuilder } from './overlays-builder';
 import { TranslateService } from '@ngx-translate/core';
@@ -113,10 +113,12 @@ export class LeafletMapComponent implements OnInit {
       const southWest = new L.LatLng(bbox[0], bbox[2]);
       const northEast = new L.LatLng(bbox[1], bbox[3]);
       this.cityBoundingBox = new L.LatLngBounds(southWest, northEast);
+
     }
   }
 
   public setCityLatLong(lat: number, lon: number) {
+
     if (lat && lon) {
       this.center = L.latLng(lat, lon);
       if (this.map) {
@@ -124,11 +126,19 @@ export class LeafletMapComponent implements OnInit {
       }
     }
   }
-
+  paramsRead = false;
   ngOnInit(): void {
+    this.paramsRead = false;
     this.route.queryParams.subscribe((params: Params) => {
+      if (this.paramsRead) // workaround multiple events why?
+        return;
+      this.paramsRead = true;
+      if (params['cityLatitude'] && params['cityLongitude']) {
         this.setCityLatLong(params['cityLatitude'], params['cityLongitude']);
+      }
+      if (params['cityBoundingBox']) {
         this.setBoundingBox(params['cityBoundingBox']);
+      }
       },
     );
   }

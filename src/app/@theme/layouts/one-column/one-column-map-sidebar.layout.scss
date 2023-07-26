@@ -1,0 +1,67 @@
+@import '../../styles/themes';
+@import '../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
+@import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+
+@include nb-install-component {
+
+  .menu-sidebar ::ng-deep .scrollable {
+    padding-top: nb-theme(layout-padding-top);
+  }
+  .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .footer {
+    z-index: 3;
+  }
+
+  .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
+    min-width: 50%;
+  }
+
+  .map-sidebar ::ng-deep .scrollable {
+    padding: 0;
+  }
+
+  .map-container-show-over ::ng-deep .scrollable {
+    padding: 0;
+  }
+
+
+  .map-container-show-over ::ng-deep {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    position: fixed !important;
+    z-index: 1050 !important;
+    //transition: all 0.2s ease-out;
+    > div {
+      top: 0 !important;
+      width: 100%;
+      height: 100vh !important;
+      padding: 0;
+      //transition: all 0.2s ease-out;
+    }
+  }
+
+  nb-layout-column {
+    //filter: drop-shadow(1px 0px 10px var(--color-basic-transparent-600));
+  }
+
+  @include media-breakpoint-down(lg) {
+    .hide-map {
+      width: 0 !important;
+      min-width: 0 !important;
+      //display: none !important;
+   }
+  }
+
+  @include media-breakpoint-down(xxl) {
+    .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
+      min-width: 40%;
+    }
+  }
+
+}

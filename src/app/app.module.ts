@@ -39,7 +39,7 @@ registerLocaleData(localeRu, 'ru');
     NbToastrModule.forRoot( {
       position: NbGlobalLogicalPosition.TOP_END,
       duration: 5000
-    })
+    }),
   ],
   providers: [
     {

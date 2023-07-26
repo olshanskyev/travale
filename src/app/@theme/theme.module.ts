@@ -2,11 +2,12 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { NbActionsModule, NbContextMenuModule, NbIconModule, NbLayoutModule, NbSearchModule, NbSelectModule, NbSidebarModule, NbThemeModule, NbUserModule } from '@nebular/theme';
+import { NbActionsModule, NbButtonModule, NbContextMenuModule, NbIconModule, NbLayoutModule, NbSearchModule, NbSelectModule, NbSidebarModule, NbThemeModule, NbUserModule } from '@nebular/theme';
 import { OneColumnLayoutComponent } from './layouts';
 
 import { DEFAULT_THEME } from './styles/theme.default';
 import { GRAY_THEME } from './styles/theme.gray';
+import { OneColumnMapSidebarLayoutComponent } from './layouts/one-column/one-column-map-sidebar.layout';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -17,12 +18,14 @@ const NB_MODULES = [
   NbSearchModule,
   NbSelectModule,
   NbIconModule,
+  NbButtonModule
 ];
 
 const COMPONENTS = [
   HeaderComponent,
   FooterComponent,
   OneColumnLayoutComponent,
+  OneColumnMapSidebarLayoutComponent
 ];
 
 

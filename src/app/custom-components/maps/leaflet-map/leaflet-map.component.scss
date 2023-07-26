@@ -10,7 +10,6 @@
 
   ::ng-deep .leaflet-container {
     width: 100%;
-    min-height: nb-theme(card-height-giant);
     height: 100%;
   }
 
@@ -33,12 +32,6 @@
     text-decoration: none;
   }
 
-  @include media-breakpoint-down(md) {
-    .leaflet-container {
-      width: 100%;
-      min-height: nb-theme(card-height-large);
-    }
-  }
   ::ng-deep .leaflet-marker-icon { // route icons
     z-index: 601 !important;
   }
