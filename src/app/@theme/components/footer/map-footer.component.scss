@@ -1,0 +1,21 @@
+@import '../../styles/themes';
+@import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+
+@include nb-install-component {
+  .toggle-map-button-container {
+    position: fixed;
+    bottom: 16px;
+    left: 0;
+    display: none;
+    z-index: 1051;
+    width: 100%;
+    justify-content: center !important
+  }
+
+  @include media-breakpoint-down(lg) {
+    .toggle-map-button-container {
+      display: flex;
+   }
+  }
+}

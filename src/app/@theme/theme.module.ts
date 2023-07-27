@@ -8,6 +8,7 @@ import { OneColumnLayoutComponent } from './layouts';
 import { DEFAULT_THEME } from './styles/theme.default';
 import { GRAY_THEME } from './styles/theme.gray';
 import { OneColumnMapSidebarLayoutComponent } from './layouts/one-column/one-column-map-sidebar.layout';
+import { MapFooterComponent } from './components/footer/map-footer.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -24,6 +25,7 @@ const NB_MODULES = [
 const COMPONENTS = [
   HeaderComponent,
   FooterComponent,
+  MapFooterComponent,
   OneColumnLayoutComponent,
   OneColumnMapSidebarLayoutComponent
 ];

@@ -159,7 +159,10 @@ export class LeafletMapComponent implements OnInit {
 
 
   public invalidate() {
-    this.map.invalidateSize();
+    this.map.invalidateSize({
+      debounceMoveend: true,
+      pan: true
+    });
   }
 
   onMapReady($event: L.Map) {
@@ -174,7 +177,6 @@ export class LeafletMapComponent implements OnInit {
     if (this.zoom >= this.minZoomToShowFeatures) {
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
     }
-
 
   }
 

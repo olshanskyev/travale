@@ -4,8 +4,8 @@ import { Place, Route } from 'src/app/@core/data/route.data';
 
 import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
-import { NbDialogService } from '@nebular/theme';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { NbDialogService, NbSidebarService } from '@nebular/theme';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { TranslateService } from '@ngx-translate/core';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
@@ -34,8 +34,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private activatedRoute: ActivatedRoute,
     private translateService: TranslateService,
     private dialogService: NbDialogService,
-    private mapSidebarService: MapSidebarService
-
+    private mapSidebarService: MapSidebarService,
+    private sidebarService: NbSidebarService
     ) {
   }
 
@@ -76,13 +76,6 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.route.places.push(newPlace);
     this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.places.map(item => item.geoJson));
-  }
-
-  toggleMapClicked() {
-    this.showMapOver = !this.showMapOver;
-    (this.showMapOver)? this.mapSidebarService.showMapOver(): this.mapSidebarService.hideMapOver();
-
-    setTimeout(() => { this.leafletMap.invalidate();}, 10);
   }
 
   private buildInitRoute(): Route {
@@ -132,7 +125,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
       this.leafletMap = this.mapSidebarService.leafletMap;
-      this.leafletMap.addToRoute.subscribe(res => {
+      this.leafletMap.addToRoute.pipe(takeUntil(this.destroy$)).subscribe(res => {
         this.onAddToRoute(res);
       });
     }, 0);
