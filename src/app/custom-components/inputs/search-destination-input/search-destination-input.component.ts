@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, LOCALE_ID, Output, Input, ViewChild, E
 import { TranslateService } from '@ngx-translate/core';
 
 import { map, forkJoin, fromEvent, filter, debounceTime, distinctUntilChanged, of } from 'rxjs';
-import { Destination, PopularDestinations } from 'src/app/@core/data/common.data';
+import { Destination, PopularDestinations } from 'src/app/@core/data/destination.data';
 import { CitiesService } from 'src/app/@core/service/cities.service';
 import { CountriesService } from 'src/app/@core/service/countries.service';
 

@@ -4,7 +4,7 @@ import { Place, Route } from 'src/app/@core/data/route.data';
 
 import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
-import { NbDialogService, NbSidebarService } from '@nebular/theme';
+import { NbDialogService } from '@nebular/theme';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -36,8 +36,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private activatedRoute: ActivatedRoute,
     private translateService: TranslateService,
     private dialogService: NbDialogService,
-    private mapSidebarService: MapSidebarService,
-    private sidebarService: NbSidebarService
+    private mapSidebarService: MapSidebarService
     ) {
   }
 

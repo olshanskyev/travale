@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Destination } from './common.data';
+import { Destination } from './destination.data';
 
 
 export abstract class CitiesServiceData {

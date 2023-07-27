@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Country } from 'src/app/@core/data/countries.data';
 import { CountriesService } from 'src/app/@core/service/countries.service';
 import { City } from 'src/app/@core/data/cities.data';
-import { Destination, PopularDestinations } from 'src/app/@core/data/common.data';
+import { Destination, PopularDestinations } from 'src/app/@core/data/destination.data';
 
 @Component({
   selector: 'travale-select-destination-map',

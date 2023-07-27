@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbDialogRef } from '@nebular/theme';
 import { City } from 'src/app/@core/data/cities.data';
-import { Destination } from 'src/app/@core/data/common.data';
+import { Destination } from 'src/app/@core/data/destination.data';
 import { CitiesService } from 'src/app/@core/service/cities.service';
 
 @Component({

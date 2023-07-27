@@ -125,7 +125,7 @@ export class OverlaysBuilder {
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
         if (feature.properties) {
-            this.popupBuilder.buildPopupDiv(feature, null, this.locale).subscribe(resDiv => {
+            this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale).subscribe(resDiv => {
                 layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
             });
 

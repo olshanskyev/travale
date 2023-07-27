@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "make-your-travel": {
+    "travale": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,9 +20,10 @@
             "allowedCommonJsDependencies": [
               "eva-icons",
               "leaflet",
-              "leaflet.offline"
+              "leaflet.offline",
+              "file-saver"
             ],
-            "outputPath": "dist/make-your-travel",
+            "outputPath": "dist/travale",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -90,10 +91,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "make-your-travel:build:production"
+              "browserTarget": "travale:build:production"
             },
             "development": {
-              "browserTarget": "make-your-travel:build:development"
+              "browserTarget": "travale:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -101,7 +102,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "make-your-travel:build"
+            "browserTarget": "travale:build"
           }
         },
         "test": {

@@ -266,7 +266,7 @@ export class LeafletMapComponent implements OnInit {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.popupBuilder.buildPopupDiv(feature, null, this.locale).subscribe(resDiv => {
+      this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale).subscribe(resDiv => {
         this.searchPlaceMarker.bindPopup(resDiv, PopupBuilder.popUpOptions);
       });
 

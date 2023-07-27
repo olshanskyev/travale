@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { City } from 'src/app/@core/data/cities.data';
-import { Destination } from 'src/app/@core/data/common.data';
+import { Destination } from 'src/app/@core/data/destination.data';
 import { Country } from 'src/app/@core/data/countries.data';
 
 @Component({

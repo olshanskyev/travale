@@ -84,6 +84,7 @@ export class PopupBuilder {
     }
 
     public buildPopupDiv(feature: CustomFeature, wikiService: WikiService | null, preferredLanguage: string): Observable<HTMLElement> {
+        this.wikiExtranction = null;
         const div = document.createElement('div');
         const mainInfoDiv = document.createElement('div');
         div.appendChild(mainInfoDiv);
@@ -108,7 +109,7 @@ export class PopupBuilder {
         button.setAttribute('class', 'appearance-filled full-width size-small shape-round status-primary mt-2');
         button.innerHTML = this.translateService.instant('leafletMap.addToRoute');
         button.onclick = () => this.addToRouteCallback({feature: feature, wikiExtraction: this.wikiExtranction});
-        div.setAttribute('style', 'max-width: 320px; min-width: 100px');
+        div.setAttribute('style', 'max-width: 320px; min-width: 250px');
         div.appendChild(button);
         if (wikiService && wikidata && wikipedia) { // if wikipedia tag presents in reply, we can find wikipedia page on wikidata
             const defLangPrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
