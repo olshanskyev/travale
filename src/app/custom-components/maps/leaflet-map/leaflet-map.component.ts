@@ -2,15 +2,16 @@ import { Component, OnInit, Output, EventEmitter, Inject, LOCALE_ID } from '@ang
 import * as L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { icon, Marker } from 'leaflet';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 import { OverlaysBuilder } from './overlays-builder';
 import { TranslateService } from '@ngx-translate/core';
 import { IconsService } from 'src/app/@core/service/icons.service';
 import { CustomLayersConfig } from './types';
-import { CustomFeature } from 'src/app/@core/data/poi.data';
+import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import { NominatimService } from 'src/app/@core/service/nominatim.service';
 import { PopupBuilder } from './popup-builder';
+import { WikiService } from 'src/app/@core/service/wiki.service';
 
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
@@ -36,7 +37,7 @@ Marker.prototype.options.icon = iconDefault;
 })
 export class LeafletMapComponent implements OnInit {
 
-  @Output() addToRoute: EventEmitter<CustomFeature> = new EventEmitter();
+  @Output() addToRoute: EventEmitter<AggregatedFeatureInfo> = new EventEmitter();
 
   map!: L.Map;
   zoom = 12;
@@ -97,14 +98,16 @@ export class LeafletMapComponent implements OnInit {
     private nominatimService: NominatimService,
     private translateService: TranslateService,
     private iconsService: IconsService,
+    private wikiService: WikiService,
     @Inject(LOCALE_ID) public locale: string
     ) {
-    this.popupBuilder = new PopupBuilder((feature) => this.onAddToRouteClick(feature), iconsService, translateService);
+    this.popupBuilder = new PopupBuilder((featureInfo) => this.onAddToRouteClick(featureInfo), iconsService, translateService);
     this.overlayBuilder = new OverlaysBuilder(
       this.overpassapiService,
       this.translateService,
       this.iconsService,
       this.popupBuilder,
+      this.wikiService,
       this.locale);
   }
 
@@ -143,8 +146,8 @@ export class LeafletMapComponent implements OnInit {
     );
   }
 
-  private onAddToRouteClick(feature: CustomFeature) {
-    this.addToRoute.emit(feature);
+  private onAddToRouteClick(featureInfo: AggregatedFeatureInfo) {
+    this.addToRoute.emit(featureInfo);
   }
 
   onDragEnd = () => {
@@ -263,7 +266,10 @@ export class LeafletMapComponent implements OnInit {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.searchPlaceMarker.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
+      this.popupBuilder.buildPopupDiv(feature, null, this.locale).subscribe(resDiv => {
+        this.searchPlaceMarker.bindPopup(resDiv, PopupBuilder.popUpOptions);
+      });
+
       this.searchPlaceMarker.addTo(this.map);
       if (centeredOnMarker)
         this.map.flyTo(position, this.selectPlaceZoom);

@@ -6,12 +6,14 @@ import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { CustomFeature } from 'src/app/@core/data/poi.data';
+
 import { TranslateService } from '@ngx-translate/core';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 import { EditPlaceWindowComponent } from 'src/app/custom-components/windows/edit-place-window/edit-place-window.component';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
+import { AggregatedFeatureInfo } from 'src/app/@core/data/poi.data';
+
 
 @Component({
   selector: 'travale-create-route',
@@ -64,14 +66,17 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
     this.leafletMap.updateRouteLayerName(this.route.id, this.route.title);
   }
 
-  onAddToRoute(feature: CustomFeature) {
-    const geoJson = feature;
+  onAddToRoute(featureInfo: AggregatedFeatureInfo) {
+    const geoJson = featureInfo.feature;
     geoJson.properties.route = {
       order: this.route.places.length + 1
     };
+    const name = (featureInfo.feature.properties?.['name_loc'])? featureInfo.feature.properties?.['name_loc']:
+            ((featureInfo.feature.properties?.['name_en'])? featureInfo.feature.properties?.['name_en']: featureInfo.feature.properties?.['name']);
     const newPlace: Place = {
-      id: feature.id,
-      name: feature.properties?.['name'] as string,
+      id: featureInfo.feature.id,
+      name: (name)? name: '',
+      description: featureInfo.wikiExtraction?.extract,
       geoJson: geoJson,
     };
     this.route.places.push(newPlace);

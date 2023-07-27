@@ -4,5 +4,7 @@ export const environment = {
   countriesEndpoint: '<countriesEndpoint>',
   citiesEndpoint: '<citiesEndpoint>',
   overpassapiEndpoint: '<overpassapiEndpoint>',
-  nominatimEndpoint: '<nominatimEndpoint>'
+  nominatimEndpoint: '<nominatimEndpoint>',
+  wikipediaEndpoint: '<wikipediaEndpoint>',
+  wikidataEndpoint: '<wikidataEndpoint>',
 };

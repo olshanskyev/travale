@@ -1,10 +1,14 @@
-import { CustomFeature } from 'src/app/@core/data/poi.data';
+import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import { IconsService } from 'src/app/@core/service/icons.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ShortUrlPipe } from 'src/app/pipes/short-domain.pipe';
+import { Observable, of } from 'rxjs';
+import { WikiService } from 'src/app/@core/service/wiki.service';
+import { WikiExtraction, WikiPageRef } from 'src/app/@core/data/wiki.data';
 
 export class PopupBuilder {
 
+    private wikiExtranction: WikiExtraction | null;
     shortDomainPipe: ShortUrlPipe = new ShortUrlPipe();
 
     public static popUpOptions = {
@@ -12,7 +16,7 @@ export class PopupBuilder {
     };
 
     constructor(
-        private addToRouteCallback: (feature: CustomFeature)=> void,
+        private addToRouteCallback: (featureInfo: AggregatedFeatureInfo)=> void,
         private iconsService: IconsService,
         private translateService: TranslateService ) {
 
@@ -60,23 +64,29 @@ export class PopupBuilder {
         </div>`;
     }
 
-    private buildWikipediaDiv(wikipedia: string | undefined) {
+    private buildWikipediaDiv(wikipedia: WikiPageRef) {
         if (!wikipedia)
             return '';
-
-        const languagePrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
-        const wikiName = wikipedia?.substring(wikipedia.indexOf(':') + 1, wikipedia.length);
 
         return `
         <div class="subtitle w-100" style="font-size: small">
             <i class="fa-brands fa-wikipedia-w" style="color: var(--color-basic-600);"></i>
-            <a href="https://${languagePrefix}.wikipedia.org/wiki/${wikiName}">Wikipedia</a>
-            (${languagePrefix})
+            <a href="${wikipedia.url}">Wikipedia</a>
+            (${wikipedia.language})
         </div>`;
     }
 
-    public buildPopupDiv(feature: CustomFeature) {
+    private buildWikiExtractionDiv(wikiExtraction: WikiExtraction) {
+        return `
+        <div id='wikicontainer' style='max-height: inherit; overflow-y: scroll; text-align: justify;' class='scrollable-container ps-1 pe-1 pt-1'>
+            ${wikiExtraction.extract}
+        </div>`;
+    }
+
+    public buildPopupDiv(feature: CustomFeature, wikiService: WikiService | null, preferredLanguage: string): Observable<HTMLElement> {
         const div = document.createElement('div');
+        const mainInfoDiv = document.createElement('div');
+        div.appendChild(mainInfoDiv);
 
         const historic = feature.properties?.categories?.['historic'];
         const tourism = feature.properties?.categories?.['tourism'];
@@ -85,20 +95,54 @@ export class PopupBuilder {
         const openingHours = feature.properties?.openingHours;
         const phone = feature.properties?.phone;
         const wikipedia = feature.properties?.wikipedia;
+        const wikidata = feature.properties?.wikidata;
         const historicString = (historic)? this.buildBadgeSpan(this.translateService.instant('leafletMap.' + historic), this.iconsService.getIconColorByKey(historic)): '';
         const tourismString = (tourism)? this.buildBadgeSpan(this.translateService.instant('leafletMap.' + tourism), this.iconsService.getIconColorByKey(tourism)): '';
         const amenityString = (amenity)? this.buildBadgeSpan(this.translateService.instant('leafletMap.' + amenity), this.iconsService.getIconColorByKey(amenity)): '';
 
-        div.innerHTML = this.buildNameDiv(feature) + historicString + tourismString + amenityString
-        + this.buildWebsiteDiv(website) + this.buildOpeningHoursDiv(openingHours) + this.buildPhoneDiv(phone) + this.buildWikipediaDiv(wikipedia);
+        mainInfoDiv.innerHTML = this.buildNameDiv(feature) + historicString + tourismString + amenityString
+        + this.buildWebsiteDiv(website) + this.buildOpeningHoursDiv(openingHours) + this.buildPhoneDiv(phone)/* + this.buildWikipediaDiv(wikipedia)*/;
 
         const button = document.createElement('button');
         button.setAttribute('nbButton','');
         button.setAttribute('class', 'appearance-filled full-width size-small shape-round status-primary mt-2');
         button.innerHTML = this.translateService.instant('leafletMap.addToRoute');
-        button.onclick = () => this.addToRouteCallback(feature);
-        div.setAttribute('style', 'max-width: 350px; min-width: 100px');
+        button.onclick = () => this.addToRouteCallback({feature: feature, wikiExtraction: this.wikiExtranction});
+        div.setAttribute('style', 'max-width: 320px; min-width: 100px');
         div.appendChild(button);
-        return div;
+        if (wikiService && wikidata && wikipedia) { // if wikipedia tag presents in reply, we can find wikipedia page on wikidata
+            const defLangPrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
+            wikiService.getWikiPageByWikiData([preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( article => {
+                if (article) {
+                    mainInfoDiv.innerHTML += this.buildWikipediaDiv(article);
+                } else {  //article not found, take wikipedia string and parse
+
+                    const wikiName = wikipedia?.substring(wikipedia.indexOf(':') + 1, wikipedia.length);
+                    article = {
+                        title: wikiName,
+                        language: defLangPrefix,
+                        url: `https://${defLangPrefix}.wikipedia.org/wiki/${wikiName}`
+                    };
+                    mainInfoDiv.innerHTML += this.buildWikipediaDiv(article);
+                }
+                wikiService.extractTextFromArticle(article.language, article.title, 10).subscribe( wikiRes => {
+                    this.wikiExtranction = wikiRes;
+                    const wikiDiv = document.createElement('div');
+                    wikiDiv.setAttribute('style', 'max-height: 0');
+                    wikiDiv.innerHTML += this.buildWikiExtractionDiv(wikiRes);
+                    const buttonShowWiki = document.createElement('a');
+                    buttonShowWiki.innerHTML = 'show more';
+                    buttonShowWiki.setAttribute('href', 'javascript:void(0);');
+                    buttonShowWiki.onclick = () => {
+                        wikiDiv.setAttribute('style', 'max-height: 150px; ');
+                        buttonShowWiki.setAttribute('hidden','');
+                    };
+                    mainInfoDiv.appendChild(buttonShowWiki);
+                    mainInfoDiv.appendChild(wikiDiv);
+                });
+
+            });
+        }
+        return of(div);
     }
 }

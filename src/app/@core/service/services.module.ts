@@ -6,6 +6,7 @@ import { OverpassapiService } from './overpassapi.service';
 import { IconsService } from './icons.service';
 import { NominatimService } from './nominatim.service';
 import { MapSidebarService } from './map-sidebar.service';
+import { WikiService } from './wiki.service';
 
 const SERVICES = [
   CountriesService,
@@ -14,6 +15,7 @@ const SERVICES = [
   IconsService,
   NominatimService,
   MapSidebarService,
+  WikiService,
 ];
 
 @NgModule({

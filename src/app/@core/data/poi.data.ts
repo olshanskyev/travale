@@ -1,8 +1,14 @@
 import { LatLngBounds } from 'leaflet';
 import { Observable } from 'rxjs';
 import { Feature, Geometry } from 'geojson';
+import { WikiExtraction } from './wiki.data';
 
 export type JsonFeatureSource = 'nominatim' | 'overpass';
+
+export type AggregatedFeatureInfo = {
+    feature: CustomFeature,
+    wikiExtraction: WikiExtraction | null
+}
 
 export class CustomFeature implements Feature {
     type: 'Feature';

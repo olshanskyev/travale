@@ -7,7 +7,7 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
   styleUrls: ['./map-footer.component.scss'],
   template: `
     <div class="toggle-map-button-container">
-      <button nbButton status="primary" shape="round" (click)="toggleMapClicked()"><nb-icon icon="map-outline"></nb-icon>Map View</button>
+      <button nbButton status="primary" shape="round" (click)="toggleMapClicked()"><nb-icon icon="map-outline"></nb-icon>{{'leafletMap.toggleMap' | translate}}</button>
     </div>
   `,
 })

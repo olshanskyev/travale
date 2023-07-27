@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IconsService } from 'src/app/@core/service/icons.service';
 import { CustomGeoJSONLayersMap, CustomGeoJsonLayer, FeaturesMap, LayersFeaturesMap } from './types';
 import { PopupBuilder } from './popup-builder';
+import { WikiService } from 'src/app/@core/service/wiki.service';
 
 export class OverlaysBuilder {
     poiLayersFeaturesMap: LayersFeaturesMap = {}; // has format [layerName][feature.id] => layer
@@ -19,6 +20,7 @@ export class OverlaysBuilder {
         private translateService: TranslateService,
         private iconsService: IconsService,
         private popupBuilder: PopupBuilder,
+        private wikiService: WikiService,
         private locale: string) {
     }
 
@@ -69,7 +71,7 @@ export class OverlaysBuilder {
     }
 
 
-    private onPoiPopup(e: any, feature: CustomFeature, layer: Layer) {
+    private enlargeIcon(e: any, feature: CustomFeature) {
         const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
         const historicKey = feature.properties?.categories?.['historic'] as TourismKeyType;
         const historicIcon = this.iconsService.getMouseOverIconByKey(historicKey);
@@ -79,11 +81,7 @@ export class OverlaysBuilder {
         else if (tourismIcon) {
             e.target.setIcon(tourismIcon);
         }
-        if (feature.properties) {
-            layer.unbindPopup();
-            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
-            layer.openPopup();
-        }
+
     }
 
     private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
@@ -94,10 +92,17 @@ export class OverlaysBuilder {
             this.poiLayersFeaturesMap[layerKey][feature.id] = layer;
 
         layer.on('click', (e: any) => {
-            this.onPoiPopup(e, feature, layer);
+            this.enlargeIcon(e, feature);
+            if (feature.properties) {
+                layer.unbindPopup();
+                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale).subscribe(resDiv => {
+                    layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
+                layer.openPopup();
+                });
+            }
         });
         layer.on('mouseover', (e: any) => {
-            this.onPoiPopup(e, feature, layer);
+            this.enlargeIcon(e, feature);
         });
         layer.on('mouseout', (e: any) => {
             const tourismKey = feature.properties?.categories?.['tourism'] as HistoricKeyType;
@@ -119,11 +124,11 @@ export class OverlaysBuilder {
         if (feature.id)
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
-        /*layer.on('click', (e: any) => {
-            this.onPopup(e, feature, layer);
-        });*/
         if (feature.properties) {
-            layer.bindPopup(this.popupBuilder.buildPopupDiv(feature), PopupBuilder.popUpOptions);
+            this.popupBuilder.buildPopupDiv(feature, null, this.locale).subscribe(resDiv => {
+                layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
+            });
+
         }
     }
 
