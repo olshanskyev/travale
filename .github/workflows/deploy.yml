@@ -8,6 +8,8 @@ jobs:
         env:
           ARCHIVE_NAME: ${{ github.event.repository.name }}.tar.gz
           DIST_FOLDER: ${{ vars.GITHUB_WORKSPACE }}dist/travale/
+          REMOTE_FOLDER: /home/ec2-user/${{ github.event.repository.name }}
+          NGINX_DIST_FOLDER: /home/ec2-user/test
         environment: dev_workflow
         steps:
           - uses: actions/checkout@v3
@@ -28,8 +30,15 @@ jobs:
           - name: Copy dist to AWS
             uses: garygrossgarten/github-action-scp@release
             with:
-              local: ${{ vars.ARCHIVE_NAME }}
-              remote: /home/ec2-user/test
+              local: ${{ env.ARCHIVE_NAME }}
+              remote: $ {{ env.REMOTE_FOLDER }}
+              host: ${{ secrets.AWS_PUBLIC_IP }}
+              username: ${{ secrets.AWS_SSH_USER }}
+              password: ${{ secrets.AWS_SSH_PWD }}
+          - name: Unzip and copy to nginx folder
+            uses: garygrossgarten/github-action-ssh@release
+            with:
+              command: tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }}
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
               password: ${{ secrets.AWS_SSH_PWD }}
