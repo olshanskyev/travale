@@ -8,14 +8,19 @@ env:
 jobs:
     deployment:
         runs-on: ubuntu-latest
+        environment: dev_workflow
         steps:
             - name: List Variables
               run: |
-                  echo "aws public IP : $AWS_PUBLIC_IP"
-                  echo "$GITHUB_WORKSPACE"
+                  echo "aws public IP : $PUBLIC_IP"
+                  echo "aws public IP2": {{ vars.AWS_PUBLIC_IP }}"
+                  echo "workspace: $GITHUB_WORKSPACE"
               env:
-                  AWS_PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}
+                  PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}
             - name: List artifacts
               run: |
+                ls -laF /home/runner/work/travale
                 ls -laF $GITHUB_WORKSPACE
                 pwd
+                
+                
