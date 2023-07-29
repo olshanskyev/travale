@@ -18,5 +18,11 @@ jobs:
         needs: [build]
         steps:
          # Step 1
-          - name: List artifacts
-            run: ls -laF /home/runner/work/travale/
+            - name: List Variables:
+                run: |
+                    echo "deployment IP : $DEPLOYMENT_IP"
+                    echo "GITHUB_WORKSPACE : $GITHUB_WORKSPACE"
+                env:
+                    DEPLOYMENT_IP: ${{ vars.AWS_PUBLIC_IP }}  
+            - name: List artifacts
+                run: ls -laF $GITHUB_WORKSPACE/dist
