@@ -28,6 +28,7 @@ jobs:
               env:
                   PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}
             - name: List artifacts
+              run: |
                 ls -laF $GITHUB_WORKSPACE
                 ls -laF $GITHUB_WORKSPACE/dist
                 
