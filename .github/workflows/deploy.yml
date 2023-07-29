@@ -14,13 +14,8 @@ jobs:
           - uses: actions/setup-node@v3
             with:
                 node-version: 18
-          - name: NPM install
-            run: npm ci
-          - name: NPM build
-            run: npm run -s build          
-          - name: List artifacts to deploy
-            run: |              
-              ls -laF $GITHUB_WORKSPACE/dist/travale          
+          - name: ping
+            run: ping ${{ secrets.AWS_PUBLIC_IP }}
           - name: copy file via ssh key
             uses: appleboy/scp-action@master
             with:
@@ -28,7 +23,7 @@ jobs:
               username: ${{ secrets.AWS_SSH_USER }}
               port: 22
               key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-              source: "$GITHUB_WORKSPACE/dist/travale/index.html"
+              source: "$GITHUB_WORKSPACE/src/index.html"
               target: "/home/ec2-user/test"
                 
                 
