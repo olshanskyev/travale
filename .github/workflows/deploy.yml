@@ -21,5 +21,4 @@ jobs:
               remote: /home/ec2-user/test
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
-              privateKey : ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-                
+              password: ${{ secrets.AWS_SSH_PWD }}
