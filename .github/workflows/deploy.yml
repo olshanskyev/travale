@@ -31,7 +31,7 @@ jobs:
             uses: garygrossgarten/github-action-scp@release
             with:
               local: ${{ env.ARCHIVE_NAME }}
-              remote: $ {{ env.REMOTE_FOLDER }}
+              remote: ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }}
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
               password: ${{ secrets.AWS_SSH_PWD }}
