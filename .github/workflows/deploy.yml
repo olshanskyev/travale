@@ -18,7 +18,7 @@ jobs:
         needs: [build]
         steps:
          # Step 1
-            - name: List Variables:
+            - name: List Variables
                 run: |
                     echo "deployment IP : $DEPLOYMENT_IP"
                     echo "GITHUB_WORKSPACE : $GITHUB_WORKSPACE"
