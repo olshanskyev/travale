@@ -14,15 +14,10 @@ jobs:
           - uses: actions/setup-node@v3
             with:
                 node-version: 18
-          - name: "check is AWS_PUBLIC_IP exists"
-            env: 
-                super_secret: ${{ secrets.AWS_PUBLIC_IP }}
-            if: ${{ env.super_secret == '' }}
-            run: echo "doesnt exist"
           - name: Copy folder content recursively to AWS
             uses: garygrossgarten/github-action-scp@release
             with:
-              local: $GITHUB_WORKSPACE/stc/index.html
+              local: /home/runner/work/travale/travale/src/assets/test_images
               remote: /home/ec2-user/test
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
