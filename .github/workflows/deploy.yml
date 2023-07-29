@@ -38,7 +38,9 @@ jobs:
           - name: Unzip and copy to nginx folder
             uses: garygrossgarten/github-action-ssh@release
             with:
-              command: tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }}
+              command: |
+                rm -rf ${{ env.NGINX_DIST_FOLDER }}
+                tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }} --strip-components=2
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
               password: ${{ secrets.AWS_SSH_PWD }}
