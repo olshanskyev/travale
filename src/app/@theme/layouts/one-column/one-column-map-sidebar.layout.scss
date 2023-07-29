@@ -1,6 +1,9 @@
 @import '../../styles/themes';
 @import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
+::ng-deep .cdk-overlay-container {
+  z-index: 1080 !important;
+}
 
 @include nb-install-component {
 

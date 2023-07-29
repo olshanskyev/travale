@@ -43,8 +43,6 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onChangePlaceClicked(place: Place) {
     this.dialogService.open(EditPlaceWindowComponent, {
-      closeOnBackdropClick: false,
-      closeOnEsc: false,
       context: {
         place: place
       },
