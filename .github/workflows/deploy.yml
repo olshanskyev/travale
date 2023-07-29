@@ -20,14 +20,15 @@ jobs:
             run: npm run -s build          
           - name: List artifacts to deploy
             run: |              
-              ls -laF $GITHUB_WORKSPACE/dist/travale
-          - name: Copy folder content recursively to AWS
-            uses: garygrossgarten/github-action-scp@release
+              ls -laF $GITHUB_WORKSPACE/dist/travale          
+          - name: copy file via ssh key
+            uses: appleboy/scp-action@master
             with:
-              local: $GITHUB_WORKSPACE/dist/travale
-              remote: /home/ec2-user/test
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
-              privateKey : ${{ secrets.AWS_SSH_PRIVATE_KEY }}
+              port: 22
+              key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
+              source: "$GITHUB_WORKSPACE/dist/travale/index.html"
+              target: "/home/ec2-user/test"
                 
                 
