@@ -9,7 +9,7 @@ jobs:
           ARCHIVE_NAME: ${{ github.event.repository.name }}.tar.gz
           DIST_FOLDER: ${{ vars.GITHUB_WORKSPACE }}dist/travale/
           REMOTE_FOLDER: /home/ec2-user/${{ github.event.repository.name }}
-          NGINX_DIST_FOLDER: /home/ec2-user/test
+          NGINX_DIST_FOLDER: /usr/share/nginx/html
         environment: dev_workflow
         steps:
           - uses: actions/checkout@v3
@@ -39,8 +39,8 @@ jobs:
             uses: garygrossgarten/github-action-ssh@release
             with:
               command: |
-                rm -rf ${{ env.NGINX_DIST_FOLDER }}
-                tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }} --strip-components=2
+                sudo rm -rf ${{ env.NGINX_DIST_FOLDER }}/*
+                sudo tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }} --strip-components=2
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
               password: ${{ secrets.AWS_SSH_PWD }}
