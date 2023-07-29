@@ -18,6 +18,6 @@ export class MapFooterComponent {
 
   toggleMapClicked() {
     this.sidebarService.toggle(false, 'map-sidebar');
-    setTimeout(() => { this.mapSidebarService.leafletMap.invalidate();}, 10);
+    setTimeout(() => { this.mapSidebarService.leafletMap.invalidate();}, 500);
   }
 }

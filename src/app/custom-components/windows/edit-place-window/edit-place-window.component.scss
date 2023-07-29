@@ -10,7 +10,7 @@
   @include media-breakpoint-down(sm) {
     nb-card {
       width: var(--small-window-width);
-      max-height: 90vh;
+      max-height: 80vh;
     }
   }
 }
