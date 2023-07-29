@@ -6,21 +6,13 @@ env:
   # Setting an environment variable with the value of a configuration variable
   REP_VAR: ${{ vars.REP_VAR }}
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v3
-          - uses: actions/setup-node@v3
-            with:
-                node-version: 18
-          - run: npm ci
     deployment:
         runs-on: ubuntu-latest
-        needs: [build]
         steps:
             - name: List Variables
               run: |
                   echo "aws public IP : $AWS_PUBLIC_IP"
+                  echo "$GITHUB_WORKSPACE"
               env:
                   AWS_PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}
             - name: List artifacts
