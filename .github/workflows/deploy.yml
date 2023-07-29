@@ -10,6 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         environment: dev_workflow
         steps:
+            - uses: actions/checkout@v3
             - name: List Variables
               run: |
                   echo "aws public IP : $PUBLIC_IP"
