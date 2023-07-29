@@ -19,4 +19,4 @@ jobs:
         steps:
          # Step 1
           - name: List artifacts
-            run: ls -laF .
+            run: ls -laF /home/runner/work/travale/
