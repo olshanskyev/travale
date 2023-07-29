@@ -15,23 +15,6 @@
     z-index: 1080 !important;
   }
 
-  .toggle-map-button-container {
-    position: fixed;
-    bottom: 16px;
-    left: 0;
-    display: none;
-    z-index: 1051;
-    width: 100%;
-    justify-content: center !important
-  }
-
-  @include media-breakpoint-down(lg) {
-
-   .toggle-map-button-container {
-      display: flex;
-   }
-  }
-
 }
 
 
