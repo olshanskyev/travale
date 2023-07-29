@@ -2,9 +2,6 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ dev_workflow ]
-env:
-  # Setting an environment variable with the value of a configuration variable
-  REP_VAR: ${{ vars.REP_VAR }}
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
@@ -16,10 +13,15 @@ jobs:
                 node-version: 18
           - name: NPM install
             run: npm ci          
-          - name: Copy folder content recursively to AWS
+          - name: NPM build
+            run: npm run -s build          
+          - name: List artifacts to deploy
+            run: |              
+              ls -laF $GITHUB_WORKSPACE/dist/travale
+          - name: Copy dist to AWS
             uses: garygrossgarten/github-action-scp@release
             with:
-              local: ${{ vars.GITHUB_WORKSPACE }}src/assets/test_images/
+              local: ${{ vars.GITHUB_WORKSPACE }}dist/travale/
               remote: /home/ec2-user/test
               host: ${{ secrets.AWS_PUBLIC_IP }}
               username: ${{ secrets.AWS_SSH_USER }}
