@@ -13,7 +13,7 @@ jobs:
             - name: List Variables
               run: |
                   echo "aws public IP : $PUBLIC_IP"
-                  echo "aws public IP2": {{ vars.AWS_PUBLIC_IP }}"
+                  echo "aws public IP2: {{ vars.AWS_PUBLIC_IP }}"
                   echo "workspace: $GITHUB_WORKSPACE"
               env:
                   PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}
