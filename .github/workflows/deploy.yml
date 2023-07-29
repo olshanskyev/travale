@@ -2,7 +2,9 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ dev_workflow ]
-    
+env:
+  # Setting an environment variable with the value of a configuration variable
+  REP_VAR: ${{ vars.REP_VAR }}
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -21,8 +23,9 @@ jobs:
             - name: List Variables
               run: |
                   echo "deployment IP : $DEPLOYMENT_IP"
-                  echo "GITHUB_WORKSPACE : $GITHUB_WORKSPACE"
+                  echo "GITHUB_WORKSPACE : $AWS_PUBLIC_IP"
+                  echo "repvar: $REP_VAR"
               env:
-                  DEPLOYMENT_IP: ${{ vars.AWS_PUBLIC_IP }}  
+                  AWS_PUBLIC_IP: ${{ vars.AWS_PUBLIC_IP }}  
             - name: List artifacts
-              run: ls -laF $GITHUB_WORKSPACE/dist
+              run: ls -laF $GITHUB_WORKSPACE
