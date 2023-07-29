@@ -19,10 +19,10 @@ jobs:
         steps:
          # Step 1
             - name: List Variables
-                run: |
-                    echo "deployment IP : $DEPLOYMENT_IP"
-                    echo "GITHUB_WORKSPACE : $GITHUB_WORKSPACE"
-                env:
-                    DEPLOYMENT_IP: ${{ vars.AWS_PUBLIC_IP }}  
+              run: |
+                  echo "deployment IP : $DEPLOYMENT_IP"
+                  echo "GITHUB_WORKSPACE : $GITHUB_WORKSPACE"
+              env:
+                  DEPLOYMENT_IP: ${{ vars.AWS_PUBLIC_IP }}  
             - name: List artifacts
-                run: ls -laF $GITHUB_WORKSPACE/dist
+              run: ls -laF $GITHUB_WORKSPACE/dist
