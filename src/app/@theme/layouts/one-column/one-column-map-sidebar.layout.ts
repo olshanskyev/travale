@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
       <!--<nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive [compactedBreakpoints]="['xs', 'is', 'sm', 'md', 'lg']" [collapsedBreakpoints]="['is', 'xs', 'unknown']">
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>-->
-      <nb-sidebar [compactedBreakpoints]="['xs', 'is', 'sm', 'md', 'lg']" [collapsedBreakpoints]="['is', 'xs', 'unknown']" responsive class="map-sidebar"
+      <nb-sidebar [compactedBreakpoints]="['xs', 'is', 'sm', 'md', 'lg']" left="false" [collapsedBreakpoints]="['is', 'xs', 'unknown']" responsive class="map-sidebar"
         tag="map-sidebar" #mapSidebar responsive>
         <ng-content select="travale-leaflet-map-component"></ng-content>
       </nb-sidebar>
