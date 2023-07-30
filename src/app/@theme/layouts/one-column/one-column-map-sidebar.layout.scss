@@ -11,7 +11,7 @@
     padding-top: nb-theme(layout-padding-top);
   }
   .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
-    //transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .footer {
@@ -19,7 +19,7 @@
   }
 
   .map-sidebar {
-    //transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
   }
 
   .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
@@ -43,7 +43,7 @@
   }
 
   nb-layout-column {
-    //filter: drop-shadow(1px 0px 10px var(--color-basic-transparent-600));
+    filter: drop-shadow(1px 0px 10px var(--color-basic-transparent-600));
   }
 
   @include media-breakpoint-down(xxl) {
