@@ -26,6 +26,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
 
   cityName: string;
+  cityLatitude = 40.61939015;
+  cityLongitude = 22.959859730874502;
   country: string;
   route: Route;
   showMapOver = false;
@@ -43,8 +45,6 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onChangePlaceClicked(place: Place) {
     this.dialogService.open(EditPlaceWindowComponent, {
-      closeOnBackdropClick: false,
-      closeOnEsc: false,
       context: {
         place: place
       },
@@ -86,45 +86,14 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
     return {
       id: 'route_' + this.cityName + Math.random(),
       title: this.translateService.instant('createRoute.newRouteIn') + this.cityName,
-      places: [{
-        id: 123,
-        name: 'Test attraction',
-        description: 'Long description for attraction',
-        geoJson: {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [40.640266, 22.939524]
-          },
-          properties: {
-            source: 'nominatim',
-            osm_type: 'node'
-          }
-        },
-        images: [
-        {
-          src: 'assets/test_images/white_tower2.jpg',
-          thumb: 'assets/test_images/white_tower2_thumb.jpg'
-        },
-        {
-          src: 'assets/test_images/white_tower1.jpg',
-          thumb: 'assets/test_images/white_tower1_thumb.jpg'
-        },
-
-        {
-          src: 'assets/test_images/white_tower3.jpg',
-          thumb: 'assets/test_images/white_tower3_thumb.jpg'
-        }
-      ]
-      }],
+      places: [],
       routeType: 'Main Attractions',
-      cityLatitude: 40.61939015,
-      cityLongitude: 22.959859730874502,
+      cityLatitude: this.cityLatitude,
+      cityLongitude: this.cityLongitude,
       cityName: this.cityName,
       country: this.country,
     };
   }
-
 
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
@@ -151,6 +120,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
           }).onClose.subscribe((result: any) => {
             const city: City = result?.city as City;
             const cityGeometry = result?.cityGeometry as CityGeometry;
+            this.cityLatitude = cityGeometry.lat;
+            this.cityLongitude = cityGeometry.lon;
             if (city && cityGeometry) {
               this.cityName = city.fullName;
               this.country = city.country;
@@ -162,6 +133,8 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.cityName = params['cityName'];
         this.country = params['country'];
+        this.cityLatitude = params['cityLatitude'];
+        this.cityLongitude = params['cityLongitude'];
         this.route = this.buildInitRoute();
       }
     });

@@ -13,10 +13,10 @@ import { MapSidebarService } from '../@core/service/map-sidebar.service';
   template: `
     <travale-one-column-map-sidebar-layout *ngIf="router.url.includes('create-route'); else simpleLayout">
       <nb-menu [items]="menu"></nb-menu>
-      <router-outlet>
-      </router-outlet>
       <travale-leaflet-map-component #leafletMap>
       </travale-leaflet-map-component>
+      <router-outlet>
+      </router-outlet>
     </travale-one-column-map-sidebar-layout>
     <ng-template #simpleLayout>
       <travale-one-column-layout>

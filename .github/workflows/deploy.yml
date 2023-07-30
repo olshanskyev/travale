@@ -1,0 +1,46 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [ main ]
+jobs:
+    build_and_deploy:
+        runs-on: ubuntu-latest
+        env:
+          ARCHIVE_NAME: ${{ github.event.repository.name }}.tar.gz
+          DIST_FOLDER: ${{ vars.GITHUB_WORKSPACE }}dist/travale/
+          REMOTE_FOLDER: /home/ec2-user/${{ github.event.repository.name }}
+          NGINX_DIST_FOLDER: /usr/share/nginx/html
+        environment: prod
+        steps:
+          - uses: actions/checkout@v3
+          - uses: actions/setup-node@v3
+            with:
+                node-version: 18
+          - name: NPM install
+            run: npm ci          
+          - name: NPM build
+            run: npm run -s build          
+          - name: List artifacts to deploy
+            run: |              
+              ls -laF $DIST_FOLDER
+          - name: Pachage into archive
+            run: tar -czf $ARCHIVE_NAME $DIST_FOLDER
+          - name: check archive
+            run: ls -laF $ARCHIVE_NAME
+          - name: Copy dist to AWS
+            uses: garygrossgarten/github-action-scp@release
+            with:
+              local: ${{ env.ARCHIVE_NAME }}
+              remote: ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }}
+              host: ${{ secrets.AWS_PUBLIC_IP }}
+              username: ${{ secrets.AWS_SSH_USER }}
+              password: ${{ secrets.AWS_SSH_PWD }}
+          - name: Unzip and copy to nginx folder
+            uses: garygrossgarten/github-action-ssh@release
+            with:
+              command: |
+                sudo rm -rf ${{ env.NGINX_DIST_FOLDER }}/*
+                sudo tar -xzf ${{ env.REMOTE_FOLDER }}/${{ env.ARCHIVE_NAME }} -C ${{ env.NGINX_DIST_FOLDER }} --strip-components=2
+              host: ${{ secrets.AWS_PUBLIC_IP }}
+              username: ${{ secrets.AWS_SSH_USER }}
+              password: ${{ secrets.AWS_SSH_PWD }}

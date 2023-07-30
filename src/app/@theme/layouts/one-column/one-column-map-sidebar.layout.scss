@@ -1,14 +1,14 @@
 @import '../../styles/themes';
 @import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
+::ng-deep .cdk-overlay-container {
+  z-index: 1080 !important;
+}
 
 @include nb-install-component {
 
   .menu-sidebar ::ng-deep .scrollable {
     padding-top: nb-theme(layout-padding-top);
-  }
-  .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .footer {
@@ -17,6 +17,10 @@
 
   .map-sidebar {
     transition: all 0.4s ease-out;
+    order: 2 !important;
+  }
+  .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
@@ -29,7 +33,7 @@
 
 
   .map-layout-footer {
-    z-index: 1051 !important;
+    z-index: 1065 !important;
     box-shadow: none !important;
 
   }
@@ -50,25 +54,29 @@
   }
 
   @include media-breakpoint-down(lg) {
+    nb-layout-column {
+      padding: 0 !important;
+    }
     .map-sidebar ::ng-deep {
-      left: 0;
-      top: 0;
       width: 100%;
-      height: 100vh;
-      position: fixed !important;
-      z-index: 1050 !important;
-
-      > div {
+      z-index: 1062 !important;
+      opacity: 1;
+      > div.main-container {
         top: 0 !important;
         width: 100%;
         height: 100vh !important;
-        padding: 0;
+
       }
     }
 
-    .map-sidebar.collapsed {
+    .map-sidebar.collapsed ::ng-deep {
       width: 0 !important;
       min-width: 0 !important;
+      opacity: 0;
+      > div.main-container {
+        width: 0 !important;
+        height: 0 !important;
+      }
     }
   }
 
