@@ -10,9 +10,6 @@
   .menu-sidebar ::ng-deep .scrollable {
     padding-top: nb-theme(layout-padding-top);
   }
-  .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
 
   .footer {
     z-index: 3;
@@ -21,6 +18,9 @@
   .map-sidebar {
     transition: all 0.4s ease-out;
     order: 2 !important;
+  }
+  .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
@@ -54,19 +54,25 @@
   }
 
   @include media-breakpoint-down(lg) {
+    nb-layout-column {
+      padding: 0 !important;
+    }
     .map-sidebar ::ng-deep {
       width: 100%;
       z-index: 1062 !important;
+      opacity: 1;
       > div.main-container {
         top: 0 !important;
         width: 100%;
         height: 100vh !important;
+
       }
     }
 
     .map-sidebar.collapsed ::ng-deep {
       width: 0 !important;
       min-width: 0 !important;
+      opacity: 0;
       > div.main-container {
         width: 0 !important;
         height: 0 !important;
