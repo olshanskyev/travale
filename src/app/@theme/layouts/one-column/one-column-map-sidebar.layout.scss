@@ -54,14 +54,16 @@
 
   @include media-breakpoint-down(lg) {
     .map-sidebar ::ng-deep {
-      //width: 100%;
-      //height: 100vh !important;
+      width: 100%;
       z-index: 1062 !important;
       > div.main-container {
         top: 0 !important;
         width: 100%;
         height: 100vh !important;
         padding: 0;
+        div.scrollable {
+          z-index: 1062 !important;
+        }
       }
     }
 
