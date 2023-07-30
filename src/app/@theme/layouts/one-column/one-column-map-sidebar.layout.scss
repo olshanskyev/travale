@@ -19,7 +19,7 @@
   }
 
   .map-sidebar {
-    //transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
     order: 2 !important;
   }
 
@@ -70,10 +70,6 @@
       > div.main-container {
         width: 0 !important;
         height: 0 !important;
-        //padding: 0;
-        //div.scrollable {
-        //  z-index: 1062 !important;
-        //}
       }
     }
   }
