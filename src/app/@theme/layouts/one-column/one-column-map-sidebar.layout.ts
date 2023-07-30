@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { NbSidebarService } from '@nebular/theme';
-import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'travale-one-column-map-sidebar-layout',
@@ -31,14 +29,4 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
   `,
 })
 export class OneColumnMapSidebarLayoutComponent {
-
-  constructor(nbSidebarService: NbSidebarService, mapSidebarService: MapSidebarService) {
-    nbSidebarService.onToggle().subscribe((res) => {
-      if (res.tag === 'map-sidebar') {
-        mapSidebarService.leafletMap.zoom = 14;
-      }
-
-    });
-
-  }
 }
