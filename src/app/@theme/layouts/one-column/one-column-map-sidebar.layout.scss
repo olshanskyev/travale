@@ -57,16 +57,13 @@
       left: 0;
       top: 0;
       width: 100%;
-      height: 100vh;
+      height: 100vh !important;
       z-index: 1062 !important;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
       > div.main-container {
         top: 0 !important;
-        width: 100%;
+        //width: 100%;
         height: 100vh !important;
         padding: 0;
-        z-index: 1060 !important;
       }
     }
 
