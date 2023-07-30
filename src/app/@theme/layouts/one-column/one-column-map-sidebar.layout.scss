@@ -22,13 +22,13 @@
     //transition: all 0.4s ease-out;
   }
 
-  .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
+  /*.map-sidebar, .map-sidebar ::ng-deep > div.main-container {
     min-width: 50%;
   }
 
   .map-sidebar ::ng-deep .scrollable {
     padding: 0;
-  }
+  }*/
 
 
   .map-layout-footer {
@@ -48,12 +48,12 @@
 
   @include media-breakpoint-down(xxl) {
     .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
-      min-width: 40%;
+      //min-width: 40%;
     }
   }
 
   @include media-breakpoint-down(lg) {
-    .map-sidebar ::ng-deep {
+    /*.map-sidebar ::ng-deep {
       width: 100%;
       z-index: 1062 !important;
       top: 0 !important;
@@ -71,7 +71,7 @@
     .map-sidebar.collapsed {
       width: 0 !important;
       min-width: 0 !important;
-    }
+    }*/
   }
 
 }
