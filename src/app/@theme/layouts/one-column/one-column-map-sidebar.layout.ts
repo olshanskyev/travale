@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { NbSidebarService } from '@nebular/theme';
 
 @Component({
   selector: 'travale-one-column-map-sidebar-layout',
@@ -29,4 +30,17 @@ import { Component } from '@angular/core';
   `,
 })
 export class OneColumnMapSidebarLayoutComponent {
+
+  constructor(changeDetectionRef: ChangeDetectorRef, nbSidebarService: NbSidebarService) {
+    nbSidebarService.onToggle().subscribe((res) => {
+      if (res.tag === 'map-sidebar') {
+        setTimeout(() => {
+          changeDetectionRef.detectChanges();
+        }, 500); // workaround beacause of not implemented .map-sidebar style on mobile devices
+
+      }
+
+    });
+
+  }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { NbSidebarService } from '@nebular/theme';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 
@@ -13,12 +13,11 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 })
 export class MapFooterComponent {
 
-  constructor(private sidebarService: NbSidebarService, private mapSidebarService: MapSidebarService, private changeDetectionRef: ChangeDetectorRef) {
+  constructor(private sidebarService: NbSidebarService, private mapSidebarService: MapSidebarService) {
   }
 
   toggleMapClicked() {
     this.sidebarService.toggle(false, 'map-sidebar');
     setTimeout(() => { this.mapSidebarService.leafletMap.invalidate();}, 10);
-    setTimeout(() => this.changeDetectionRef.detectChanges(), 500); // workaround beacause of not implemented .map-sidebar style on mobile devices
   }
 }
