@@ -1,5 +1,56 @@
 
-    <h1>test</h1>
+    <div class="map-wrapper">
+        <travale-search-place-control *ngIf="cityBoundingBox" [bounds]="cityBoundingBox" (placeSelect)="onPlaceSelect($event)" (mouseOverPlace)="onMouseOverSearchPlace($event)" class="w-50"></travale-search-place-control>
+        <button nbButton ghost size="giant" class="layers-button" (click)="sideComponent.open()"><nb-icon icon="layers-outline" class="layers-icon"></nb-icon></button>
+        <div leaflet
+            class="leaflet-div"
+            [leafletOptions]="options"
+            (leafletMapReady)="onMapReady($event)"
+            (leafletClick)="mapClicked($event)"
+            [(leafletZoom)]="zoom"
+            #map
+            >
+        </div>
+    </div>
+
+    <travale-slide-out [toggled]="false" [collapsedWidth]="'1px'" [disableManualOpen]="true" #sideComponent>
+        <nb-accordion>
+            <nb-accordion-item [collapsed]="false">
+             <nb-accordion-item-header class="accordion-header">
+              <div class="subtitle">
+                {{'leafletMap.pois' | translate}}
+              </div>
+             </nb-accordion-item-header>
+             <nb-accordion-item-body class="accordion-checkbox-body">
+                <div class="layers-checkbox-container">
+                    <nb-checkbox
+                    *ngFor="let item of customLayersControl.poiOverlays | keyvalue:keepOriginalOrder"
+                    (checkedChange)="poiLayerToggled(item.value.layer, $event, item.key)"
+                    [checked] = "item.value.checked">
+                        <div [innerHTML]="item.value.displayName"></div>
+                    </nb-checkbox>
+                </div>
+             </nb-accordion-item-body>
+            </nb-accordion-item>
+            <nb-accordion-item *ngIf="customLayersControl.routeOverlays">
+                <nb-accordion-item-header class="accordion-header">
+                 <div class="subtitle">
+                   {{'leafletMap.routes' | translate}}
+                 </div>
+                </nb-accordion-item-header>
+                <nb-accordion-item-body class="accordion-checkbox-body">
+                   <div class="layers-checkbox-container">
+                       <nb-checkbox
+                       *ngFor="let item of customLayersControl.routeOverlays| keyvalue:keepOriginalOrder"
+                       (checkedChange)="routeLayerToggled(item.value.layer, $event, item.key)"
+                       [checked] = "item.value.checked">
+                           <div [innerHTML]="item.value.displayName"></div>
+                       </nb-checkbox>
+                   </div>
+                </nb-accordion-item-body>
+            </nb-accordion-item>
+        </nb-accordion>
+    </travale-slide-out>
 
 
 
