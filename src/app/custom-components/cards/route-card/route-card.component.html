@@ -9,11 +9,18 @@
 
       </div>
       <div class="route-caption">
+        <div class="row">
+          <div class="col-11 pe-0">
+            <nb-form-field class="title-form-field">
+              <input nbInput type="text" [(ngModel)]="route.title" (ngModelChange)="titleUpdate.next($event)" class="title-input" placeholder="{{'createRoute.routeTitle' | translate}}">
+              <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+            </nb-form-field>
+          </div>
+          <div class="col-1 p-0 d-flex align-items-center justify-content-center">
+            <button nbButton (click)="onSelectColor()" class="select-route-color-button" shape="round" size="tiny"><nb-icon icon="edit"></nb-icon></button>
+          </div>
+        </div>
 
-        <nb-form-field class="title-form-field">
-          <input nbInput type="text" [(ngModel)]="route.title" (ngModelChange)="titleUpdate.next($event)" class="title-input" placeholder="{{'createRoute.routeTitle' | translate}}">
-          <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
-        </nb-form-field>
 
         <nb-form-field class="subheading-form-field">
           <input nbInput type="text" [(ngModel)]="route.subheading" class="subheading-input" placeholder="{{'createRoute.addRouteSubheading' | translate}}">
@@ -46,7 +53,7 @@
               <nb-icon class="drag-handle" cdkDragHandle icon="menu-outline" pack="eva"></nb-icon>
             </button>
             <div class="edit-buttons">
-              <travale-marker-icon markerColor="rgb(200,200,200)" textColor="white">{{i + 1}}</travale-marker-icon>
+              <travale-marker-icon [markerColor]="routeColor" textColor="white">{{i + 1}}</travale-marker-icon>
 
               <button nbButton ghost size="small" (click)="onChangePlaceClick(item)">
                 <nb-icon icon="edit-outline" pack="eva"></nb-icon>

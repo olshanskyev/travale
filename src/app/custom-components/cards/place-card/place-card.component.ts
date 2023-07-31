@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { Place } from 'src/app/@core/data/route.data';
 import { ImgUploaderWindowComponent } from '../../windows/img-uploader-window/img-uploader-window.component';

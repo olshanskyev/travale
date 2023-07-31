@@ -27,6 +27,7 @@ import { SearchPlaceComponent } from './maps/leaflet-map/search-place-control/se
 import { CitySelectWindowComponent } from './windows/city-select-window/city-select-window.component';
 import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place-window.component';
 import { BadgeDirective } from './directives/badge.directive';
+import { SelectColorWindowComponent } from './windows/select-color-window/select-color-window.component';
 
 @NgModule({
   imports: [
@@ -71,7 +72,8 @@ import { BadgeDirective } from './directives/badge.directive';
     SearchPlaceComponent,
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
-    BadgeDirective
+    BadgeDirective,
+    SelectColorWindowComponent
 
   ],
   exports:[
@@ -90,7 +92,8 @@ import { BadgeDirective } from './directives/badge.directive';
   entryComponents: [
     ImgUploaderWindowComponent,
     CitySelectWindowComponent,
-    EditPlaceWindowComponent
+    EditPlaceWindowComponent,
+    SelectColorWindowComponent
   ]
 })
 export class CustomComponentsModule { }

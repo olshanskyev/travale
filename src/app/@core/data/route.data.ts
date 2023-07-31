@@ -24,6 +24,7 @@ export interface Route {
     cityName: string;
     country: string;
     image?: ImageType;
+    color: string;
 }
 
 export interface Place {

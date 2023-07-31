@@ -187,7 +187,7 @@ export class LeafletMapComponent implements OnInit {
     const address = await this.nominatimService.getAddress($event.latlng.lat, $event.latlng.lng, this.map.getZoom());
   }
 
-  public updateRouteLayer(routeId: string, routeTitle: string, features: CustomFeature[]) {
+  public updateRouteLayer(routeId: string, routeTitle: string, routeColor: string, features: CustomFeature[]) {
     if (!this.customLayersControl.routeOverlays)
       this.customLayersControl.routeOverlays = {};
 
@@ -195,7 +195,7 @@ export class LeafletMapComponent implements OnInit {
       this.customLayersControl.routeOverlays['select_all_routes'] = this.overlayBuilder.createSelectAllLayer();
     }
     if (!this.customLayersControl.routeOverlays[routeId]) {
-      this.customLayersControl.routeOverlays[routeId] = this.overlayBuilder.createEmptyRouteLayer(routeId, routeTitle);
+      this.customLayersControl.routeOverlays[routeId] = this.overlayBuilder.createEmptyRouteLayer(routeId, routeTitle, routeColor);
     }
 
     this.overlayBuilder.updateRouteLayer(this.customLayersControl.routeOverlays[routeId].layer, routeId, features);
@@ -208,6 +208,14 @@ export class LeafletMapComponent implements OnInit {
       return;
 
     this.customLayersControl.routeOverlays[routeId].displayName = routeTitle;
+  }
+
+  public updateRouteColor(routeId: string, routeColor: string) {
+    if (!this.customLayersControl.routeOverlays)
+      return;
+    if (!this.customLayersControl.routeOverlays[routeId])
+      return;
+    this.overlayBuilder.updateRouteLayerColor(this.customLayersControl.routeOverlays[routeId].layer, routeId, routeColor);
   }
 
   public keepOriginalOrder = (a: any) => a.key;

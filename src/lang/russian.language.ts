@@ -8,7 +8,8 @@ export class RussianLanguage {
                 warning: 'Внимание',
                 info: 'Информация',
                 done: 'OK',
-                back: 'Назад'
+                back: 'Назад',
+                color: 'Цвет'
             },
 
             login: {

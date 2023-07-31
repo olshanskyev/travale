@@ -143,6 +143,19 @@ textarea {
         align-items: center;
     }
 
+    .select-route-color-button {
+        background-color: var(--route-color);
+        color: var(--color-basic-100);
+    }
+    .select-route-color-button:hover, .select-route-color-button:active, .select-route-color-button:focus, .select-route-color-button:visited {
+        background-color: var(--route-color);
+        opacity: 0.8;
+    }
+
+
+    /*color:
+    */
+
 }
 
 
