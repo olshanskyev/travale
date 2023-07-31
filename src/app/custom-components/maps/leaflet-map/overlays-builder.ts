@@ -65,8 +65,8 @@ export class OverlaysBuilder {
         return resMarker;
     }
 
-    private getRouteMarkerByFeature(feature: CustomFeature, latlng: LatLng): Marker {
-        const icon = this.iconsService.getDefaultRouteIcon(feature.properties?.['route']?.order, 'white', 'rgb(63, 82, 227)');
+    private getRouteMarkerByFeature(feature: CustomFeature, latlng: LatLng, routeColor: string): Marker {
+        const icon = this.iconsService.getDefaultRouteIcon(feature.properties?.['route']?.order, 'white', routeColor);
         return marker(latlng, {icon: icon});
     }
 
@@ -200,14 +200,19 @@ export class OverlaysBuilder {
 
     }
 
-    createEmptyRouteLayer(routeId: string, displayName: string): CustomGeoJsonLayer {
+    createEmptyRouteLayer(routeId: string, displayName: string, routeColor: string): CustomGeoJsonLayer {
         return {
             layer: geoJSON(undefined, {
-                pointToLayer: (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng),
+                pointToLayer: (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor),
                 onEachFeature: (feature, layer) => this.onEachRouteFeature(feature, layer, routeId)
                 }),
             displayName: displayName
         };
+    }
+
+    updateRouteLayerColor(layerToUpdate: GeoJSON, routeId: string, routeColor: string) {
+        layerToUpdate.options.pointToLayer = (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor);
+        this.updateRouteLayer(layerToUpdate, routeId, layerToUpdate.getLayers().map((item: any) => item.feature as CustomFeature));
     }
 
 

@@ -58,17 +58,22 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
         item.geoJson.properties['route']['order'] = index + 1;
     });
 
-    this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.places.map(item => item.geoJson));
+    this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
   }
 
   onRouteTitleChanged() {
     this.leafletMap.updateRouteLayerName(this.route.id, this.route.title);
   }
 
+  onRouteColorChanged() {
+    this.leafletMap.updateRouteColor(this.route.id, this.route.color);
+  }
+
   onAddToRoute(featureInfo: AggregatedFeatureInfo) {
     const geoJson = featureInfo.feature;
     geoJson.properties.route = {
-      order: this.route.places.length + 1
+      order: this.route.places.length + 1,
+
     };
     const name = (featureInfo.feature.properties?.['name_loc'])? featureInfo.feature.properties?.['name_loc']:
             ((featureInfo.feature.properties?.['name_en'])? featureInfo.feature.properties?.['name_en']: featureInfo.feature.properties?.['name']);
@@ -79,7 +84,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
       geoJson: geoJson,
     };
     this.route.places.push(newPlace);
-    this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.places.map(item => item.geoJson));
+    this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
   }
 
   private buildInitRoute(): Route {
@@ -92,6 +97,7 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
       cityLongitude: this.cityLongitude,
       cityName: this.cityName,
       country: this.country,
+      color: 'rgb(52, 152, 219)'
     };
   }
 
