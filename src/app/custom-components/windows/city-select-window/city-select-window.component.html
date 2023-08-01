@@ -1,15 +1,16 @@
-<nb-card size="medium" style="width: var(--small-window-width)">
+<nb-card style="width: var(--small-window-width); min-height: var(--card-height-small)">
     <nb-card-header>
         {{'citySelectWindow.selectCity' | translate}}
     </nb-card-header>
     <nb-card-body>
-        <div>
-            <travale-search-destination-input mode="only_cities" (destianationSelect)="onSelectCity($event)"></travale-search-destination-input>
-        </div>
+        <travale-search-destination-input mode="only_cities" (destianationSelect)="onSelectCity($event)"></travale-search-destination-input>
     </nb-card-body>
+    <nb-card-footer class="border-0">
+        <button nbButton [disabled]="!city" status="primary" (click)="done()" fullWidth>{{'common.done' | translate}}</button>
+    </nb-card-footer>
     <nb-card-footer class="d-flex justify-content-center">
-        <button nbButton status="info" (click)="ref.close(); router.navigate(['/']);">{{'common.back' | translate}}</button>
-        <button nbButton status="info" [disabled]="!city" (click)="done()" class="ms-4">{{'common.done' | translate}}</button>
+        <button nbButton status="info" (click)="router.navigate(['/'])"><nb-icon icon="home"></nb-icon></button>
+        <button nbButton status="info" (click)="this.ref.close(); this.location.back();" class="ms-4">{{'common.back' | translate}}</button>
     </nb-card-footer>
 </nb-card>
 

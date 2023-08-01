@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { City } from 'src/app/@core/data/cities.data';
 import { CitiesService } from 'src/app/@core/service/cities.service';
+import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 
 @Component({
   selector: 'travale-city-info-card',
@@ -10,13 +11,14 @@ import { CitiesService } from 'src/app/@core/service/cities.service';
 })
 export class CityInfoCardComponent {
 
-  private _city?: City;
+  private _city: City;
 
   constructor(
     private citiesService: CitiesService,
-    private router: Router) {}
+    private router: Router,
+    private localRouteService: LocalRouteService) {}
 
-  public set city(value: City | undefined) {
+  public set city(value: City) {
     this._city = value;
   }
 
@@ -28,15 +30,10 @@ export class CityInfoCardComponent {
   createNewRoute() {
     if (this._city) {
       this.citiesService.getCityGeometry(this._city).subscribe(geometry => {
-        this.router.navigate(['pages/create-route'], { queryParams: {
-            cityLatitude: geometry.lat,
-            cityLongitude: geometry.lon,
-            cityName: this._city?.fullName,
-            country: this._city?.country,
-            cityBoundingBox: geometry.cityBoundingBox
-          }
-          }
-        );
+        const emptyRoute = this.localRouteService.initEmptyRoute(this._city, geometry);
+        this.localRouteService.saveRoute(emptyRoute).subscribe(savedRoute => {
+          this.router.navigate(['pages/routes/create'], {queryParams: {routeid: savedRoute.id}} );
+        });
       });
     }
   }

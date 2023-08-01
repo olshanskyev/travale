@@ -2,7 +2,7 @@
 
     <nb-card-header>
       <div class="route-caption-picture-container">
-        <button nbButton ghost size="small" (click)="onUploadImgClick()" class="upload-img-button">
+        <button *ngIf="!previewMode" nbButton ghost size="small" (click)="onUploadImgClick()" class="upload-img-button">
           <nb-icon class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
         </button>
         <img [src]="(route.image)? route.image.src: 'assets/no-photo-available.png'" class="caption-img">
@@ -12,19 +12,19 @@
         <div class="row">
           <div class="col-11 pe-0">
             <nb-form-field class="title-form-field">
-              <input nbInput type="text" [(ngModel)]="route.title" (ngModelChange)="titleUpdate.next($event)" class="title-input" placeholder="{{'createRoute.routeTitle' | translate}}">
-              <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+              <input [readonly]="previewMode" nbInput type="text" [(ngModel)]="route.title" (ngModelChange)="titleUpdate.next($event)" class="title-input" placeholder="{{'createRoute.routeTitle' | translate}}">
+              <nb-icon *ngIf="!previewMode" nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
             </nb-form-field>
           </div>
-          <div class="col-1 p-0 d-flex align-items-center justify-content-center">
+          <div *ngIf="!previewMode" class="col-1 p-0 d-flex align-items-center justify-content-center">
             <button nbButton (click)="onSelectColor()" class="select-route-color-button" shape="round" size="tiny"><nb-icon icon="edit"></nb-icon></button>
           </div>
         </div>
 
 
         <nb-form-field class="subheading-form-field">
-          <input nbInput type="text" [(ngModel)]="route.subheading" class="subheading-input" placeholder="{{'createRoute.addRouteSubheading' | translate}}">
-          <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+          <input [readonly]="previewMode" nbInput type="text" [(ngModel)]="route.subheading" class="subheading-input" placeholder="{{'createRoute.addRouteSubheading' | translate}}">
+          <nb-icon *ngIf="!previewMode" nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
         </nb-form-field>
 
         <nb-accordion>
@@ -35,7 +35,7 @@
             </div>
            </nb-accordion-item-header>
            <nb-accordion-item-body class="accordion-textarea-body">
-            <textarea nbInput fullWidth [(ngModel)]="route.generalInfo" placeholder="{{'createRoute.writeGeneralInformationHere' | translate}}" class="textarea-input"></textarea>
+            <textarea [readonly]="previewMode" nbInput fullWidth [(ngModel)]="route.generalInfo" placeholder="{{'createRoute.writeGeneralInformationHere' | translate}}" class="textarea-input"></textarea>
            </nb-accordion-item-body>
           </nb-accordion-item>
         </nb-accordion>
@@ -43,16 +43,15 @@
 
     </nb-card-header>
 
-
     <nb-card-body>
-      <div *ngIf="!route.places || route.places.length === 0" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>
+      <div *ngIf=" !previewMode && (!route.places || route.places.length === 0)" class="w-100 caption d-flex justify-content-center mt-3 mb-2">{{'createRoute.selectPlaceOnMap' | translate}}</div>
 
       <nb-list class="places-list mt-2 me-2" cdkDropList (cdkDropListDropped)="drop($event)">
-        <nb-list-item class="place-item" cdkDrag *ngFor="let item of route.places; let i=index">
-            <button nbButton class="drag-handle-button" ghost size="small">
+        <nb-list-item [cdkDragDisabled]="previewMode" class="place-item" cdkDrag *ngFor="let item of route.places; let i=index">
+            <button *ngIf="!previewMode" nbButton class="drag-handle-button" ghost size="small">
               <nb-icon class="drag-handle" cdkDragHandle icon="menu-outline" pack="eva"></nb-icon>
             </button>
-            <div class="edit-buttons">
+            <div *ngIf="!previewMode" class="edit-buttons">
               <travale-marker-icon [markerColor]="routeColor" textColor="white">{{i + 1}}</travale-marker-icon>
 
               <button nbButton ghost size="small" (click)="onChangePlaceClick(item)">
@@ -62,7 +61,7 @@
                 <nb-icon icon="trash-outline" pack="eva"></nb-icon>
               </button>
             </div>
-            <travale-place-card [place]="item"></travale-place-card>
+            <travale-place-card [editable]="!previewMode" [place]="item"></travale-place-card>
         </nb-list-item>
       </nb-list>
 

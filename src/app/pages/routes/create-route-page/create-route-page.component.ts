@@ -1,54 +1,42 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Place, Route } from 'src/app/@core/data/route.data';
-
 import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
 import { NbDialogService } from '@nebular/theme';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-
-import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subject, Subscription, interval, takeUntil } from 'rxjs';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
-import { EditPlaceWindowComponent } from 'src/app/custom-components/windows/edit-place-window/edit-place-window.component';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 import { AggregatedFeatureInfo } from 'src/app/@core/data/poi.data';
+import { LocalRouteService } from 'src/app/@core/service/local.route.service';
+import { LatLngBounds } from 'leaflet';
 
 
 @Component({
-  selector: 'travale-create-route',
-  templateUrl: './create-route.component.html',
-  styleUrls: ['./create-route.component.scss']
+  selector: 'travale-create-route-page',
+  templateUrl: './create-route-page.component.html',
+  styleUrls: ['./create-route-page.component.scss']
 })
-export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('slideOut', {static: true}) slideOut: SlideOutComponent;
   @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
 
-  cityName: string;
-  cityLatitude = 40.61939015;
-  cityLongitude = 22.959859730874502;
-  country: string;
   route: Route;
+  routeAutoSaveInterval = 5000;
+
   showMapOver = false;
   private destroy$: Subject<void> = new Subject<void>();
   resizeObservable$: Observable<Event>;
   resizeSubscription$: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
-    private translateService: TranslateService,
     private dialogService: NbDialogService,
-    private mapSidebarService: MapSidebarService
+    private mapSidebarService: MapSidebarService,
+    private localRouteService: LocalRouteService,
+    private router: Router
     ) {
-  }
-
-
-  onChangePlaceClicked(place: Place) {
-    this.dialogService.open(EditPlaceWindowComponent, {
-      context: {
-        place: place
-      },
-    });
   }
 
   onPlacesSequenceChanged(route: Route) {
@@ -87,23 +75,14 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
     this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
   }
 
-  private buildInitRoute(): Route {
-    return {
-      id: 'route_' + this.cityName + Math.random(),
-      title: this.translateService.instant('createRoute.newRouteIn') + this.cityName,
-      places: [],
-      routeType: 'Main Attractions',
-      cityLatitude: this.cityLatitude,
-      cityLongitude: this.cityLongitude,
-      cityName: this.cityName,
-      country: this.country,
-      color: 'rgb(52, 152, 219)'
-    };
-  }
-
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
       this.leafletMap = this.mapSidebarService.leafletMap;
+      if (this.route) {
+        this.leafletMap.setBoundingBox(this.route.boundingBox);
+        this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
+      }
+
       this.leafletMap.addToRoute.pipe(takeUntil(this.destroy$)).subscribe(res => {
         this.onAddToRoute(res);
       });
@@ -116,35 +95,53 @@ export class CreateRouteComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params: Params) => {
-     if (!params['cityName'] || !params['country'] || !params['cityLatitude'] || !params['cityLongitude'] || !params['cityBoundingBox']) {
+    interval(this.routeAutoSaveInterval).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.routeAutoSave();
+    });
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (!params['routeid']) {
         this.dialogService.open(CitySelectWindowComponent, {
           closeOnBackdropClick: false,
           closeOnEsc: false,
           context: {
           },
           }).onClose.subscribe((result: any) => {
-            const city: City = result?.city as City;
-            const cityGeometry = result?.cityGeometry as CityGeometry;
-            this.cityLatitude = cityGeometry.lat;
-            this.cityLongitude = cityGeometry.lon;
-            if (city && cityGeometry) {
-              this.cityName = city.fullName;
-              this.country = city.country;
-              this.leafletMap.setBoundingBox(cityGeometry.cityBoundingBox);
-              this.leafletMap.setCityLatLong(cityGeometry.lat, cityGeometry.lon);
-              this.route = this.buildInitRoute();
+            if (result) {
+              const city: City = result?.city as City;
+              const cityGeometry = result?.cityGeometry as CityGeometry;
+              const emptyRoute = this.localRouteService.initEmptyRoute(city, cityGeometry);
+              this.localRouteService.saveRoute(emptyRoute).subscribe(savedRoute => {
+                this.router.navigate([this.router.url], {queryParams: {routeid: savedRoute.id}});
+              });
             }
           });
       } else {
-        this.cityName = params['cityName'];
-        this.country = params['country'];
-        this.cityLatitude = params['cityLatitude'];
-        this.cityLongitude = params['cityLongitude'];
-        this.route = this.buildInitRoute();
+        this.localRouteService.getRouteById(params['routeid']).subscribe(gotRoute => {
+          if (gotRoute) {
+            this.route = gotRoute;
+            // how to synchronize/desynchronize
+            this.route.boundingBox = new LatLngBounds((this.route.boundingBox as any)._southWest, (this.route.boundingBox as any)._northEast);
+            if (this.leafletMap) {
+              this.leafletMap.setBoundingBox(this.route.boundingBox);
+              this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
+              this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
+            }
+          }
+          else {
+            // route note found navigate to create new route
+            // ToDo add notification
+            this.router.navigate(['pages/routes/create'] );
+          }
+        });
       }
+
     });
   }
 
+  routeAutoSave() {
+    if (this.route) {
+      this.localRouteService.saveRoute(this.route).subscribe();
+    }
+  }
 
 }

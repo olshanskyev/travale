@@ -11,12 +11,30 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'CreateRoute',
-    link: '/pages/create-route',
-    icon: {
-      icon: 'ios-navigate',
-      pack: 'ion'
-    },
+    title: 'Routes',
+      expanded: true,
+      children: [
+        {
+          title: 'CreateRoute',
+          link: '/pages/routes/create',
+          icon: {
+            icon: 'ios-add-circle-outline',
+            pack: 'ion'
+          },
+        },
+        {
+          title: 'Drafts',
+          link: '/pages/routes/drafts',
+          icon: {
+            icon: 'edit-2-outline',
+            pack: 'eva'
+          },
+        },
+      ],
+      icon: {
+        icon: 'ios-navigate',
+        pack: 'ion'
+      },
   },
   {
     title: 'Map',
@@ -34,14 +52,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
       pack: 'ion'
     },
     group: true,
-  },
-  {
-    title: 'NewDestination',
-    link: '/pages/destinations/new-destination',
-    icon: {
-      icon: 'ios-add-circle-outline',
-      pack: 'ion'
-    },
-
   },
 ];

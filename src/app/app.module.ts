@@ -13,12 +13,22 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientModule } from '@angular/common/http';
-
+import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
 import {register} from 'swiper/element/bundle';
+import { LocalRouteService } from './@core/service/local.route.service';
 
 register();
 
 registerLocaleData(localeRu, 'ru');
+const dbConfig: DBConfig  = {
+  name: 'Travale',
+  version: 1,
+  objectStoresMeta: [{
+    store: LocalRouteService.store(),
+    storeConfig: LocalRouteService.storeConfig(),
+    storeSchema: LocalRouteService.storeSchema()
+  }]
+};
 
 @NgModule({
   declarations: [
@@ -40,6 +50,7 @@ registerLocaleData(localeRu, 'ru');
       position: NbGlobalLogicalPosition.TOP_END,
       duration: 5000
     }),
+    NgxIndexedDBModule.forRoot(dbConfig)
   ],
   providers: [
     {

@@ -1,8 +1,7 @@
+import { LatLngBounds } from 'leaflet';
+import { City, CityGeometry } from './cities.data';
 import { CustomFeature } from './poi.data';
-
-export abstract class RoutesServiceData {
-
-}
+import { Observable } from 'rxjs';
 
 export type ImageType = {
     src: string,
@@ -25,6 +24,7 @@ export interface Route {
     country: string;
     image?: ImageType;
     color: string;
+    boundingBox?: LatLngBounds;
 }
 
 export interface Place {
@@ -33,4 +33,15 @@ export interface Place {
     description?: string;
     images?: ImageType[];
     geoJson: CustomFeature;
+}
+
+export interface RouteInitializer {
+    initEmptyRoute(city: City, cityGeometry: CityGeometry): Route;
+}
+
+export interface RouteServiceData {
+    getRouteById(id: string): Observable<Route>;
+    saveRoute(route: Route): Observable<Route>;
+    getAllRoutes(): Observable<Route[]>;
+    deleteRoute(routeId: string): Observable<boolean>;
 }

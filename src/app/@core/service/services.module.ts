@@ -7,6 +7,8 @@ import { IconsService } from './icons.service';
 import { NominatimService } from './nominatim.service';
 import { MapSidebarService } from './map-sidebar.service';
 import { WikiService } from './wiki.service';
+import { LocalRouteService } from './local.route.service';
+
 
 const SERVICES = [
   CountriesService,
@@ -16,6 +18,7 @@ const SERVICES = [
   NominatimService,
   MapSidebarService,
   WikiService,
+  LocalRouteService
 ];
 
 @NgModule({
