@@ -43,8 +43,8 @@ $nb-themes: nb-register-theme((
   color-basic-transparent-400:	rgba(177, 177, 177, 0.32),
   color-basic-transparent-500:	rgba(177, 177, 177, 0.4),
   color-basic-transparent-600:	rgba(177, 177, 177, 0.48),
-
-
+  color-basic-transparent-700:	rgba(177, 177, 177, 0.56),
+  color-basic-transparent-800:	rgba(177, 177, 177, 0.64),
 
   color-primary-400: #a0c492,
   color-primary-500: #83b271,
@@ -79,9 +79,15 @@ $nb-themes: nb-register-theme((
   layout-background-color: color-basic-200,
   menu-item-hover-text-color: color-basic-100,
   menu-item-hover-background-color: color-basic-700,
+  menu-submenu-item-hover-text-color: color-basic-100,
+  menu-submenu-item-hover-background-color: color-basic-700,
 
   menu-item-active-text-color: color-basic-100,
   menu-item-active-background-color: color-basic-700,
+  menu-submenu-item-active-text-color: color-basic-100,
+  menu-submenu-item-active-background-color: color-basic-700,
+  menu-submenu-padding: 0 0 0 0.5rem,
+
   layout-small-padding: 0,
 
   picture-default-shadow: drop-shadow(2px 4px 6px gray),

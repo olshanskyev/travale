@@ -4,10 +4,7 @@
             <div *ngIf="!place.images || place.images.length === 0" class="d-flex justify-content-center w-100">
                 <img src="assets/no-photo-available.png" class="thumb-photo"/>
             </div>
-
-
                 <travale-img-slider [images]="place.images" [editable]="editable"></travale-img-slider>
-
 
             <button nbButton status="info" fullWidth size="small" shape="round" class="mt-2" (click)="openImgUploaderWindow()">Upload Images</button>
         </nb-card-body>
@@ -19,12 +16,12 @@
                 <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo me-3"/>
                 <div class="d-flex flex-column w-100">
                     <nb-form-field class="subtitle-form-field">
-                        <input nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
-                        <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+                        <input [readonly]="!editable" nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
+                        <nb-icon *ngIf="editable" nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
                     </nb-form-field>
                 </div>
             </div>
-            <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-2"></textarea>
+            <textarea [readonly]="!editable" nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-2"></textarea>
         </div>
     </div>
     <ng-template #full>

@@ -5,6 +5,7 @@ import { Route, Place } from 'src/app/@core/data/route.data';
 import { ImgUploaderWindowComponent } from '../../windows/img-uploader-window/img-uploader-window.component';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { SelectColorWindowComponent } from '../../windows/select-color-window/select-color-window.component';
+import { EditPlaceWindowComponent } from '../../windows/edit-place-window/edit-place-window.component';
 
 @Component({
   selector: 'travale-route-card',
@@ -15,10 +16,11 @@ import { SelectColorWindowComponent } from '../../windows/select-color-window/se
 export class RouteCardComponent implements OnChanges {
 
   @Input() route: Route;
-  @Output() changePlaceClicked: EventEmitter<Place> = new EventEmitter();
+  @Input() previewMode = false;
   @Output() placesSequenceChanged: EventEmitter<Route> = new EventEmitter();
   @Output() routeTitleChanged: EventEmitter<string> = new EventEmitter();
   @Output() routeColorChanged: EventEmitter<string> = new EventEmitter();
+
   @HostBinding('style.--route-color') routeColor: string;
 
   titleUpdate = new Subject<string>();
@@ -49,7 +51,11 @@ export class RouteCardComponent implements OnChanges {
   }
 
   onChangePlaceClick(place: Place) {
-    this.changePlaceClicked.emit(place);
+    this.dialogService.open(EditPlaceWindowComponent, {
+      context: {
+        place: place
+      },
+    });
   }
 
   onDeletePlaceClick(index: number) {

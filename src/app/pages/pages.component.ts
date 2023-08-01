@@ -11,7 +11,7 @@ import { MapSidebarService } from '../@core/service/map-sidebar.service';
   selector: 'travale-pages',
   styleUrls: ['pages.component.scss'],
   template: `
-    <travale-one-column-map-sidebar-layout *ngIf="router.url.includes('create-route'); else simpleLayout">
+    <travale-one-column-map-sidebar-layout *ngIf="router.url.includes('routes/create'); else simpleLayout">
       <nb-menu [items]="menu"></nb-menu>
       <travale-leaflet-map-component #leafletMap>
       </travale-leaflet-map-component>

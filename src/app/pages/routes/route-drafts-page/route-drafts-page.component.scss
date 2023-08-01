@@ -1,0 +1,38 @@
+@import '../../../@theme/styles/themes';
+
+
+@include nb-install-component {
+
+    .preview-item {
+        border: var(--card-border-width) var(--card-border-style) var(--card-border-color);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--card-shadow);
+        position: relative;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .preview-item:hover {
+        outline: 2px solid var(--color-basic-700);
+        cursor: pointer;
+        > div.control-container {
+            width: 50px !important;
+            display: flex !important;
+            opacity: 1;
+        }
+    }
+
+    .control-container {
+        transition: all 0.2s ease-out;
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 0 !important;
+        z-index: 1;
+        background-color: var(--color-basic-transparent-400);
+
+    }
+}

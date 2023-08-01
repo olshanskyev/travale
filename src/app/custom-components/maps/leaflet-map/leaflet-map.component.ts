@@ -1,8 +1,7 @@
-import { Component, OnInit, Output, EventEmitter, Inject, LOCALE_ID } from '@angular/core';
+import { Component, Output, EventEmitter, Inject, LOCALE_ID } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { icon, Marker } from 'leaflet';
-import { ActivatedRoute, Params } from '@angular/router';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 import { OverlaysBuilder } from './overlays-builder';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,7 +34,7 @@ Marker.prototype.options.icon = iconDefault;
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent implements OnInit {
+export class LeafletMapComponent {
 
   @Output() addToRoute: EventEmitter<AggregatedFeatureInfo> = new EventEmitter();
 
@@ -93,7 +92,6 @@ export class LeafletMapComponent implements OnInit {
   };
 
   constructor(
-    private route: ActivatedRoute,
     private overpassapiService: OverpassapiService,
     private nominatimService: NominatimService,
     private translateService: TranslateService,
@@ -111,13 +109,8 @@ export class LeafletMapComponent implements OnInit {
       this.locale);
   }
 
-  public setBoundingBox(bbox: number[]) {
-    if (bbox && bbox.length === 4) {
-      const southWest = new L.LatLng(bbox[0], bbox[2]);
-      const northEast = new L.LatLng(bbox[1], bbox[3]);
-      this.cityBoundingBox = new L.LatLngBounds(southWest, northEast);
-
-    }
+  public setBoundingBox(bbox?: L.LatLngBounds) {
+    this.cityBoundingBox = bbox;
   }
 
   public setCityLatLong(lat: number, lon: number) {
@@ -128,22 +121,6 @@ export class LeafletMapComponent implements OnInit {
         this.map.panTo(this.center);
       }
     }
-  }
-  paramsRead = false;
-  ngOnInit(): void {
-    this.paramsRead = false;
-    this.route.queryParams.subscribe((params: Params) => {
-      if (this.paramsRead) // workaround multiple events why?
-        return;
-      this.paramsRead = true;
-      if (params['cityLatitude'] && params['cityLongitude']) {
-        this.setCityLatLong(params['cityLatitude'], params['cityLongitude']);
-      }
-      if (params['cityBoundingBox']) {
-        this.setBoundingBox(params['cityBoundingBox']);
-      }
-      },
-    );
   }
 
   private onAddToRouteClick(featureInfo: AggregatedFeatureInfo) {

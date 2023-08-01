@@ -69,7 +69,10 @@ export class RussianLanguage {
                 Destinations: 'Места',
                 NewDestination: 'Добавить новое место',
                 Map: 'Карта',
-                CreateRoute: 'Создать маршрут'
+                CreateRoute: 'Создать маршрут',
+                Routes: 'Маршруты',
+                Drafts: 'Черновики',
+                Saved: 'Сохраненные'
             },
             searchDestinationInput: {
                 searchForDestination: 'Поиск места',

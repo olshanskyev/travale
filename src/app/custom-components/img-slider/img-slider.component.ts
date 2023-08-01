@@ -30,27 +30,8 @@ export class ImgSliderComponent {
 
     autoHeight: true,
     spaceBetween: 5,
-    //navigation: true,
-
     slidesPerView: 'auto',
     centeredSlides: false,
-    /*injectStyles: [
-      `
-          :root {
-            --swiper-navigation-size: 20px;
-            --swiper-navigation-color: grey;
-          }
-          .swiper-button-next, .swiper-button-prev {
-            margin-top: calc(-5px - (var(--swiper-navigation-size)/ 2));
-            width: var(--swiper-navigation-size);
-            border-radius: 100%;
-            background-color: rgba(255,255,255,0.6);
-            padding: 5px;
-          }
-
-      `
-    ],*/
-
   };
 
   deleteItem(index: number) {

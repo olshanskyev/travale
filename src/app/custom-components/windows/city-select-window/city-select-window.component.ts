@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbDialogRef } from '@nebular/theme';
@@ -14,7 +15,9 @@ export class CitySelectWindowComponent {
 
   constructor(protected ref: NbDialogRef<CitySelectWindowComponent>,
     private citiesService: CitiesService,
-    protected router: Router) { }
+    protected router: Router,
+    protected location: Location) {
+    }
 
   city: City;
 
