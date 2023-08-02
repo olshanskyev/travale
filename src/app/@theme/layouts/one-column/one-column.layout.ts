@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'travale-one-column-layout',
-  styleUrls: ['./one-column.layout.scss'],
+  styleUrls: ['./one-column-map-sidebar.layout.scss'],
   template: `
     <nb-layout>
       <nb-layout-header fixed>

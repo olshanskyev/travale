@@ -22,6 +22,11 @@ export class PopupBuilder {
 
     }
 
+    addToRouteClicked(featureInfo: AggregatedFeatureInfo) {
+        this.addToRouteCallback(featureInfo);
+        this.addToRouteButton.setAttribute('disabled', '');
+    }
+
     private buildBadgeSpan(text: string, color: string): string {
         return `<span class="travale-badge" style="background-color: ${color}"> ${text} </span>`;
     }
@@ -83,11 +88,13 @@ export class PopupBuilder {
         </div>`;
     }
 
-    public buildPopupDiv(feature: CustomFeature, wikiService: WikiService | null, preferredLanguage: string): Observable<HTMLElement> {
+    addToRouteButton: HTMLElement;
+    popupDiv: HTMLElement;
+    public buildPopupDiv(feature: CustomFeature, wikiService: WikiService | null, preferredLanguage: string, alreadyInRoute: boolean): Observable<HTMLElement> {
         this.wikiExtranction = null;
-        const div = document.createElement('div');
+        this.popupDiv = document.createElement('div');
         const mainInfoDiv = document.createElement('div');
-        div.appendChild(mainInfoDiv);
+        this.popupDiv.appendChild(mainInfoDiv);
 
         const historic = feature.properties?.categories?.['historic'];
         const tourism = feature.properties?.categories?.['tourism'];
@@ -102,15 +109,18 @@ export class PopupBuilder {
         const amenityString = (amenity)? this.buildBadgeSpan(this.translateService.instant('leafletMap.' + amenity), this.iconsService.getIconColorByKey(amenity)): '';
 
         mainInfoDiv.innerHTML = this.buildNameDiv(feature) + historicString + tourismString + amenityString
-        + this.buildWebsiteDiv(website) + this.buildOpeningHoursDiv(openingHours) + this.buildPhoneDiv(phone)/* + this.buildWikipediaDiv(wikipedia)*/;
+        + this.buildWebsiteDiv(website) + this.buildOpeningHoursDiv(openingHours) + this.buildPhoneDiv(phone);
 
-        const button = document.createElement('button');
-        button.setAttribute('nbButton','');
-        button.setAttribute('class', 'appearance-filled full-width size-small shape-round status-primary mt-2');
-        button.innerHTML = this.translateService.instant('leafletMap.addToRoute');
-        button.onclick = () => this.addToRouteCallback({feature: feature, wikiExtraction: this.wikiExtranction});
-        div.setAttribute('style', 'max-width: 320px; min-width: 250px');
-        div.appendChild(button);
+        if (!alreadyInRoute) {
+            this.addToRouteButton = document.createElement('button');
+            this.addToRouteButton.setAttribute('nbButton','');
+            this.addToRouteButton.setAttribute('class', 'appearance-filled full-width size-small shape-round status-primary mt-2 add-button');
+            this.addToRouteButton.innerHTML = this.translateService.instant('leafletMap.addToRoute');
+            this.addToRouteButton.onclick = () => this.addToRouteClicked({feature: feature, wikiExtraction: this.wikiExtranction});
+            this.popupDiv.appendChild(this.addToRouteButton);
+        }
+
+        this.popupDiv.setAttribute('style', 'max-width: 320px; min-width: 250px');
         if (wikiService && wikidata && wikipedia) { // if wikipedia tag presents in reply, we can find wikipedia page on wikidata
             const defLangPrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
             wikiService.getWikiPageByWikiData([preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( article => {
@@ -144,6 +154,6 @@ export class PopupBuilder {
 
             });
         }
-        return of(div);
+        return of(this.popupDiv);
     }
 }

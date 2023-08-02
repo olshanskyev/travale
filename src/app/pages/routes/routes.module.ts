@@ -5,6 +5,7 @@ import { DraftsPageComponent } from './route-drafts-page/route-drafts-page.compo
 import { CreateRoutePageComponent } from './create-route-page/create-route-page.component';
 import { NbButtonModule, NbCardModule, NbIconModule } from '@nebular/theme';
 import { CustomComponentsModule } from 'src/app/custom-components/custom-components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -14,7 +15,9 @@ import { CustomComponentsModule } from 'src/app/custom-components/custom-compone
     NbCardModule,
     CustomComponentsModule,
     NbIconModule,
-    NbButtonModule
+    NbButtonModule,
+    TranslateModule
+
   ],
   declarations: [
     DraftsPageComponent,

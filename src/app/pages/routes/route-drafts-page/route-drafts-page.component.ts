@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Route } from 'src/app/@core/data/route.data';
+import { RouteWithLocalId } from 'src/app/@core/data/route.data';
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 
 @Component({
@@ -10,15 +10,15 @@ import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 export class DraftsPageComponent implements OnInit {
 
   constructor(private localRouteService: LocalRouteService) { }
-  routes: Route[] = [];
+  routes: RouteWithLocalId[];
   ngOnInit(): void {
     this.localRouteService.getAllRoutes().subscribe(routes => {
       this.routes = routes;
     });
   }
 
-  deleteDraft(route: Route, index: number) {
-    this.localRouteService.deleteRoute(route.id).subscribe(success => {
+  deleteDraft(route: RouteWithLocalId, index: number) {
+    this.localRouteService.deleteRoute(route.localId).subscribe(success => {
       if (success) {
         this.routes.splice(index, 1);
       }

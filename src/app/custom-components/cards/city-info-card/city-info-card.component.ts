@@ -31,8 +31,8 @@ export class CityInfoCardComponent {
     if (this._city) {
       this.citiesService.getCityGeometry(this._city).subscribe(geometry => {
         const emptyRoute = this.localRouteService.initEmptyRoute(this._city, geometry);
-        this.localRouteService.saveRoute(emptyRoute).subscribe(savedRoute => {
-          this.router.navigate(['pages/routes/create'], {queryParams: {routeid: savedRoute.id}} );
+        this.localRouteService.addRoute(emptyRoute).subscribe(addedRoute => {
+          this.router.navigate(['pages/routes/create'], {queryParams: {id: addedRoute.localId}} );
         });
       });
     }

@@ -95,7 +95,7 @@ export class OverlaysBuilder {
             this.enlargeIcon(e, feature);
             if (feature.properties) {
                 layer.unbindPopup();
-                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale).subscribe(resDiv => {
+                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale, false).subscribe(resDiv => {
                     layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
                 layer.openPopup();
                 });
@@ -124,12 +124,15 @@ export class OverlaysBuilder {
         if (feature.id)
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
-        if (feature.properties) {
-            this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale).subscribe(resDiv => {
-                layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
-            });
-
-        }
+        layer.on('click', (e: any) => {
+            if (feature.properties) {
+                layer.unbindPopup();
+                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale, true).subscribe(resDiv => {
+                    layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
+                    layer.openPopup();
+                });
+            }
+        });
     }
 
     private getSelectAllLayerName(): string {

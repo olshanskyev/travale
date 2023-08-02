@@ -1,10 +1,13 @@
 <nb-card>
     <nb-card-body>
         <div class="row" >
+            <div *ngIf="!routes || routes.length === 0" class="title">
+                {{'drafts.noDrafts' | translate}}
+            </div>
             <div class="col-xxxl-3 col-xxl-4 col-lg-6 col-md-6 col-12 pb-3" *ngFor="let routeItem of routes; let i = index">
-                <div class="preview-item scrollable-container">
+                <div class="preview-item">
                     <div class="control-container d-flex flex-column align-items-center">
-                        <button nbButton [routerLink]="'/pages/routes/create'" [queryParams]="{routeid: routeItem.id}" status="primary" shape="round" size="small" class="mt-1"><nb-icon size="small" icon="edit-outline"></nb-icon></button>
+                        <button nbButton [routerLink]="'/pages/routes/create'" [queryParams]="{id: routeItem.localId}" status="primary" shape="round" size="small" class="mt-1"><nb-icon size="small" icon="edit-outline"></nb-icon></button>
                         <button nbButton (click)="deleteDraft(routeItem, i)" status="primary" shape="round" size="small" class="mt-2"><nb-icon size="small" icon="trash-2-outline"></nb-icon></button>
                     </div>
                     <div>

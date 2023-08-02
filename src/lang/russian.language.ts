@@ -136,6 +136,9 @@ export class RussianLanguage {
             },
             citySelectWindow: {
                 selectCity: 'Выберите город'
+            },
+            drafts: {
+                noDrafts: 'Пока нет ни одного черновика'
             }
 
 
