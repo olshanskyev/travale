@@ -9,13 +9,12 @@
         box-shadow: var(--card-shadow);
         position: relative;
         max-height: 500px;
-        overflow-y: auto;
+        overflow-y: hidden;
         overflow-x: hidden;
     }
 
     .preview-item:hover {
         outline: 2px solid var(--color-basic-700);
-        cursor: pointer;
         > div.control-container {
             width: 50px !important;
             display: flex !important;

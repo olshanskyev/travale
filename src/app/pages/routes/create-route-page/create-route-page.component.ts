@@ -24,6 +24,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
 
   route: Route;
+  localId: string;
   routeAutoSaveInterval = 5000;
 
   showMapOver = false;
@@ -99,7 +100,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
       this.routeAutoSave();
     });
     this.activatedRoute.queryParams.subscribe(params => {
-      if (!params['routeid']) {
+      if (!params['id']) {
         this.dialogService.open(CitySelectWindowComponent, {
           closeOnBackdropClick: false,
           closeOnEsc: false,
@@ -110,13 +111,14 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
               const city: City = result?.city as City;
               const cityGeometry = result?.cityGeometry as CityGeometry;
               const emptyRoute = this.localRouteService.initEmptyRoute(city, cityGeometry);
-              this.localRouteService.saveRoute(emptyRoute).subscribe(savedRoute => {
-                this.router.navigate([this.router.url], {queryParams: {routeid: savedRoute.id}});
+              this.localRouteService.addRoute(emptyRoute).subscribe(addedRoute => {
+                this.router.navigate([this.router.url], {queryParams: {id: addedRoute.localId}});
               });
             }
           });
       } else {
-        this.localRouteService.getRouteById(params['routeid']).subscribe(gotRoute => {
+        this.localId = params['id'];
+        this.localRouteService.getRouteById(this.localId).subscribe(gotRoute => {
           if (gotRoute) {
             this.route = gotRoute;
             // how to synchronize/desynchronize
@@ -140,7 +142,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
 
   routeAutoSave() {
     if (this.route) {
-      this.localRouteService.saveRoute(this.route).subscribe();
+      this.localRouteService.updateRoute(this.localId, this.route).subscribe();
     }
   }
 
