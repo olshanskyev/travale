@@ -1,10 +1,6 @@
 @import '../../styles/themes';
 @import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
-::ng-deep .cdk-overlay-container {
-  z-index: 1080 !important;
-}
-
 @include nb-install-component {
 
   .menu-sidebar ::ng-deep .scrollable {
@@ -20,7 +16,8 @@
     order: 2 !important;
   }
   .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
   }
 
   .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
@@ -30,7 +27,6 @@
   .map-sidebar ::ng-deep .scrollable {
     padding: 0;
   }
-
 
   .map-layout-footer {
     z-index: 1065 !important;
@@ -78,6 +74,9 @@
         height: 0 !important;
       }
     }
+  }
+  .menu-sidebar.collapsed {
+    opacity: 0;
   }
 
 }
