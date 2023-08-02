@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
-import { Route, RouteInitializer, RouteServiceData } from '../data/route.data';
+import { Route, RouteInitializer, RouteServiceData, RouteWithLocalId } from '../data/route.data';
+import genUniqueId from '../data/route.data';
 import { TranslateService } from '@ngx-translate/core';
 import { LatLng, LatLngBounds } from 'leaflet';
 import { City, CityGeometry } from '../data/cities.data';
@@ -18,18 +19,6 @@ export class LocalRouteService implements RouteInitializer, RouteServiceData {
 
   public static storeSchema(): ObjectStoreSchema[] {
     return [
-      { name: 'title', keypath: 'title', options: { unique: false } },
-      { name: 'subheading', keypath: 'subheading', options: { unique: false } },
-      { name: 'generalInfo', keypath: 'generalInfo', options: { unique: false } },
-      { name: 'places', keypath: 'places', options: { unique: false } },
-      { name: 'routeType', keypath: 'routeType', options: { unique: false } },
-      { name: 'cityLatitude', keypath: 'cityLatitude', options: { unique: false } },
-      { name: 'cityLongitude', keypath: 'cityLongitude', options: { unique: false } },
-      { name: 'cityName', keypath: 'cityName', options: { unique: false } },
-      { name: 'country', keypath: 'country', options: { unique: false } },
-      { name: 'image', keypath: 'image', options: { unique: false } },
-      { name: 'color', keypath: 'color', options: { unique: false } },
-      { name: 'boundingBox', keypath: 'boundingBox', options: { unique: false } },
     ];
   }
 
@@ -37,7 +26,7 @@ export class LocalRouteService implements RouteInitializer, RouteServiceData {
     keyPath: string | string[];
     autoIncrement: boolean;
     [key: string]: any} {
-    return { keyPath: 'id', autoIncrement: false };
+    return { keyPath: 'localId', autoIncrement: true };
   }
 
   constructor(
@@ -55,29 +44,46 @@ export class LocalRouteService implements RouteInitializer, RouteServiceData {
     }
 
     const route: Route =  {
-      id: 'route_' + city.name + Math.random(),
+      id: 'route_' + genUniqueId(),
       title: this.translateService.instant('createRoute.newRouteIn') + city.name,
       places: [],
-      routeType: 'Main Attractions',
+      language: 'ru',
+      version: '1.0',
       cityLatitude: cityGeometry.lat,
       cityLongitude: cityGeometry.lon,
       cityName: city.name,
       country: city.country,
       color: 'rgb(52, 152, 219)',
-      boundingBox: cityBoundingBox
+      boundingBox: cityBoundingBox,
+      lastModifiedAt: Date.now(),
+      creator: 'not_set'
     };
     return route;
   }
 
-  getRouteById(id: string): Observable<Route> {
-    return this.dbService.getByID<Route>(LocalRouteService.store(), id);
+  getRouteById(localId: string): Observable<Route> {
+    return this.dbService.getByID<Route>(LocalRouteService.store(), localId);
   }
 
-  saveRoute(route: Route): Observable<Route> {
-    return this.dbService.update<Route>(LocalRouteService.store(), route);
+  addRoute(route: Route): Observable<RouteWithLocalId> {
+    const routeWithLocalId: RouteWithLocalId = {
+      localId: genUniqueId(),
+      ...route
+    };
+    routeWithLocalId.lastModifiedAt = Date.now();
+    return this.dbService.add<RouteWithLocalId>(LocalRouteService.store(), routeWithLocalId);
   }
 
-  getAllRoutes(): Observable<Route[]> {
+  updateRoute(localId: string, route: Route): Observable<RouteWithLocalId> {
+    const routeWithLocalId: RouteWithLocalId = {
+      localId: localId,
+      ...route
+    };
+    routeWithLocalId.lastModifiedAt = Date.now();
+    return this.dbService.update<RouteWithLocalId>(LocalRouteService.store(), routeWithLocalId);
+  }
+
+  getAllRoutes(): Observable<RouteWithLocalId[]> {
     return this.dbService.getAll(LocalRouteService.store());
   }
 
