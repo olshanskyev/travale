@@ -2,6 +2,7 @@ import { LatLngBounds } from 'leaflet';
 import { City, CityGeometry } from './cities.data';
 import { CustomFeature } from './poi.data';
 import { Observable } from 'rxjs';
+import { WikiPageRef } from './wiki.data';
 
 
 export type ImageType = {
@@ -53,6 +54,7 @@ export interface Place {
     name: string;
     description?: string;
     images?: ImageType[];
+    wikiPageRef?: WikiPageRef;
     geoJson: CustomFeature;
 }
 

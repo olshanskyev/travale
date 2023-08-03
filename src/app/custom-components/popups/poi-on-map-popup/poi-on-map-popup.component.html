@@ -1,0 +1,40 @@
+<div *ngIf="feature" class="main-div">
+    <div *ngIf="name" class="subtitle w-100">{{name}}</div>
+    <span *ngIf="historic" travaleBadge [badgeColor]="iconsService.getIconColorByKey(historic)">{{'leafletMap.' + historic | translate}} </span>
+    <span *ngIf="tourism" travaleBadge [badgeColor]="iconsService.getIconColorByKey(tourism)">{{'leafletMap.' + tourism | translate}} </span>
+    <span *ngIf="amenity" travaleBadge [badgeColor]="iconsService.getIconColorByKey(amenity)">{{'leafletMap.' + amenity | translate}} </span>
+    <div *ngIf="website" class="subtitle w-100 text-nowrap">
+        <small>
+            <i class="fa fa-globe color-basic-600 me-1"></i>
+            <a [href]='website'>{{website | shortUrl}}</a>
+        </small>
+    </div>
+    <div *ngIf="openingHours" class="subtitle w-100 lh-1 mt-1 mb-1" >
+        <small>
+            <i class="fa-regular fa-clock color-basic-600 me-1"></i>
+            {{openingHours}}
+        </small>
+    </div>
+    <div *ngIf="phone" class="subtitle w-100 lh-1 mt-1 mb-1">
+        <small>
+            <i class="fa fa-phone color-basic-600 me-1"></i>
+            {{phone}}
+        </small>
+    </div>
+
+    <div *ngIf="wikiPageRef" class="subtitle w-100 lh-1 mt-1 mb-1">
+        <small>
+            <i class="fa-brands fa-wikipedia-w color-basic-600 me-1"></i>
+            <a [href]="wikiPageRef.url">Wikipedia</a>
+            {{wikiPageRef.language}}
+        </small>
+    </div>
+    <small>
+        <a *ngIf="wikiExtraction" href="javascript:void(0);" (click)="showWikiInfo = !showWikiInfo">{{ (!showWikiInfo)? ('common.showMore' | translate): ('common.hide' | translate)}}</a>
+    </small>
+    <div *ngIf="wikiExtraction" [hidden]="!showWikiInfo" class="wikicontainer scrollable-container ps-1 pe-1 pt-1">
+        {{wikiExtraction.extract}}
+    </div>
+
+    <button nbButton [hidden]="isAddedToRoute" (click)="addToRoute()" status="primary" size="small" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
+</div>

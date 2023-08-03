@@ -2,15 +2,11 @@ import { Component, Output, EventEmitter, Inject, LOCALE_ID } from '@angular/cor
 import * as L from 'leaflet';
 import 'leaflet-control-geocoder';
 import { icon, Marker } from 'leaflet';
-import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
-import { OverlaysBuilder } from './overlays-builder';
-import { TranslateService } from '@ngx-translate/core';
-import { IconsService } from 'src/app/@core/service/icons.service';
 import { CustomLayersConfig } from './types';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import { NominatimService } from 'src/app/@core/service/nominatim.service';
-import { PopupBuilder } from './popup-builder';
-import { WikiService } from 'src/app/@core/service/wiki.service';
+import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
+import { Place } from 'src/app/@core/data/route.data';
 
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
@@ -43,12 +39,11 @@ export class LeafletMapComponent {
   minZoom = 10;
   minZoomToShowFeatures = 15;
   selectPlaceZoom = 16;
-  overlayBuilder: OverlaysBuilder;
   geoJsonInitialized: false;
   center: L.LatLng = L.latLng(40.640266, 22.939524);
   cityBoundingBox?: L.LatLngBounds;
   searchPlaceMarker: L.Marker;
-  popupBuilder: PopupBuilder;
+  popupPlace: Place;
 
   baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -92,22 +87,10 @@ export class LeafletMapComponent {
   };
 
   constructor(
-    private overpassapiService: OverpassapiService,
     private nominatimService: NominatimService,
-    private translateService: TranslateService,
-    private iconsService: IconsService,
-    private wikiService: WikiService,
-    @Inject(LOCALE_ID) public locale: string
-    ) {
-    this.popupBuilder = new PopupBuilder((featureInfo) => this.onAddToRouteClick(featureInfo), iconsService, translateService);
-    this.overlayBuilder = new OverlaysBuilder(
-      this.overpassapiService,
-      this.translateService,
-      this.iconsService,
-      this.popupBuilder,
-      this.wikiService,
-      this.locale);
-  }
+    @Inject(LOCALE_ID) public locale: string,
+    private overlayBuilder: LeafletOverlayBuilderService
+    ) {}
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
     this.cityBoundingBox = bbox;
@@ -123,10 +106,6 @@ export class LeafletMapComponent {
     }
   }
 
-  private onAddToRouteClick(featureInfo: AggregatedFeatureInfo) {
-    this.addToRoute.emit(featureInfo);
-  }
-
   onDragEnd = () => {
     if (this.zoom >= this.minZoomToShowFeatures)
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
@@ -136,7 +115,6 @@ export class LeafletMapComponent {
     if (this.zoom >= this.minZoomToShowFeatures)
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
   };
-
 
   public invalidate() {
     this.map.invalidateSize({
@@ -251,10 +229,7 @@ export class LeafletMapComponent {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale, false).subscribe(resDiv => {
-        this.searchPlaceMarker.bindPopup(resDiv, PopupBuilder.popUpOptions);
-      });
-
+      this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
       this.searchPlaceMarker.addTo(this.map);
       if (centeredOnMarker)
         this.map.flyTo(position, this.selectPlaceZoom);
@@ -263,12 +238,16 @@ export class LeafletMapComponent {
   }
   onPlaceSelect(feature: CustomFeature)  {
     this.placeMarker(feature, true);
-
-
   }
 
   onMouseOverSearchPlace(feature: CustomFeature)  {
     this.placeMarker(feature, false);
+  }
+
+  showPopup = false;
+  public showPlaceItem(place: Place) {
+    this.popupPlace = place;
+    this.showPopup = true;
   }
 
 }

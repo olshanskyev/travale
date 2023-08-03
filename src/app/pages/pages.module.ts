@@ -8,7 +8,6 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CustomComponentsModule } from '../custom-components/custom-components.module';
 import { MapPageComponent } from './map-page/map-page.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { ShortUrlPipe } from '../pipes/short-domain.pipe';
 
 @NgModule({
   imports: [
@@ -24,8 +23,7 @@ import { ShortUrlPipe } from '../pipes/short-domain.pipe';
   declarations: [
     PagesComponent,
     HomePageComponent,
-    MapPageComponent,
-    ShortUrlPipe
+    MapPageComponent
   ],
 })
 export class PagesModule {

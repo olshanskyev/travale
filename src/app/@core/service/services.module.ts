@@ -8,6 +8,7 @@ import { NominatimService } from './nominatim.service';
 import { MapSidebarService } from './map-sidebar.service';
 import { WikiService } from './wiki.service';
 import { LocalRouteService } from './local.route.service';
+import { LeafletOverlayBuilderService } from './leaflet-overlay-builder.service';
 
 
 const SERVICES = [
@@ -18,7 +19,8 @@ const SERVICES = [
   NominatimService,
   MapSidebarService,
   WikiService,
-  LocalRouteService
+  LocalRouteService,
+  LeafletOverlayBuilderService
 ];
 
 @NgModule({

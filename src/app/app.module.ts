@@ -1,6 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injector, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,7 +7,7 @@ import { NbGlobalLogicalPosition, NbLayoutModule, NbMenuModule, NbSidebarModule,
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { ThemeModule } from './@theme/theme.module';
 import { CoreModule } from './@core/core.module';
-
+import { createCustomElement } from '@angular/elements';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
 import {register} from 'swiper/element/bundle';
 import { LocalRouteService } from './@core/service/local.route.service';
+import { PlaceOnMapPopupComponent } from './custom-components/popups/place-on-map-popup/place-on-map-popup.component';
+import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
 
 register();
 
@@ -60,4 +61,13 @@ const dbConfig: DBConfig  = {
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private injector: Injector) {
+    const PlaceOnMapPopupElement = createCustomElement(PlaceOnMapPopupComponent, {injector});
+    const PoiOnMapPopupElement = createCustomElement(PoiOnMapPopupComponent, {injector});
+    // Register the custom element with the browser.
+    customElements.define('place-on-map-element', PlaceOnMapPopupElement);
+    customElements.define('poi-on-map-element', PoiOnMapPopupElement);
+  }
+}

@@ -13,11 +13,13 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 })
 export class MapFooterComponent {
 
+  mapOpened = false;
   constructor(private sidebarService: NbSidebarService, private mapSidebarService: MapSidebarService) {
   }
 
   toggleMapClicked() {
     this.sidebarService.toggle(false, 'map-sidebar');
+    this.mapOpened = !this.mapOpened;
     setTimeout(() => { this.mapSidebarService.leafletMap.invalidate();}, 10);
   }
 }

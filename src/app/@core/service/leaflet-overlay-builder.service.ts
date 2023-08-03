@@ -1,27 +1,77 @@
-import { CustomFeature, HistoricKeyType, TourismKeyType } from 'src/app/@core/data/poi.data';
-import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
-import { LatLng, LatLngBounds, Layer, Marker, geoJSON, marker, GeoJSON } from 'leaflet';
-import { Observable, map } from 'rxjs';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Layer, GeoJSON, LatLngBounds, LatLng, Marker, marker, geoJSON, Content } from 'leaflet';
+import { Feature } from 'geojson';
+import { AggregatedFeatureInfo, CustomFeature, HistoricKeyType, TourismKeyType } from '../data/poi.data';
+import { OverpassapiService } from './overpassapi.service';
 import { TranslateService } from '@ngx-translate/core';
-import { IconsService } from 'src/app/@core/service/icons.service';
-import { CustomGeoJSONLayersMap, CustomGeoJsonLayer, FeaturesMap, LayersFeaturesMap } from './types';
-import { PopupBuilder } from './popup-builder';
-import { WikiService } from 'src/app/@core/service/wiki.service';
+import { IconsService } from './icons.service';
+import { Observable, map, Subject } from 'rxjs';
+import { NgElement, WithProperties } from '@angular/elements';
+import { PoiOnMapPopupComponent } from 'src/app/custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
 
-export class OverlaysBuilder {
+export type CustomGeoJsonLayer = {
+    layer: GeoJSON,
+    displayName: string,
+    checked?: boolean
+}
+
+export type CustomGeoJSONLayersMap = {
+    [name: string]: CustomGeoJsonLayer
+}
+
+export type CustomLayersMap = {
+    [name: string]: {
+        layer: Layer,
+        displayName: string,
+    },
+}
+
+export type LayersFeaturesMap = {
+    [name: string]: {
+        [id: string]: Layer
+    },
+}
+
+export type FeaturesMap = {
+    [name: string]: Feature[];
+}
+
+
+export declare class CustomLayersConfig {
+    baseLayers: CustomLayersMap;
+    poiOverlays: CustomGeoJSONLayersMap;
+    routeOverlays: CustomGeoJSONLayersMap | undefined;
+}
+
+@Injectable()
+export class LeafletOverlayBuilderService {
+
     poiLayersFeaturesMap: LayersFeaturesMap = {}; // has format [layerName][feature.id] => layer
     routesLayersFeaturesMap: LayersFeaturesMap = {}; // has format [layerName][feature.id] => layer
 
     tourismLayersList: TourismKeyType[] = ['artwork', 'attraction', 'museum', 'viewpoint', 'gallery', 'theme_park', 'information', 'zoo'];
     historicLayersList: HistoricKeyType[] = ['castle', 'castle_wall', 'church', 'city_gate', 'citywalls', 'memorial', 'monument', 'tower'];
 
+    private addToRoute$ = new Subject<AggregatedFeatureInfo>;
+    private routeItemClick$ = new Subject<CustomFeature>;
+
+    public static popupOptions = {
+        maxWidth: 350
+    };
+
     constructor(
         private overpassapiService: OverpassapiService,
         private translateService: TranslateService,
         private iconsService: IconsService,
-        private popupBuilder: PopupBuilder,
-        private wikiService: WikiService,
-        private locale: string) {
+        @Inject(LOCALE_ID) private locale: string) {
+    }
+
+    public onAddToRoute(): Observable<AggregatedFeatureInfo> {
+        return this.addToRoute$;
+    }
+
+    public onRouteItemClick(): Observable<CustomFeature> {
+        return this.routeItemClick$;
     }
 
     private findPois$ = (bbox: LatLngBounds): Observable<FeaturesMap> => {
@@ -84,6 +134,18 @@ export class OverlaysBuilder {
 
     }
 
+    public buildPoiPopup(feature: CustomFeature): Content {
+        const popupEl: NgElement & WithProperties<PoiOnMapPopupComponent> = document.createElement('poi-on-map-element') as any;
+        // Listen to the close event
+        popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+        popupEl.feature = feature;
+        popupEl.preferredLanguage = this.locale;
+        popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        // Add to the DOM
+        document.body.appendChild(popupEl);
+        return popupEl;
+    }
+
     private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
         if (!this.poiLayersFeaturesMap[layerKey]) {
             this.poiLayersFeaturesMap[layerKey] = {};
@@ -95,10 +157,8 @@ export class OverlaysBuilder {
             this.enlargeIcon(e, feature);
             if (feature.properties) {
                 layer.unbindPopup();
-                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale, false).subscribe(resDiv => {
-                    layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
+                layer.bindPopup(this.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
                 layer.openPopup();
-                });
             }
         });
         layer.on('mouseover', (e: any) => {
@@ -124,15 +184,7 @@ export class OverlaysBuilder {
         if (feature.id)
             this.routesLayersFeaturesMap[layerKey][feature.id] = layer;
 
-        layer.on('click', (e: any) => {
-            if (feature.properties) {
-                layer.unbindPopup();
-                this.popupBuilder.buildPopupDiv(feature, this.wikiService, this.locale, true).subscribe(resDiv => {
-                    layer.bindPopup(resDiv, PopupBuilder.popUpOptions);
-                    layer.openPopup();
-                });
-            }
-        });
+        layer.on('click', () => this.routeItemClick$.next(feature));
     }
 
     private getSelectAllLayerName(): string {
@@ -234,5 +286,4 @@ export class OverlaysBuilder {
             layer.addData(itemfeature);
         });
     }
-
 }
