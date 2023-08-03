@@ -1,0 +1,21 @@
+@import '../../../@theme/styles/themes';
+
+
+@include nb-install-component {
+    .color-basic-600 {
+        color: var(--color-basic-600)
+    }
+
+    .wikicontainer {
+        max-height: inherit;
+        overflow-y: scroll;
+        text-align: justify;
+        max-height: 150px;
+    }
+
+    .main-div {
+        max-width: 320px;
+        min-width: 250px
+    }
+}
+

@@ -9,7 +9,7 @@
         <button nbButton [disabled]="!city" status="primary" (click)="done()" fullWidth>{{'common.done' | translate}}</button>
     </nb-card-footer>
     <nb-card-footer class="d-flex justify-content-center">
-        <button nbButton status="info" (click)="router.navigate(['/'])"><nb-icon icon="home"></nb-icon></button>
+        <button nbButton status="info" (click)="this.ref.close(); router.navigate(['/'])"><nb-icon icon="home"></nb-icon></button>
         <button nbButton status="info" (click)="this.ref.close(); this.location.back();" class="ms-4">{{'common.back' | translate}}</button>
     </nb-card-footer>
 </nb-card>

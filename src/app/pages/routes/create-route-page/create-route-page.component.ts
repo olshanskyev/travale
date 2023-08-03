@@ -8,9 +8,10 @@ import { Observable, Subject, Subscription, interval, takeUntil } from 'rxjs';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
-import { AggregatedFeatureInfo } from 'src/app/@core/data/poi.data';
+import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 import { LatLngBounds } from 'leaflet';
+import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
     private dialogService: NbDialogService,
     private mapSidebarService: MapSidebarService,
     private localRouteService: LocalRouteService,
-    private router: Router
+    private router: Router,
+    private leafletOverlaysBuilderService: LeafletOverlayBuilderService
     ) {
   }
 
@@ -70,10 +72,16 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
       id: featureInfo.feature.id,
       name: (name)? name: '',
       description: featureInfo.wikiExtraction?.extract,
+      wikiPageRef: featureInfo.wikiPageRef,
       geoJson: geoJson,
     };
     this.route.places.push(newPlace);
     this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
+  }
+
+  onRouteItemClick(feature: CustomFeature) {
+    const place = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
+    this.leafletMap.showPlaceItem(place);
   }
 
   ngAfterViewInit(): void {
@@ -83,10 +91,6 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
         this.leafletMap.setBoundingBox(this.route.boundingBox);
         this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
       }
-
-      this.leafletMap.addToRoute.pipe(takeUntil(this.destroy$)).subscribe(res => {
-        this.onAddToRoute(res);
-      });
     }, 0);
   }
 
@@ -99,6 +103,8 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
     interval(this.routeAutoSaveInterval).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.routeAutoSave();
     });
+    this.leafletOverlaysBuilderService.onAddToRoute().pipe(takeUntil(this.destroy$)).subscribe(res => this.onAddToRoute(res));
+    this.leafletOverlaysBuilderService.onRouteItemClick().pipe(takeUntil(this.destroy$)).subscribe(res => this.onRouteItemClick(res));
     this.activatedRoute.queryParams.subscribe(params => {
       if (!params['id']) {
         this.dialogService.open(CitySelectWindowComponent, {

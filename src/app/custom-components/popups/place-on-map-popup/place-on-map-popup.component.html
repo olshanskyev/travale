@@ -1,0 +1,36 @@
+<div *ngIf="place" class="main-div">
+    <div *ngIf="place" class="subtitle w-100">{{place.name}}</div>
+    <div *ngIf="feature">
+        <span *ngIf="historic" travaleBadge [badgeColor]="iconsService.getIconColorByKey(historic)">{{'leafletMap.' + historic | translate}} </span>
+        <span *ngIf="tourism" travaleBadge [badgeColor]="iconsService.getIconColorByKey(tourism)">{{'leafletMap.' + tourism | translate}} </span>
+        <span *ngIf="amenity" travaleBadge [badgeColor]="iconsService.getIconColorByKey(amenity)">{{'leafletMap.' + amenity | translate}} </span>
+        <div *ngIf="website" class="subtitle w-100 text-nowrap">
+            <small>
+                <i class="fa fa-globe color-basic-600 me-1"></i>
+                <a [href]='website'>{{website | shortUrl}}</a>
+            </small>
+        </div>
+        <div *ngIf="openingHours" class="subtitle w-100 lh-1 mt-1 mb-1" >
+            <small>
+                <i class="fa-regular fa-clock color-basic-600 me-1"></i>
+                {{openingHours}}
+            </small>
+        </div>
+        <div *ngIf="phone" class="subtitle w-100 lh-1 mt-1 mb-1">
+            <small>
+                <i class="fa fa-phone color-basic-600 me-1"></i>
+                {{phone}}
+            </small>
+        </div>
+
+        <div *ngIf="wikiPageRef" class="subtitle w-100 lh-1 mt-1 mb-1">
+            <small>
+                <i class="fa-brands fa-wikipedia-w color-basic-600 me-1"></i>
+                <a [href]="wikiPageRef.url">Wikipedia</a>
+                {{wikiPageRef.language}}
+            </small>
+        </div>
+    </div>
+
+
+</div>

@@ -9,7 +9,9 @@ export class RussianLanguage {
                 info: 'Информация',
                 done: 'OK',
                 back: 'Назад',
-                color: 'Цвет'
+                color: 'Цвет',
+                showMore: 'Показать больше',
+                hide: 'Скрыть'
             },
 
             login: {

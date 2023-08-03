@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, Injector  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeModule } from '../@theme/theme.module';
 import { SearchDestinationInputComponent } from './inputs/search-destination-input/search-destination-input.component';
@@ -28,6 +28,11 @@ import { CitySelectWindowComponent } from './windows/city-select-window/city-sel
 import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place-window.component';
 import { BadgeDirective } from './directives/badge.directive';
 import { SelectColorWindowComponent } from './windows/select-color-window/select-color-window.component';
+import { PlaceOnMapPopupComponent } from './popups/place-on-map-popup/place-on-map-popup.component';
+import { PoiOnMapPopupComponent } from './popups/poi-on-map-popup/poi-on-map-popup.component';
+import { PipesModule } from '../pipes/pipes.module';
+
+
 
 @NgModule({
   imports: [
@@ -54,6 +59,8 @@ import { SelectColorWindowComponent } from './windows/select-color-window/select
     NbAccordionModule,
     NbCheckboxModule,
     NbDialogModule.forChild(),
+    PipesModule
+
   ],
   declarations: [
     SearchDestinationInputComponent,
@@ -73,7 +80,9 @@ import { SelectColorWindowComponent } from './windows/select-color-window/select
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
     BadgeDirective,
-    SelectColorWindowComponent
+    SelectColorWindowComponent,
+    PlaceOnMapPopupComponent,
+    PoiOnMapPopupComponent,
 
   ],
   exports:[
@@ -86,14 +95,17 @@ import { SelectColorWindowComponent } from './windows/select-color-window/select
     RouteCardComponent,
     PlaceCardComponent,
     ImgSliderComponent,
-    MarkerIconComponent
+    MarkerIconComponent,
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: [
     ImgUploaderWindowComponent,
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
-    SelectColorWindowComponent
+    SelectColorWindowComponent,
+    PlaceOnMapPopupComponent,
+    PoiOnMapPopupComponent
   ]
 })
-export class CustomComponentsModule { }
+export class CustomComponentsModule {
+}
