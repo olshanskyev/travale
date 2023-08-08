@@ -3,12 +3,21 @@
 
 
 @include nb-install-component {
-  .toggle-map-button-container {
+  .map-footer-container {
     position: fixed;
-    bottom: 10px;
-    left: 0;
-    display: none;
+    bottom: 0;
+    right: 0;
     z-index: 1065;
+    width: 50%;
+
+    //transition: all 1s ease-out;
+  }
+
+  .toggle-map-button-container {
+    padding-bottom: 10px;
+    position: absolute;
+    bottom: 0;
+    display: none;
     width: 100%;
     justify-content: center !important
   }
@@ -16,6 +25,37 @@
   @include media-breakpoint-down(lg) {
     .toggle-map-button-container {
       display: flex;
-   }
+    }
+    .map-footer-container {
+      width: 100% !important;
+    }
+  }
+
+  @include media-breakpoint-down(xxl) {
+    .map-footer-container {
+      width: 40%;
+    }
+  }
+  .popup-shadow {
+    box-shadow: 0 -0.2rem 1rem 0 rgba(44, 51, 73, 0.1);
+  }
+
+  .popup-place {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    transition: opacity 0.2s ease-out;
+    background-color: var(--color-basic-100);
+    opacity: 0;
+  }
+
+  .popup-show-over {
+    opacity: 1;
+    height: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 60px;
   }
 }

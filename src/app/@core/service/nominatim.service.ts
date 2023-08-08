@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { AddressServiceData } from '../data/address.data';
 import { Nominatim } from 'leaflet-control-geocoder/dist/geocoders';
 import { environment } from '../../../environments/environment';
+import 'leaflet-control-geocoder';
 
 
 @Injectable({

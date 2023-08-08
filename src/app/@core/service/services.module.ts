@@ -9,6 +9,7 @@ import { MapSidebarService } from './map-sidebar.service';
 import { WikiService } from './wiki.service';
 import { LocalRouteService } from './local.route.service';
 import { LeafletOverlayBuilderService } from './leaflet-overlay-builder.service';
+import { MapFooterService } from './map-footer.service';
 
 
 const SERVICES = [
@@ -20,7 +21,8 @@ const SERVICES = [
   MapSidebarService,
   WikiService,
   LocalRouteService,
-  LeafletOverlayBuilderService
+  LeafletOverlayBuilderService,
+  MapFooterService
 ];
 
 @NgModule({

@@ -15,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
 import {register} from 'swiper/element/bundle';
 import { LocalRouteService } from './@core/service/local.route.service';
-import { PlaceOnMapPopupComponent } from './custom-components/popups/place-on-map-popup/place-on-map-popup.component';
 import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
 
 register();
@@ -64,10 +63,8 @@ const dbConfig: DBConfig  = {
 export class AppModule {
 
   constructor(private injector: Injector) {
-    const PlaceOnMapPopupElement = createCustomElement(PlaceOnMapPopupComponent, {injector});
     const PoiOnMapPopupElement = createCustomElement(PoiOnMapPopupComponent, {injector});
     // Register the custom element with the browser.
-    customElements.define('place-on-map-element', PlaceOnMapPopupElement);
     customElements.define('poi-on-map-element', PoiOnMapPopupElement);
   }
 }

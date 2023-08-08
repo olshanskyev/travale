@@ -12,6 +12,7 @@ import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.dat
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 import { LatLngBounds } from 'leaflet';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
+import { MapFooterService } from 'src/app/@core/service/map-footer.service';
 
 
 @Component({
@@ -36,9 +37,11 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
   constructor(private activatedRoute: ActivatedRoute,
     private dialogService: NbDialogService,
     private mapSidebarService: MapSidebarService,
+    private mapFooterService: MapFooterService,
     private localRouteService: LocalRouteService,
     private router: Router,
     private leafletOverlaysBuilderService: LeafletOverlayBuilderService
+
     ) {
   }
 
@@ -60,6 +63,13 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
     this.leafletMap.updateRouteColor(this.route.id, this.route.color);
   }
 
+  leafletMapInitState() {
+    if (this.route && this.leafletMap) {
+      this.leafletMap.setBoundingBox(this.route.boundingBox);
+      this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
+      this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
+    }
+  }
   onAddToRoute(featureInfo: AggregatedFeatureInfo) {
     const geoJson = featureInfo.feature;
     geoJson.properties.route = {
@@ -79,18 +89,17 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
     this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
   }
 
+
   onRouteItemClick(feature: CustomFeature) {
     const place = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
-    this.leafletMap.showPlaceItem(place);
+    this.mapFooterService.showPlaceInfo(place);
+    //this.leafletMap.showPlaceItem(place);
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
       this.leafletMap = this.mapSidebarService.leafletMap;
-      if (this.route) {
-        this.leafletMap.setBoundingBox(this.route.boundingBox);
-        this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
-      }
+      this.leafletMapInitState();
     }, 0);
   }
 
@@ -127,13 +136,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
         this.localRouteService.getRouteById(this.localId).subscribe(gotRoute => {
           if (gotRoute) {
             this.route = gotRoute;
-            // how to synchronize/desynchronize
-            this.route.boundingBox = new LatLngBounds((this.route.boundingBox as any)._southWest, (this.route.boundingBox as any)._northEast);
-            if (this.leafletMap) {
-              this.leafletMap.setBoundingBox(this.route.boundingBox);
-              this.leafletMap.setCityLatLong(this.route.cityLatitude, this.route.cityLongitude);
-              this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
-            }
+            this.leafletMapInitState();
           }
           else {
             // route note found navigate to create new route

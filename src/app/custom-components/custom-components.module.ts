@@ -1,6 +1,5 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, Injector  } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ThemeModule } from '../@theme/theme.module';
 import { SearchDestinationInputComponent } from './inputs/search-destination-input/search-destination-input.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NbAccordionModule, NbAutocompleteModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbListModule } from '@nebular/theme';
@@ -28,16 +27,13 @@ import { CitySelectWindowComponent } from './windows/city-select-window/city-sel
 import { EditPlaceWindowComponent } from './windows/edit-place-window/edit-place-window.component';
 import { BadgeDirective } from './directives/badge.directive';
 import { SelectColorWindowComponent } from './windows/select-color-window/select-color-window.component';
-import { PlaceOnMapPopupComponent } from './popups/place-on-map-popup/place-on-map-popup.component';
-import { PoiOnMapPopupComponent } from './popups/poi-on-map-popup/poi-on-map-popup.component';
-import { PipesModule } from '../pipes/pipes.module';
-
+import { PopupsModule } from './popups/popups.module';
+import { DirectivesModule } from './directives/directives.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    ThemeModule,
     NbAutocompleteModule,
     NbInputModule,
     ReactiveFormsModule,
@@ -59,8 +55,8 @@ import { PipesModule } from '../pipes/pipes.module';
     NbAccordionModule,
     NbCheckboxModule,
     NbDialogModule.forChild(),
-    PipesModule
-
+    PopupsModule,
+    DirectivesModule
   ],
   declarations: [
     SearchDestinationInputComponent,
@@ -79,11 +75,7 @@ import { PipesModule } from '../pipes/pipes.module';
     SearchPlaceComponent,
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
-    BadgeDirective,
     SelectColorWindowComponent,
-    PlaceOnMapPopupComponent,
-    PoiOnMapPopupComponent,
-
   ],
   exports:[
     SearchDestinationInputComponent,
@@ -103,8 +95,6 @@ import { PipesModule } from '../pipes/pipes.module';
     CitySelectWindowComponent,
     EditPlaceWindowComponent,
     SelectColorWindowComponent,
-    PlaceOnMapPopupComponent,
-    PoiOnMapPopupComponent
   ]
 })
 export class CustomComponentsModule {

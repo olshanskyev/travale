@@ -10,6 +10,7 @@ import { GRAY_THEME } from './styles/theme.gray';
 import { OneColumnMapSidebarLayoutComponent } from './layouts/one-column/one-column-map-sidebar.layout';
 import { MapFooterComponent } from './components/footer/map-footer.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { PopupsModule } from '../custom-components/popups/popups.module';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -21,7 +22,8 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbButtonModule,
-  TranslateModule
+  TranslateModule,
+  PopupsModule
 ];
 
 const COMPONENTS = [

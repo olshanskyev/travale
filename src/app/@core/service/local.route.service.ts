@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LatLng, LatLngBounds } from 'leaflet';
 import { City, CityGeometry } from '../data/cities.data';
 import { ObjectStoreSchema, NgxIndexedDBService } from 'ngx-indexed-db';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class LocalRouteService implements RouteInitializer, RouteServiceData {
@@ -61,8 +61,11 @@ export class LocalRouteService implements RouteInitializer, RouteServiceData {
     return route;
   }
 
-  getRouteById(localId: string): Observable<Route> {
-    return this.dbService.getByID<Route>(LocalRouteService.store(), localId);
+  getRouteById(localId: string): Observable<Route> { // how to synchronize/desynchronize
+    return this.dbService.getByID<Route>(LocalRouteService.store(), localId).pipe(map(item => {
+      item.boundingBox = new LatLngBounds((item.boundingBox as any)._southWest, (item.boundingBox as any)._northEast);
+      return item;
+    }));
   }
 
   addRoute(route: Route): Observable<RouteWithLocalId> {

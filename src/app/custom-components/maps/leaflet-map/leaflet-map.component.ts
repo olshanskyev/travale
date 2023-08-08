@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, Inject, LOCALE_ID } from '@angular/core';
 import * as L from 'leaflet';
-import 'leaflet-control-geocoder';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
@@ -151,6 +150,8 @@ export class LeafletMapComponent {
     }
     if (!this.customLayersControl.routeOverlays[routeId]) {
       this.customLayersControl.routeOverlays[routeId] = this.overlayBuilder.createEmptyRouteLayer(routeId, routeTitle, routeColor);
+      this.customLayersControl.routeOverlays[routeId].checked = true;
+      this.routeLayerToggled(this.customLayersControl.routeOverlays[routeId].layer, true, routeId);
     }
 
     this.overlayBuilder.updateRouteLayer(this.customLayersControl.routeOverlays[routeId].layer, routeId, features);
@@ -229,7 +230,13 @@ export class LeafletMapComponent {
     if (feature.geometry.type === 'Point') {
       const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
       this.searchPlaceMarker = new L.Marker(position);
-      this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
+      this.searchPlaceMarker.on('click', () => {
+        if (feature.properties) {
+
+          this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
+          this.searchPlaceMarker.openPopup();
+        }
+      });
       this.searchPlaceMarker.addTo(this.map);
       if (centeredOnMarker)
         this.map.flyTo(position, this.selectPlaceZoom);
@@ -242,12 +249,6 @@ export class LeafletMapComponent {
 
   onMouseOverSearchPlace(feature: CustomFeature)  {
     this.placeMarker(feature, false);
-  }
-
-  showPopup = false;
-  public showPlaceItem(place: Place) {
-    this.popupPlace = place;
-    this.showPopup = true;
   }
 
 }
