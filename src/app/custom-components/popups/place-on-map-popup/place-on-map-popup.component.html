@@ -1,9 +1,10 @@
 <div *ngIf="place" class="main-div">
     <div *ngIf="place" class="subtitle w-100">{{place.name}}</div>
     <div *ngIf="feature">
-        <span *ngIf="historic" travaleBadge [badgeColor]="iconsService.getIconColorByKey(historic)">{{'leafletMap.' + historic | translate}} </span>
-        <span *ngIf="tourism" travaleBadge [badgeColor]="iconsService.getIconColorByKey(tourism)">{{'leafletMap.' + tourism | translate}} </span>
-        <span *ngIf="amenity" travaleBadge [badgeColor]="iconsService.getIconColorByKey(amenity)">{{'leafletMap.' + amenity | translate}} </span>
+            <travale-img-thumbs-slider *ngIf="place.images" [images]="place.images"></travale-img-thumbs-slider>
+            <span *ngIf="historic" travaleBadge [badgeColor]="iconsService.getIconColorByKey(historic)">{{'leafletMap.' + historic | translate}} </span>
+            <span *ngIf="tourism" travaleBadge [badgeColor]="iconsService.getIconColorByKey(tourism)">{{'leafletMap.' + tourism | translate}} </span>
+            <span *ngIf="amenity" travaleBadge [badgeColor]="iconsService.getIconColorByKey(amenity)">{{'leafletMap.' + amenity | translate}} </span>
         <div *ngIf="website" class="subtitle w-100 text-nowrap">
             <small>
                 <i class="fa fa-globe color-basic-600 me-1"></i>

@@ -6,6 +6,7 @@ import { NbButtonModule, NbIconModule } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
+import { ImgSlidersModule } from '../img-slider/Img-sliders.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { DirectivesModule } from '../directives/directives.module';
     NbIconModule,
     TranslateModule,
     PipesModule,
-    DirectivesModule
+    DirectivesModule,
+    ImgSlidersModule
   ],
   declarations: [
     PlaceOnMapPopupComponent,

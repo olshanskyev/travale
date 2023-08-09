@@ -1,0 +1,31 @@
+@import '../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+  .only-thumb-swiper img {
+    cursor: pointer;
+    border-radius: var(--picture-border-radius);
+    filter: var(--picture-default-shadow);
+    object-fit: cover;
+    width: 100%;
+    height: var(--thumb-xl-height);
+  }
+
+  .only-thumb-swiper swiper-slide {
+    width: auto;
+  }
+
+  .only-thumb-swiper {
+   max-height: var(--thumb-xl-height);
+   margin: 0;
+  }
+
+  swiper-slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+}
+
+
+

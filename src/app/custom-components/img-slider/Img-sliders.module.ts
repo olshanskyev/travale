@@ -1,9 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { ImgSliderComponent } from './img-slider.component';
+
 import { CommonModule } from '@angular/common';
 import { NbButtonModule, NbCardModule, NbIconModule } from '@nebular/theme';
 import { SwiperDirective } from './img-slider-directive';
 import { LightboxModule } from 'ngx-lightbox';
+import { ImgThumbsSliderComponent } from './img-thumbs-slider/img-thumbs-slider.component';
+import { ImgCarouselSliderComponent } from './img-carousel-slider/img-carousel-slider.component';
 
 @NgModule({
     imports: [
@@ -14,8 +16,14 @@ import { LightboxModule } from 'ngx-lightbox';
         LightboxModule,
         NbIconModule
     ],
-    declarations: [ImgSliderComponent],
+    declarations: [
+        ImgCarouselSliderComponent,
+        ImgThumbsSliderComponent
+    ],
     schemas:[ CUSTOM_ELEMENTS_SCHEMA ],
-    exports: [ImgSliderComponent]
+    exports: [
+        ImgCarouselSliderComponent,
+        ImgThumbsSliderComponent
+    ]
 })
-export class ImgSliderModule {}
+export class ImgSlidersModule {}

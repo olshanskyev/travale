@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NbMediaBreakpointsService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { Subject, takeUntil, map } from 'rxjs';
 
 @Component({
   selector: 'travale-one-column-map-sidebar-layout',
@@ -9,11 +11,11 @@ import { Component } from '@angular/core';
         <travale-header></travale-header>
       </nb-layout-header>
 
-      <nb-sidebar [compactedBreakpoints]="[]" [collapsedBreakpoints]="['sm', 'md', 'lg', 'is', 'xs', 'unknown']" responsive class="map-sidebar"
+      <nb-sidebar [compactedBreakpoints]="[]" [collapsedBreakpoints]="['sm', 'md', 'lg', 'is', 'xs']" class="map-sidebar"
         tag="map-sidebar" #mapSidebar responsive>
         <ng-content select="travale-leaflet-map-component"></ng-content>
       </nb-sidebar>
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive [compactedBreakpoints]="['xs', 'is', 'sm', 'md', 'lg']" [collapsedBreakpoints]="['is', 'xs', 'unknown']">
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" state="collapsed" [fixed]="isMenuFixed">
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
       <nb-layout-column class="p-0 ps-3">
@@ -25,5 +27,55 @@ import { Component } from '@angular/core';
     </nb-layout>
   `,
 })
-export class OneColumnMapSidebarLayoutComponent {
+export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
+  private destroy$: Subject<void> = new Subject<void>();
+  isMenuFixed = true;
+
+  constructor(
+    private themeService: NbThemeService,
+    private breakpointService: NbMediaBreakpointsService,
+    private sidebarService: NbSidebarService
+    ) {
+  }
+
+  ngOnInit(): void {
+    // thats all is workaround, because using of swiper js is throwing unknown breakpoint
+    // and using sidebar with responsive is not posible
+    const { xl } = this.breakpointService.getBreakpointsMap();
+    const { sm } = this.breakpointService.getBreakpointsMap();
+
+    this.themeService.onMediaQueryChange().pipe(
+      map(([, currentBreakpoint]) => currentBreakpoint),
+      takeUntil(this.destroy$)
+    ).subscribe(
+      currentBreakpoint => {
+          if (currentBreakpoint.width) {
+            if (currentBreakpoint.width < sm) {
+              setTimeout(() => {
+                this.sidebarService.collapse('menu-sidebar');
+              }, 0);
+
+              this.isMenuFixed = true;
+            }
+            else if (currentBreakpoint.width < xl) {
+              setTimeout(() => {
+                this.sidebarService.compact('menu-sidebar');
+              }, 0);
+              this.isMenuFixed = false;
+            }
+            else {
+              setTimeout(() => {
+                this.sidebarService.expand('menu-sidebar');
+              }, 0);
+              this.isMenuFixed = false;
+            }
+          }
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

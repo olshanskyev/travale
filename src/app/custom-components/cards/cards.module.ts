@@ -6,7 +6,7 @@ import { PlaceCardComponent } from './place-card/place-card.component';
 import { CommonModule } from '@angular/common';
 import { NbAccordionModule, NbButtonModule, NbCardModule, NbFormFieldModule, NbIconModule, NbInputModule, NbListModule } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
-import { ImgSliderModule } from '../img-slider/ImgSlider.module';
+import { ImgSlidersModule } from '../img-slider/Img-sliders.module';
 import { FormsModule } from '@angular/forms';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -19,7 +19,7 @@ import { MarkerIconComponent } from '../marker-icon/marker-icon.component';
         NbCardModule,
         TranslateModule,
         NbIconModule,
-        ImgSliderModule,
+        ImgSlidersModule,
         NbFormFieldModule,
         NbInputModule,
         FormsModule,
