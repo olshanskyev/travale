@@ -11,7 +11,7 @@ import { Subject, takeUntil, map } from 'rxjs';
         <travale-header></travale-header>
       </nb-layout-header>
 
-      <nb-sidebar [compactedBreakpoints]="[]" [collapsedBreakpoints]="['sm', 'md', 'lg', 'is', 'xs']" class="map-sidebar"
+      <nb-sidebar [compactedBreakpoints]="[]" [collapsedBreakpoints]="['sm', 'md', 'lg', 'is', 'xs']" fixed="true" class="map-sidebar"
         tag="map-sidebar" #mapSidebar responsive>
         <ng-content select="travale-leaflet-map-component"></ng-content>
       </nb-sidebar>
@@ -49,7 +49,8 @@ export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
       takeUntil(this.destroy$)
     ).subscribe(
       currentBreakpoint => {
-          if (currentBreakpoint.width) {
+
+          if (currentBreakpoint.width !== undefined) {
             if (currentBreakpoint.width < sm) {
               setTimeout(() => {
                 this.sidebarService.collapse('menu-sidebar');

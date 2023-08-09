@@ -56,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(currentBreakpoint => {
-            if (currentBreakpoint.width) { // using swiper js throwing unknown value
+            if (currentBreakpoint.width !== undefined) { // using swiper js throwing unknown value
               const isLessThanXl = currentBreakpoint.width < xl;
               this.userPictureOnly = isLessThanXl;
               this.isLessThanSm = currentBreakpoint.width < sm;
