@@ -6,6 +6,7 @@ import { CreateRoutePageComponent } from './create-route-page/create-route-page.
 import { NbButtonModule, NbCardModule, NbIconModule } from '@nebular/theme';
 import { CustomComponentsModule } from 'src/app/custom-components/custom-components.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { CardsModule } from 'src/app/custom-components/cards/cards.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { TranslateModule } from '@ngx-translate/core';
     CustomComponentsModule,
     NbIconModule,
     NbButtonModule,
-    TranslateModule
+    TranslateModule,
+    CardsModule
 
   ],
   declarations: [
