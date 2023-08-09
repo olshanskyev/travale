@@ -1,21 +1,19 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Lightbox } from 'ngx-lightbox';
 import { ImageType } from 'src/app/@core/data/route.data';
 import { SwiperOptions } from 'swiper';
 
 @Component({
-  selector: 'travale-img-slider',
-  templateUrl: './img-slider.component.html',
-  styleUrls: ['./img-slider.component.scss'],
+  selector: 'travale-img-carousel-slider',
+  templateUrl: './img-carousel-slider.component.html',
+  styleUrls: ['./img-carousel-slider.component.scss'],
 
 })
-export class ImgSliderComponent {
+export class ImgCarouselSliderComponent {
 
   @Input() editable = false;
   @Input() images?: ImageType[] = [];
-
-  @Input() @HostBinding('style.--swiper-max-width') swiperMaxWidth = '545px';
 
   constructor(private _lightbox: Lightbox) {
   }
@@ -29,9 +27,9 @@ export class ImgSliderComponent {
   public configThumbSwiper: SwiperOptions = {
 
     autoHeight: true,
-    spaceBetween: 5,
+    spaceBetween: 10,
     slidesPerView: 'auto',
-    centeredSlides: false,
+    centeredSlides: false
   };
 
   deleteItem(index: number) {

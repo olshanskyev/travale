@@ -13,10 +13,8 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
-
   userPictureOnly = false;
-  hideMenuOnClick = false;
-
+  isLessThanSm = false;
   user: {
     name: string,
     picture: string
@@ -50,19 +48,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
     const { xl } = this.breakpointService.getBreakpointsMap();
-    const { is } = this.breakpointService.getBreakpointsMap();
+    const { sm } = this.breakpointService.getBreakpointsMap();
 
     this.themeService.onMediaQueryChange()
       .pipe(
-        map(([, currentBreakpoint]) =>/* !currentBreakpoint.width || currentBreakpoint.width < xl*/ currentBreakpoint),
+        map(([, currentBreakpoint]) => currentBreakpoint),
         takeUntil(this.destroy$),
       )
-      //.subscribe((isLessThanXl: boolean) => {this.userPictureOnly = isLessThanXl;});
       .subscribe(currentBreakpoint => {
-        const isLessThanXl = !currentBreakpoint.width || currentBreakpoint.width < xl;
-        this.userPictureOnly = isLessThanXl;
-        this.hideMenuOnClick = currentBreakpoint.width <= is;
-      });
+            if (currentBreakpoint.width) { // using swiper js throwing unknown value
+              const isLessThanXl = currentBreakpoint.width < xl;
+              this.userPictureOnly = isLessThanXl;
+              this.isLessThanSm = currentBreakpoint.width < sm;
+            }
+    });
+
+
     this.themeService.onThemeChange()
       .pipe(
         map(({ name }) => name),
@@ -71,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(themeName => this.currentTheme = themeName);
 
       this.menuService.onItemClick().subscribe(() => {
-        if (this.hideMenuOnClick) {
+        if (this.isLessThanSm) {
           this.sidebarService.collapse('menu-sidebar');
         }
       });
@@ -87,7 +88,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSidebar(): boolean {
-    this.sidebarService.toggle(true, 'menu-sidebar');
+    this.sidebarService.toggle(!this.isLessThanSm, 'menu-sidebar');
     return false;
   }
 

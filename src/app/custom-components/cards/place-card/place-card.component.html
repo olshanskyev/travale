@@ -4,7 +4,7 @@
             <div *ngIf="!place.images || place.images.length === 0" class="d-flex justify-content-center w-100">
                 <img src="assets/no-photo-available.png" class="thumb-photo"/>
             </div>
-                <travale-img-slider [images]="place.images" [editable]="editable"></travale-img-slider>
+                <travale-img-carousel-slider [images]="place.images" [editable]="editable"></travale-img-carousel-slider>
 
             <button nbButton status="info" fullWidth size="small" shape="round" class="mt-2" (click)="openImgUploaderWindow()">Upload Images</button>
         </nb-card-body>

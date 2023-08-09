@@ -5,7 +5,7 @@ import { DirectivesModule } from './directives/directives.module';
 import { WindowsModule } from './windows/windows.module';
 import { InputsModule } from './inputs/inputs.module';
 import { CardsModule } from './cards/cards.module';
-import { ImgSliderModule } from './img-slider/ImgSlider.module';
+import { ImgSlidersModule } from './img-slider/Img-sliders.module';
 import { MapsModule } from './maps/maps.module';
 import { SlideOutModule } from './slide-out/slide-out.module';
 
@@ -18,7 +18,7 @@ import { SlideOutModule } from './slide-out/slide-out.module';
     WindowsModule,
     InputsModule,
     CardsModule,
-    ImgSliderModule,
+    ImgSlidersModule,
     MapsModule,
     SlideOutModule
   ],

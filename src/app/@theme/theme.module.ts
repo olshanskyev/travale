@@ -31,7 +31,7 @@ const COMPONENTS = [
   FooterComponent,
   MapFooterComponent,
   OneColumnLayoutComponent,
-  OneColumnMapSidebarLayoutComponent
+  OneColumnMapSidebarLayoutComponent,
 ];
 
 

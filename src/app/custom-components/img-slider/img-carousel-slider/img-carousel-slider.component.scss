@@ -1,4 +1,4 @@
-@import '../../@theme/styles/themes';
+@import '../../../@theme/styles/themes';
 
 @include nb-install-component() {
 
@@ -17,13 +17,10 @@
 
   .thumb-swiper {
    max-height: var(--thumb-xl-height);
-   max-width: var(--swiper-max-width);
-
    margin: 0;
   }
 
   .full-img-swiper {
-   max-width: var(--swiper-max-width);
    margin: 0;
   }
 
