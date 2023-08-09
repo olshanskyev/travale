@@ -9,7 +9,6 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
   selector: 'travale-map-footer',
   styleUrls: ['./map-footer.component.scss'],
   template: `
-    <div class="map-footer-container" [class.popup-shadow]="showPopup">
       <div class="popup-place" [class.popup-show-over]="showPopup">
             <travale-place-on-map-popup [place]="popupPlace"></travale-place-on-map-popup>
             <div class="position-absolute top-0 end-0 pt-1 pe-1">
@@ -19,7 +18,6 @@ import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
       <div class="toggle-map-button-container">
         <button nbButton status="primary" shape="round" (click)="toggleMapClicked()"><nb-icon icon="map-outline"></nb-icon>{{'leafletMap.toggleMap' | translate}}</button>
       </div>
-    </div>
   `,
 })
 export class MapFooterComponent implements OnDestroy {

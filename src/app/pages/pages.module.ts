@@ -8,6 +8,9 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CustomComponentsModule } from '../custom-components/custom-components.module';
 import { MapPageComponent } from './map-page/map-page.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { CardsModule } from '../custom-components/cards/cards.module';
+import { MapsModule } from '../custom-components/maps/maps.module';
+import { SlideOutModule } from '../custom-components/slide-out/slide-out.module';
 
 @NgModule({
   imports: [
@@ -18,7 +21,10 @@ import { TranslateModule } from '@ngx-translate/core';
     NbIconModule,
     NbCardModule,
     TranslateModule,
-    NbButtonModule
+    NbButtonModule,
+    CardsModule,
+    MapsModule,
+    SlideOutModule
   ],
   declarations: [
     PagesComponent,

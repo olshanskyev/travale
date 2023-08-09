@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
         <ng-content select="router-outlet"></ng-content>
       </nb-layout-column>
       <nb-layout-footer fixed class="footer map-layout-footer">
-        <travale-map-footer></travale-map-footer>
+        <travale-map-footer class="w-100"></travale-map-footer>
       </nb-layout-footer>
     </nb-layout>
   `,

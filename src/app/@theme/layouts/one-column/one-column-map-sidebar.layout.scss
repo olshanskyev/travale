@@ -30,13 +30,18 @@
 
   .map-layout-footer {
     z-index: 1065 !important;
-    box-shadow: none !important;
-
+    box-shadow: 0 -0.2rem 1rem 0 rgba(44, 51, 73, 0.1) !important;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    transition: all 0.4s ease-out;
   }
 
   .map-layout-footer ::ng-deep .fixed {
     border: none;
     background: none !important;
+    padding: 0;
   }
 
   nb-layout-column {
@@ -47,9 +52,15 @@
     .map-sidebar, .map-sidebar ::ng-deep > div.main-container {
       min-width: 40%;
     }
+    .map-layout-footer {
+      width: 40%;
+    }
   }
 
   @include media-breakpoint-down(lg) {
+    .map-layout-footer {
+      width: 100%;
+    }
     nb-layout-column {
       padding: 0 !important;
     }
