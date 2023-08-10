@@ -11,8 +11,7 @@ import { Subject, takeUntil, map } from 'rxjs';
         <travale-header></travale-header>
       </nb-layout-header>
 
-      <nb-sidebar [compactedBreakpoints]="[]" [collapsedBreakpoints]="['sm', 'md', 'lg', 'is', 'xs']" fixed="true" class="map-sidebar"
-        tag="map-sidebar" #mapSidebar responsive>
+      <nb-sidebar class="map-sidebar" tag="map-sidebar" #mapSidebar [fixed]="isMapFixed" >
         <ng-content select="travale-leaflet-map-component"></ng-content>
       </nb-sidebar>
       <nb-sidebar class="menu-sidebar" tag="menu-sidebar" state="collapsed" [fixed]="isMenuFixed">
@@ -30,7 +29,7 @@ import { Subject, takeUntil, map } from 'rxjs';
 export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
   private destroy$: Subject<void> = new Subject<void>();
   isMenuFixed = true;
-
+  isMapFixed = true;
   constructor(
     private themeService: NbThemeService,
     private breakpointService: NbMediaBreakpointsService,
@@ -40,7 +39,7 @@ export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     // thats all is workaround, because using of swiper js is throwing unknown breakpoint
-    // and using sidebar with responsive is not posible
+    // and using sidebar with responsive is not possible
     const { xl } = this.breakpointService.getBreakpointsMap();
     const { sm } = this.breakpointService.getBreakpointsMap();
 
@@ -54,21 +53,26 @@ export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
             if (currentBreakpoint.width < sm) {
               setTimeout(() => {
                 this.sidebarService.collapse('menu-sidebar');
+                this.sidebarService.collapse('map-sidebar');
               }, 0);
-
               this.isMenuFixed = true;
+              this.isMapFixed = true;
             }
             else if (currentBreakpoint.width < xl) {
               setTimeout(() => {
                 this.sidebarService.compact('menu-sidebar');
+                this.sidebarService.collapse('map-sidebar');
               }, 0);
               this.isMenuFixed = false;
+              this.isMapFixed = true;
             }
             else {
               setTimeout(() => {
                 this.sidebarService.expand('menu-sidebar');
+                this.sidebarService.expand('map-sidebar');
               }, 0);
               this.isMenuFixed = false;
+              this.isMapFixed = false;
             }
           }
       }
