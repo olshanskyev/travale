@@ -1,0 +1,19 @@
+@import '../../../@theme/styles/themes';
+@import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
+
+@include nb-install-component() {
+  nb-card {
+    width: 600px;
+    height: 80vh;
+  }
+
+  @include media-breakpoint-down(sm) {
+    nb-card {
+      width: var(--small-window-width);
+    }
+  }
+
+  nb-card-body {
+    overflow: hidden !important;
+}
+}

@@ -21,7 +21,7 @@
                     </nb-form-field>
                 </div>
             </div>
-            <textarea [readonly]="!editable" nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-2"></textarea>
+            <travale-expandable-textarea class="mt-1" [readonly]="!editable" [(value)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}"></travale-expandable-textarea>
         </div>
     </div>
     <ng-template #full>
@@ -31,7 +31,7 @@
                     <input nbInput type="text" [(ngModel)]="place.name" class="subtitle-input" placeholder="{{'placeCard.placeTitle' | translate}}">
                     <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
                 </nb-form-field>
-                <textarea nbInput fullWidth [(ngModel)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}" class="textarea-input w-100 mt-1 text-area-full-mode"></textarea>
+                <travale-expandable-textarea class="w-100 mt-1" [(value)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}"></travale-expandable-textarea>
             </nb-card-body>
         </nb-card>
     </ng-template>

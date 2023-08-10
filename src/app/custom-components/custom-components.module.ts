@@ -8,6 +8,7 @@ import { CardsModule } from './cards/cards.module';
 import { ImgSlidersModule } from './img-slider/Img-sliders.module';
 import { MapsModule } from './maps/maps.module';
 import { SlideOutModule } from './slide-out/slide-out.module';
+import { ExpandableTextAreaModule } from './expandable-textarea/expandable-textarea.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SlideOutModule } from './slide-out/slide-out.module';
     CardsModule,
     ImgSlidersModule,
     MapsModule,
-    SlideOutModule
+    SlideOutModule,
+    ExpandableTextAreaModule
   ],
   declarations: [
   ],

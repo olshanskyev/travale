@@ -1,0 +1,23 @@
+@import '../../@theme/styles/themes';
+
+@include nb-install-component() {
+    display: block;
+    position: relative;
+
+    textarea {
+        max-height: var(--max-height);
+        min-height: var(--min-height);
+    }
+
+    ::ng-deep nb-form-field.expandable-textarea {
+        > div.nb-form-field-addon {
+            position: absolute !important;
+            top: 0px !important;
+            right: 2px !important;
+        }
+    }
+
+
+}
+
+
