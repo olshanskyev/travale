@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, HostBinding, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, HostBinding } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { TextAreaWindowComponent } from './textarea-window/textarea-window.component';
 
