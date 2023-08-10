@@ -25,6 +25,7 @@ export class PlaceCardComponent {
       context: {
         uploadMode: 'multi',
       },
+      dialogClass: 'animated-dialog'
     })
     .onClose.subscribe((result: any) => {
       if (result && result.uploadedImages)

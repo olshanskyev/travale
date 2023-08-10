@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MarkerIconComponent } from '../marker-icon/marker-icon.component';
+import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-textarea.module';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { MarkerIconComponent } from '../marker-icon/marker-icon.component';
         NbAccordionModule,
         NbListModule,
         NgxFileDropModule,
-        DragDropModule
+        DragDropModule,
+        ExpandableTextAreaModule
     ],
     declarations: [
         CountryInfoCardComponent,

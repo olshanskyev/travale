@@ -121,6 +121,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
           closeOnEsc: false,
           context: {
           },
+          dialogClass: 'animated-dialog'
           }).onClose.subscribe((result: any) => {
             if (result) {
               const city: City = result?.city as City;

@@ -1,0 +1,8 @@
+<div class="position-relative">
+    <nb-form-field class="expandable-textarea">
+        <textarea class="textarea-input scrollable-container" [readonly]="readonly" nbInput fullWidth [ngModel]="value" (ngModelChange)="valueChanged($event)" [placeholder]="placeholder"></textarea>
+        <button class="open-button" *ngIf="expandable" nbSuffix size="tiny" nbButton ghost (click)="showTextAreaWindow()"><nb-icon icon="expand-outline" pack="eva"></nb-icon></button>
+    </nb-form-field>
+</div>
+
+

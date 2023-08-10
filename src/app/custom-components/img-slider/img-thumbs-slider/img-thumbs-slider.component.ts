@@ -20,7 +20,9 @@ export class ImgThumbsSliderComponent {
     autoHeight: true,
     spaceBetween: 10,
     slidesPerView: 'auto',
-    centeredSlides: false
+    centeredSlides: false,
+    navigation: true,
+    pagination: true
   };
 
   openImage(index: number) {

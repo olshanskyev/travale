@@ -1,5 +1,6 @@
 
-<swiper-container travaleSwiper *ngIf="images" [config]="configThumbSwiper" init="false" class="only-thumb-swiper">
+<swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+    travaleSwiper *ngIf="images" [config]="configThumbSwiper" init="false" class="only-thumb-swiper">
     <swiper-slide
         *ngFor="let item of images; let i=index">
             <img [src]="item.thumb" (click)="openImage(i)">
