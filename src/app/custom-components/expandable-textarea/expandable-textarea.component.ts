@@ -29,7 +29,8 @@ export class ExpandableTextareaComponent {
         value: this.value,
         readonly: this.readonly
       },
-      dialogClass: 'animated-dialog'
+      dialogClass: 'animated-dialog',
+      autoFocus: false,
     }
     ).onClose.subscribe(value => {
       if (value !== undefined) {
