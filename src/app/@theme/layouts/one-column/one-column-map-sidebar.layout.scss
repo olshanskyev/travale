@@ -12,7 +12,7 @@
   }
 
   .map-sidebar {
-    transition: all 0.4s ease-out;
+    transition: opacity 0.4s ease-out;
     order: 2 !important;
   }
   .menu-sidebar, .menu-sidebar ::ng-deep > div.main-container {
