@@ -94,4 +94,7 @@
   line-height: var(--input-tiny-text-line-height) !important;
 }
 
+.animated-dialog {
+  animation: fadeIn 0.2s linear;
+}
 

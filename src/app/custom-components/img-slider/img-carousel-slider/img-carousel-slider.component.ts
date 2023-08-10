@@ -22,6 +22,7 @@ export class ImgCarouselSliderComponent {
     autoHeight: true,
     spaceBetween: 10,
     navigation: true,
+    pagination: true
   };
 
   public configThumbSwiper: SwiperOptions = {

@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { ImgSlidersModule } from '../img-slider/Img-sliders.module';
+import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-textarea.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { ImgSlidersModule } from '../img-slider/Img-sliders.module';
     TranslateModule,
     PipesModule,
     DirectivesModule,
-    ImgSlidersModule
+    ImgSlidersModule,
+    ExpandableTextAreaModule
   ],
   declarations: [
     PlaceOnMapPopupComponent,

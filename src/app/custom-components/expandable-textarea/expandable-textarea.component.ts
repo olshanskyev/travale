@@ -17,7 +17,7 @@ export class ExpandableTextareaComponent {
   @Input() placeholder?: string;
   @Output() valueChange: EventEmitter<string | undefined> = new EventEmitter();
   @HostBinding('style.--max-height') maxHeight = '150px';
-  @HostBinding('style.--min-height') minHeight = '40px';
+  @HostBinding('style.--min-height') minHeight = '60px';
 
   valueChanged(value: string) {
     this.valueChange.emit(value);
@@ -26,8 +26,12 @@ export class ExpandableTextareaComponent {
   showTextAreaWindow() {
     this.dialogService.open(TextAreaWindowComponent, {
       context: {
-        value: this.value
-    }}).onClose.subscribe(value => {
+        value: this.value,
+        readonly: this.readonly
+      },
+      dialogClass: 'animated-dialog'
+    }
+    ).onClose.subscribe(value => {
       if (value !== undefined) {
         this.value = value;
         this.valueChange.emit(value);

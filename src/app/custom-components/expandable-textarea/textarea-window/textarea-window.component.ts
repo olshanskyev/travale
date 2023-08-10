@@ -12,6 +12,7 @@ export class TextAreaWindowComponent {
   }
 
   @Input() value?: string;
+  @Input() readonly = false;
 
   done() {
     this.ref.close(this.value);

@@ -55,6 +55,7 @@ export class RouteCardComponent implements OnChanges {
       context: {
         place: place
       },
+      dialogClass: 'animated-dialog'
     });
   }
 
@@ -68,6 +69,7 @@ export class RouteCardComponent implements OnChanges {
       context: {
         uploadMode: 'single',
       },
+      dialogClass: 'animated-dialog'
     })
     .onClose.subscribe((result: any) => {
       if (result && result.uploadedImages && result.uploadedImages.length > 0 && this.route) {
@@ -82,6 +84,7 @@ export class RouteCardComponent implements OnChanges {
       context: {
         selectedColor: this.routeColor,
       },
+      dialogClass: 'animated-dialog'
     }).onClose.subscribe(context => {
       if (context?.selectedColor && context.selectedColor !== this.route.color) {
         this.routeColor = context.selectedColor;
