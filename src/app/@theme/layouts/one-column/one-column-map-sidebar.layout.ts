@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbSidebarService, NbThemeService } from '@nebular/theme';
-import { Subject, takeUntil, map } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'travale-one-column-map-sidebar-layout',
@@ -30,6 +30,7 @@ export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
   private destroy$: Subject<void> = new Subject<void>();
   isMenuFixed = true;
   isMapFixed = true;
+  currBreakpointName?: string = undefined;
   constructor(
     private themeService: NbThemeService,
     private breakpointService: NbMediaBreakpointsService,
@@ -44,12 +45,12 @@ export class OneColumnMapSidebarLayoutComponent implements OnDestroy, OnInit {
     const { sm } = this.breakpointService.getBreakpointsMap();
 
     this.themeService.onMediaQueryChange().pipe(
-      map(([, currentBreakpoint]) => currentBreakpoint),
+
       takeUntil(this.destroy$)
     ).subscribe(
-      currentBreakpoint => {
-
-          if (currentBreakpoint.width !== undefined) {
+      ([, currentBreakpoint]) => {
+          if (currentBreakpoint.width !== undefined && this.currBreakpointName !== currentBreakpoint.name) {
+            this.currBreakpointName = currentBreakpoint.name;
             if (currentBreakpoint.width < sm) {
               setTimeout(() => {
                 this.sidebarService.collapse('menu-sidebar');
