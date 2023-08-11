@@ -1,0 +1,9 @@
+<nb-card style="width:300px">
+    <nb-card-body>
+        {{text}}
+    </nb-card-body>
+    <nb-card-footer class="d-flex justify-content-center">
+        <button nbButton status="primary" shape="round" size="small" (click)="ref.close(true)">{{'common.done' | translate }}</button>
+        <button nbButton class="ms-2" status="danger" shape="round" size="small" (click)="ref.close()">{{'common.cancel' | translate }}</button>
+    </nb-card-footer>
+</nb-card>

@@ -51,7 +51,6 @@ export class SearchPlaceComponent implements OnInit {
           return value;
         }),
         debounceTime(400),
-        distinctUntilChanged(),
         filter(res => (res && res.length >= 2)),
       ).subscribe((text: string) => {
         this.search(text);

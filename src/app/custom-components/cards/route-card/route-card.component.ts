@@ -6,6 +6,8 @@ import { ImgUploaderWindowComponent } from '../../windows/img-uploader-window/im
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 import { SelectColorWindowComponent } from '../../windows/select-color-window/select-color-window.component';
 import { EditPlaceWindowComponent } from '../../windows/edit-place-window/edit-place-window.component';
+import { ConfirmWindowComponent } from '../../windows/confirm-window/confirm-window.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'travale-route-card',
@@ -25,7 +27,7 @@ export class RouteCardComponent implements OnChanges {
 
   titleUpdate = new Subject<string>();
 
-  constructor(private dialogService: NbDialogService ) {
+  constructor(private dialogService: NbDialogService, private translateService: TranslateService ) {
 
     this.titleUpdate.pipe(
       debounceTime(500),
@@ -59,9 +61,17 @@ export class RouteCardComponent implements OnChanges {
     });
   }
 
-  onDeletePlaceClick(index: number) {
-    this.route?.places.splice(index, 1);
-    this.placesSequenceChanged.emit(this.route);
+  onDeletePlaceClick(index: number, place: Place) {
+    this.dialogService.open(ConfirmWindowComponent, {
+      context: {
+        text: this.translateService.instant('createRoute.deletePlace', {place: place.name})
+      },
+      dialogClass: 'animated-dialog'
+    }).onClose.subscribe(isOk => {
+      if (isOk)
+      this.route?.places.splice(index, 1);
+      this.placesSequenceChanged.emit(this.route);
+    });
   }
 
   onUploadImgClick() {

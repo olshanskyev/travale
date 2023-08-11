@@ -1,6 +1,6 @@
 <nb-card>
     <nb-card-body>
-        <textarea [readonly]="readonly" class="scrollable-container textarea-input h-100" nbInput fullWidth [(ngModel)]="value" placeholder="{{'createRoute.writeGeneralInformationHere' | translate}}"></textarea>
+        <textarea [readonly]="readonly" class="scrollable-container textarea-input h-100" nbInput fullWidth [(ngModel)]="value" [placeholder]="placeholder"></textarea>
     </nb-card-body>
     <nb-card-footer>
         <button fullWidth size="small" nbButton shape="round" status="primary" (click)="done()">{{'common.done' | translate}}</button>

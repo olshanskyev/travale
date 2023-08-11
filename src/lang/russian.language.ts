@@ -8,6 +8,7 @@ export class RussianLanguage {
                 warning: 'Внимание',
                 info: 'Информация',
                 done: 'OK',
+                cancel: 'Отмена',
                 back: 'Назад',
                 color: 'Цвет',
                 showMore: 'Показать больше',
@@ -127,7 +128,8 @@ export class RussianLanguage {
                 generalInformation: 'Общая информация',
                 writeGeneralInformationHere: 'Добавьте общую информацию о маршруте, советы и рекомендации',
                 selectPlaceOnMap: 'Выберите место на карте и добавьте его в маршрут',
-                newRouteIn: 'Новый маршрут в '
+                newRouteIn: 'Новый маршрут в ',
+                deletePlace: 'Действительно удалить место {{place}}?',
             },
             searchPlaceControl: {
                 searchForPlace: 'Поиск...'

@@ -27,7 +27,8 @@ export class ExpandableTextareaComponent {
     this.dialogService.open(TextAreaWindowComponent, {
       context: {
         value: this.value,
-        readonly: this.readonly
+        readonly: this.readonly,
+        placeholder: this.placeholder
       },
       dialogClass: 'animated-dialog',
       autoFocus: false,
