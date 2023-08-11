@@ -10,6 +10,8 @@ import { PlacesServiceData } from '../data/places.data';
 @Injectable()
 export class OverpassapiService implements PoiServiceData, PlacesServiceData {
 
+    private outputLimit = 50;
+
     constructor(private _http: HttpClient) {
     }
 
@@ -54,10 +56,11 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
 
     }
 
-    searchPlace(search: string, bounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {
-        const boxString = this.getBoxStringFromBounds(bounds);
-        const request = '[out:json];nwr[~"^name.*$"~"' + search + '", i](' + boxString + ');out center;';
-        return this._http.post<any>(environment.overpassapiEndpoint, request).pipe(map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
+    searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {
+        const boxString = this.getBoxStringFromBounds(cityBounds);
+        const request = `[out:json];nwr[~"^name.*$"~"${search}", i](${boxString});out center ${this.outputLimit};`;
+        return this._http.post<any>(environment.overpassapiEndpoint, request).pipe(
+          map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
     }
 
 

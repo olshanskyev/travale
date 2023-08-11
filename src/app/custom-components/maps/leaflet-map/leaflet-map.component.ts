@@ -232,7 +232,7 @@ export class LeafletMapComponent {
       this.searchPlaceMarker = new L.Marker(position);
       this.searchPlaceMarker.on('click', () => {
         if (feature.properties) {
-
+          this.searchPlaceMarker.unbindPopup();
           this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
           this.searchPlaceMarker.openPopup();
         }
@@ -249,6 +249,12 @@ export class LeafletMapComponent {
 
   onMouseOverSearchPlace(feature: CustomFeature)  {
     this.placeMarker(feature, false);
+  }
+
+  onSearchPlaceCleared() {
+    if (this.searchPlaceMarker) {
+      this.searchPlaceMarker.removeFrom(this.map);
+    }
   }
 
 }

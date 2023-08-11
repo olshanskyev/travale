@@ -10,6 +10,7 @@ import { InputsModule } from '../inputs/inputs.module';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { CardsModule } from '../cards/cards.module';
 import { ImagesSelectorComponent } from './img-uploader-window/images-selector/images-selector.component';
+import { ConfirmWindowComponent } from './confirm-window/confirm-window.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { ImagesSelectorComponent } from './img-uploader-window/images-selector/i
         CitySelectWindowComponent,
         EditPlaceWindowComponent,
         SelectColorWindowComponent,
-        ImagesSelectorComponent
+        ImagesSelectorComponent,
+        ConfirmWindowComponent
     ],
     exports:[
     ],
@@ -38,6 +40,7 @@ import { ImagesSelectorComponent } from './img-uploader-window/images-selector/i
         CitySelectWindowComponent,
         EditPlaceWindowComponent,
         SelectColorWindowComponent,
+        ConfirmWindowComponent
     ]
 
 })

@@ -13,6 +13,7 @@ export class TextAreaWindowComponent {
 
   @Input() value?: string;
   @Input() readonly = false;
+  @Input() placeholder?: string;
 
   done() {
     this.ref.close(this.value);
