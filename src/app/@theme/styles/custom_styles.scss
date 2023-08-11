@@ -96,6 +96,6 @@
 
 .animated-dialog {
   animation: fadeIn 0.2s linear;
-  -webkit-animation: fadeIn 0.2s linear;
+  -webkit-animation: fadeIn 0.2s linear; // not working on mobile devices
 }
 

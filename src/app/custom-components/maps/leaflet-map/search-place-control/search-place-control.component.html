@@ -8,9 +8,21 @@
       #input/>
 
     <nb-list *ngIf="foundPlaces" class="scrollable-container">
-      <nb-list-item *ngFor="let displayData of foundPlaces" (mouseover)="onMouseOverPlace(displayData)"
+      <nb-list-item class="ps-2 pe-2" *ngFor="let displayData of foundPlaces" (mouseover)="onMouseOverPlace(displayData)"
       (click)="placeSelected(displayData)">
-        <div *ngIf="displayData.feature" class="col-10">{{ displayData.displayName }}</div>
+        <div *ngIf="displayData.feature" class="w-100">
+          <div>{{ displayData.displayName }}</div>
+          <div *ngIf="displayData.feature?.properties?.categories" class="d-flex flex-wrap">
+            <div *ngFor="let category of displayData.feature?.properties?.categories | keyvalue">
+              <span *ngIf="category.value" travaleBadge
+              [badgeColor]="iconsService.getIconColorByKey(category.value)">
+                {{'leafletMap.' + category.value | translate}}
+              </span>
+            </div>
+
+          </div>
+        </div>
+
       </nb-list-item>
     </nb-list>
 </div>

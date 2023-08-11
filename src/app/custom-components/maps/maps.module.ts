@@ -10,6 +10,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { TranslateModule } from '@ngx-translate/core';
 import { InputsModule } from '../inputs/inputs.module';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { DirectivesModule } from '../directives/directives.module';
+
 
 @NgModule({
     imports: [
@@ -26,6 +28,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
           }),
+        DirectivesModule
     ],
     declarations: [
         SelectDestinationMapComponent,

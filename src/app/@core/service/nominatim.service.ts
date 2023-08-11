@@ -16,6 +16,7 @@ import 'leaflet-control-geocoder';
 export class NominatimService implements PlacesServiceData, AddressServiceData {
 
   private geocoder: Nominatim;
+  private outputLimit = 25;
 
   constructor(private _http: HttpClient) {
     this.geocoder = new (Control as any).Geocoder.Nominatim();
@@ -56,11 +57,12 @@ export class NominatimService implements PlacesServiceData, AddressServiceData {
   private getBoxStringFromBounds(bounds: LatLngBounds): string {
     return bounds.getSouthWest().lng + ',' + bounds.getSouthWest().lat + ',' + bounds.getNorthEast().lng + ',' + bounds.getNorthEast().lat;
   }
-
-  searchPlace(search: string, bounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {
-    const request = environment.nominatimEndpoint + 'search.php?q=' + search + '&polygon_geojson=1&viewbox=' + this.getBoxStringFromBounds(bounds)
-    + '&bounded=1&format=jsonv2&accept-language=' + locale + ',en';
-    return this._http.get<any>(request).pipe(map(items => items.map((item: any) => this.mapItemIntoGeoJsonFeature(item))));
-
+  // there is q= <> near lat,lon search possibility, but near word should be translated to loc language
+  searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {
+    const request = environment.nominatimEndpoint +
+    `search.php?q=${search}&polygon_geojson=1&viewbox=${this.getBoxStringFromBounds(cityBounds)}
+      &bounded=1&format=jsonv2&limit=${this.outputLimit}&accept-language=${locale},en`;
+    return this._http.get<any>(request).pipe(
+      map(items => items.map((item: any) => this.mapItemIntoGeoJsonFeature(item))));
   }
 }
