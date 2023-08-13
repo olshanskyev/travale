@@ -143,6 +143,9 @@ export class RussianLanguage {
             },
             drafts: {
                 noDrafts: 'Пока нет ни одного черновика'
+            },
+            location: {
+                showMeWhereIam: 'Показать мое местоположение',
             }
 
 

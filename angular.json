@@ -46,12 +46,14 @@
               "node_modules/leaflet/dist/leaflet.css",
               "node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
-              "node_modules/ngx-lightbox/lightbox.css"
+              "node_modules/ngx-lightbox/lightbox.css",
+              "node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css"
             ],
             "scripts": [
               "node_modules/pace-js/pace.min.js",
               "node_modules/protomaps/dist/protomaps.min.js",
-              "node_modules/leaflet/dist/leaflet.js"
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js"
 			      ]
           },
           "configurations": {

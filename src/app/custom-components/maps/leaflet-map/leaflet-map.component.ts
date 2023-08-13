@@ -6,7 +6,8 @@ import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.dat
 import { NominatimService } from 'src/app/@core/service/nominatim.service';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
-
+import 'leaflet.locatecontrol';
+import { TranslateService } from '@ngx-translate/core';
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
 const iconUrl = 'assets/img/markers/marker-icon.png';
@@ -35,7 +36,7 @@ export class LeafletMapComponent {
 
   map!: L.Map;
   zoom = 12;
-  minZoom = 10;
+  minZoom = 7;
   minZoomToShowFeatures = 15;
   selectPlaceZoom = 16;
   geoJsonInitialized: false;
@@ -60,7 +61,6 @@ export class LeafletMapComponent {
 
   baseLayerJawgSunny = L.tileLayer('https://{s}.tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=Hz6HhCOMt0OzO6GEVWAEr928fxXqY2D7EtwQEreNGpKhMA25PWXurZeNm9yZanNn', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	minZoom: 0,
 	maxZoom: 22,
 	subdomains: 'abcd',
 	accessToken: 'Hz6HhCOMt0OzO6GEVWAEr928fxXqY2D7EtwQEreNGpKhMA25PWXurZeNm9yZanNn'
@@ -72,6 +72,17 @@ export class LeafletMapComponent {
     ],
     zoom: this.zoom,
     center: this.center,
+  };
+
+  locateOptions = {
+    flyTo: false,
+    position: 'topleft',
+    showPopup: false,
+    keepCurrentZoomLevel: true,
+    strings: {
+      title: this.translateService.instant('location.showMeWhereIam'),
+    },
+    enableHighAccuracy: false
   };
 
   customLayersControl: CustomLayersConfig = {
@@ -88,7 +99,8 @@ export class LeafletMapComponent {
   constructor(
     private nominatimService: NominatimService,
     @Inject(LOCALE_ID) public locale: string,
-    private overlayBuilder: LeafletOverlayBuilderService
+    private overlayBuilder: LeafletOverlayBuilderService,
+    private translateService: TranslateService
     ) {}
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
@@ -122,6 +134,10 @@ export class LeafletMapComponent {
     });
   }
 
+  locationChanged(event: any) {
+    //todo check near attractions
+  }
+
   onMapReady($event: L.Map) {
     this.map = $event;
     this.map.setMinZoom(this.minZoom);
@@ -134,6 +150,10 @@ export class LeafletMapComponent {
     if (this.zoom >= this.minZoomToShowFeatures) {
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
     }
+
+    //geolocation
+    L.control.locate(this.locateOptions).addTo(this.map);
+    this.map.on('locationfound', (event: any) => this.locationChanged(event));
 
   }
 
