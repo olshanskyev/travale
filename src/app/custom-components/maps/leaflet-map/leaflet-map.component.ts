@@ -82,7 +82,7 @@ export class LeafletMapComponent {
     strings: {
       title: this.translateService.instant('location.showMeWhereIam'),
     },
-    enableHighAccuracy: false
+    enableHighAccuracy: true
   };
 
   customLayersControl: CustomLayersConfig = {

@@ -4,7 +4,7 @@ import { CitySelectWindowComponent } from './city-select-window/city-select-wind
 import { EditPlaceWindowComponent } from './edit-place-window/edit-place-window.component';
 import { SelectColorWindowComponent } from './select-color-window/select-color-window.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbIconModule } from '@nebular/theme';
+import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule } from '@nebular/theme';
 import { CommonModule } from '@angular/common';
 import { InputsModule } from '../inputs/inputs.module';
 import { NgxFileDropModule } from 'ngx-file-drop';
@@ -15,6 +15,7 @@ import { ConfirmWindowComponent } from './confirm-window/confirm-window.componen
 @NgModule({
     imports: [
         CommonModule,
+        NbDialogModule.forChild(),
         TranslateModule,
         NbCardModule,
         NbButtonModule,
