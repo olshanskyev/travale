@@ -32,5 +32,6 @@ export type FeaturesMap = {
 export declare class CustomLayersConfig {
     baseLayers: CustomLayersMap;
     poiOverlays: CustomGeoJSONLayersMap;
-    routeOverlays: CustomGeoJSONLayersMap | undefined;
+    routeOverlays?: CustomGeoJSONLayersMap;
+    cityBoundingBoxLayer?: Layer;
 }

@@ -4,7 +4,6 @@ import { RoutesRoutingModule } from './routes-routing.module';
 import { DraftsPageComponent } from './route-drafts-page/route-drafts-page.component';
 import { CreateRoutePageComponent } from './create-route-page/create-route-page.component';
 import { NbButtonModule, NbCardModule, NbIconModule } from '@nebular/theme';
-import { CustomComponentsModule } from 'src/app/custom-components/custom-components.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardsModule } from 'src/app/custom-components/cards/cards.module';
 
@@ -14,7 +13,6 @@ import { CardsModule } from 'src/app/custom-components/cards/cards.module';
     CommonModule,
     RoutesRoutingModule,
     NbCardModule,
-    CustomComponentsModule,
     NbIconModule,
     NbButtonModule,
     TranslateModule,

@@ -1,0 +1,14 @@
+<div *ngIf="features" class="main-div">
+
+    <swiper-container [config]="configSwiper" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" travaleSwiper class="poi-swiper">
+        <swiper-slide *ngFor="let item of features; let i=index">
+            <div class="pb-5 d-flex poi-item-container">
+                <travale-poi-item [feature]="item" [preferredLanguage]="preferredLanguage">
+                </travale-poi-item>
+            </div>
+
+        </swiper-slide>
+    </swiper-container>
+
+    <button nbButton [hidden]="isAddedToRoute" (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
+</div>

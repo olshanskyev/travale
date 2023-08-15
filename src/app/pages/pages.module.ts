@@ -5,16 +5,15 @@ import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
-import { CustomComponentsModule } from '../custom-components/custom-components.module';
 import { MapPageComponent } from './map-page/map-page.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardsModule } from '../custom-components/cards/cards.module';
 import { MapsModule } from '../custom-components/maps/maps.module';
 import { SlideOutModule } from '../custom-components/slide-out/slide-out.module';
+import { WindowsModule } from '../custom-components/windows/windows.module';
 
 @NgModule({
   imports: [
-    CustomComponentsModule,
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
@@ -24,7 +23,8 @@ import { SlideOutModule } from '../custom-components/slide-out/slide-out.module'
     NbButtonModule,
     CardsModule,
     MapsModule,
-    SlideOutModule
+    SlideOutModule,
+    WindowsModule
   ],
   declarations: [
     PagesComponent,

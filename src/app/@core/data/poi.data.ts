@@ -1,4 +1,4 @@
-import { LatLngBounds } from 'leaflet';
+import { LatLng, LatLngBounds } from 'leaflet';
 import { Observable } from 'rxjs';
 import { Feature, Geometry } from 'geojson';
 import { WikiExtraction, WikiPageRef } from './wiki.data';
@@ -27,7 +27,7 @@ export class CustomFeature implements Feature {
         wikipedia?: string;
         wikidata?: string;
         categories?: {
-            [category: string]: string // category: type
+            [category: string]: string | undefined // category: type
         }
         route?: {
             order: number;
@@ -38,6 +38,7 @@ export class CustomFeature implements Feature {
 
 export interface PoiServiceData {
     findPois(bounds: LatLngBounds, tourismKey: TourismKeyType[], historicKey: HistoricKeyType[], locale: string): Observable<CustomFeature[]>;
+    findPoisNearby(point: LatLng, locale: string): Observable<CustomFeature[]>;
 }
 
 export type TourismKeyType = 'alpine_hut' | 'apartment' | 'aquarium' | 'artwork' | 'attraction' | 'camp_pitch' |
