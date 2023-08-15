@@ -108,6 +108,8 @@ export class RussianLanguage {
                 archaeological_site: 'Археологические раскопки',
                 select_all: 'Выбрать все',
                 pois: 'Объекты на карте',
+                mapSettings: 'Настройки карты',
+                showCityBB: 'Показать границы города',
                 routes: 'Маршруты',
                 addToRoute: 'ДОБАВИТЬ В МАРШРУТ',
                 toggleMap: 'Карта'

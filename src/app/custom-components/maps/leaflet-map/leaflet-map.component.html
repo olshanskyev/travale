@@ -53,6 +53,22 @@
                    </div>
                 </nb-accordion-item-body>
             </nb-accordion-item>
+            <nb-accordion-item>
+                <nb-accordion-item-header class="accordion-header">
+                    <div class="subtitle">
+                      {{'leafletMap.mapSettings' | translate}}
+                    </div>
+                </nb-accordion-item-header>
+                <nb-accordion-item-body class="accordion-checkbox-body">
+                    <div class="layers-checkbox-container">
+                        <nb-checkbox
+                        (checkedChange)="showBondingBoxToggled($event)"
+                        >
+                            <div>{{'leafletMap.showCityBB' | translate}}</div>
+                        </nb-checkbox>
+                    </div>
+                 </nb-accordion-item-body>
+            </nb-accordion-item>
         </nb-accordion>
     </travale-slide-out>
 

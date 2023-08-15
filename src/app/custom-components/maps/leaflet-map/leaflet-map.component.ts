@@ -40,7 +40,6 @@ export class LeafletMapComponent {
   minZoomToShowFeatures = 15;
   selectPlaceZoom = 16;
   geoJsonInitialized: false;
-  center: L.LatLng = L.latLng(40.640266, 22.939524);
   cityBoundingBox?: L.LatLngBounds;
   searchPlaceMarker: L.Marker;
   popupPlace: Place;
@@ -71,7 +70,6 @@ export class LeafletMapComponent {
       this.baseLayerJawgSunny
     ],
     zoom: this.zoom,
-    center: this.center,
   };
 
   locateOptions = {
@@ -94,6 +92,7 @@ export class LeafletMapComponent {
     },
     poiOverlays: {},
     routeOverlays: undefined,
+    cityBoundingBoxLayer: undefined
   };
 
   constructor(
@@ -104,15 +103,22 @@ export class LeafletMapComponent {
     ) {}
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
-    this.cityBoundingBox = bbox;
+    if (bbox) {
+      this.cityBoundingBox = bbox;
+      this.customLayersControl.cityBoundingBoxLayer = L.rectangle(this.cityBoundingBox,
+        {
+          color: 'gray', weight: 1,
+          interactive: false
+        });
+    }
+
   }
 
-  public setCityLatLong(lat: number, lon: number) {
+  public setCenterLatLong(lat: number, lon: number) {
 
     if (lat && lon) {
-      this.center = L.latLng(lat, lon);
       if (this.map) {
-        this.map.panTo(this.center);
+        this.map.panTo(L.latLng(lat, lon));
       }
     }
   }
@@ -141,7 +147,6 @@ export class LeafletMapComponent {
   onMapReady($event: L.Map) {
     this.map = $event;
     this.map.setMinZoom(this.minZoom);
-    this.map.panTo(this.center);
 
     this.map.on('zoomend', this.onZoomEnd);
     this.map.on('dragend', this.onDragEnd);
@@ -241,6 +246,11 @@ export class LeafletMapComponent {
 
     }
     this.layerToggled(layer, checked);
+  }
+
+  showBondingBoxToggled(showBB: boolean) {
+    if (this.customLayersControl.cityBoundingBoxLayer)
+      (showBB)? this.map.addLayer(this.customLayersControl.cityBoundingBoxLayer): this.map.removeLayer(this.customLayersControl.cityBoundingBoxLayer);
   }
 
   private placeMarker(feature: CustomFeature, centeredOnMarker: boolean) {
