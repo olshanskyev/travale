@@ -8,6 +8,7 @@ import { IconsService } from './icons.service';
 import { Observable, map, Subject } from 'rxjs';
 import { NgElement, WithProperties } from '@angular/elements';
 import { PoiOnMapPopupComponent } from 'src/app/custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
+import { NearbyPoisOnMapPopupComponent } from 'src/app/custom-components/popups/nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
 
 export type CustomGeoJsonLayer = {
     layer: GeoJSON,
@@ -145,6 +146,20 @@ export class LeafletOverlayBuilderService {
         document.body.appendChild(popupEl);
         return popupEl;
     }
+
+    public buildNearbyPoiPopup(features: CustomFeature[]): Content {
+        const popupEl: NgElement & WithProperties<NearbyPoisOnMapPopupComponent> = document.createElement('nearby-pois-on-map-element') as any;
+        // Listen to the close event
+        popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+        popupEl.features = features;
+        popupEl.preferredLanguage = this.locale;
+        popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        // Add to the DOM
+        document.body.appendChild(popupEl);
+        return popupEl;
+    }
+
+
 
     private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
         if (!this.poiLayersFeaturesMap[layerKey]) {

@@ -4,15 +4,20 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CustomFeature, HistoricKeyType, PoiServiceData, TourismKeyType } from '../data/poi.data';
 import { Observable, map } from 'rxjs';
-import { LatLngBounds } from 'leaflet';
+import { LatLng, LatLngBounds } from 'leaflet';
 import { PlacesServiceData } from '../data/places.data';
 
 @Injectable()
 export class OverpassapiService implements PoiServiceData, PlacesServiceData {
 
     private outputLimit = 50;
-
+    private requestTimeout = 10;
+    private aroundMeters = 15;
     constructor(private _http: HttpClient) {
+    }
+
+    private categoryValue(value: string | undefined, categoryName: string): string | undefined {
+      return (value && value === 'yes')? categoryName: value;
     }
 
     private mapItemIntoGeoJsonFeature(item: any, locale: string): CustomFeature {
@@ -35,9 +40,11 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
             wikipedia: item.tags?.wikipedia,
             wikidata: item.tags?.wikidata,
             categories: {
-              'tourism': item.tags?.tourism,
-              'historic': item.tags?.historic,
-              'amenity': item.tags?.amenity,
+              'tourism': this.categoryValue(item.tags?.tourism, 'tourism'),
+              'historic': this.categoryValue(item.tags?.historic, 'historic'),
+              'amenity': this.categoryValue(item.tags?.amenity, 'amenity'),
+              'building': this.categoryValue(item.tags?.building, 'building'),
+              'leisure': this.categoryValue(item.tags?.leisure, 'leisure')
             }
           },
         };
@@ -51,9 +58,23 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
         const boxString = this.getBoxStringFromBounds(bounds);
         const tourismKeyString = tourismKey.join('|');
         const historicKeyString = historicKey.join('|');
-        const request = '[out:json];(nwr[historic~"^(' + historicKeyString + ')$"](' + boxString + '); nwr[tourism~"^(' + tourismKeyString + ')$"](' + boxString + '););out center;';
+        const request = `[timeout:${this.requestTimeout}][out:json];(
+          nwr[historic~"^(${historicKeyString})$"](${boxString});
+          nwr[tourism~"^(${tourismKeyString})$"](${boxString});
+        );out center;`;
         return this._http.post<any>(environment.overpassapiEndpoint, request).pipe(map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
 
+    }
+
+    findPoisNearby(point: LatLng, locale: string): Observable<CustomFeature[]> {
+      const requestNearby = `[timeout:${this.requestTimeout}][out:json];(
+        node(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
+        way(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
+      );out center;
+      is_in(${point.lat},${point.lng})->.a;way(pivot.a);out center;`;
+
+
+      return this._http.post<any>(environment.overpassapiEndpoint, requestNearby).pipe(map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
     }
 
     searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {

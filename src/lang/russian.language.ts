@@ -106,6 +106,7 @@ export class RussianLanguage {
                 monument: 'Монумент',
                 tower: 'Башня',
                 archaeological_site: 'Археологические раскопки',
+                building: 'Здание',
                 select_all: 'Выбрать все',
                 pois: 'Объекты на карте',
                 mapSettings: 'Настройки карты',

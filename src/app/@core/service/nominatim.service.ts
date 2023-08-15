@@ -1,38 +1,20 @@
 import { Injectable } from '@angular/core';
 import { PlacesServiceData } from '../data/places.data';
-import { Control, LatLngBounds } from 'leaflet';
+import { LatLngBounds } from 'leaflet';
 import { Observable, map } from 'rxjs';
 import { CustomFeature } from '../data/poi.data';
 import { HttpClient } from '@angular/common/http';
-import { AddressServiceData } from '../data/address.data';
-import { Nominatim } from 'leaflet-control-geocoder/dist/geocoders';
 import { environment } from '../../../environments/environment';
-import 'leaflet-control-geocoder';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class NominatimService implements PlacesServiceData, AddressServiceData {
+export class NominatimService implements PlacesServiceData {
 
-  private geocoder: Nominatim;
   private outputLimit = 25;
 
   constructor(private _http: HttpClient) {
-    this.geocoder = new (Control as any).Geocoder.Nominatim();
-  }
-
-  getAddress(lat: number, lng: number, zoom: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-        this.geocoder.reverse(
-            { lat, lng },
-            zoom,
-            (results: any) => {
-              return results.length ? resolve(results[0]) : reject(null);
-            }
-        );
-    });
   }
 
   private mapItemIntoGeoJsonFeature(item: any): CustomFeature {

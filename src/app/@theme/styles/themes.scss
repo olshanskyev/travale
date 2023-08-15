@@ -93,6 +93,8 @@ $nb-themes: nb-register-theme((
   picture-default-shadow: drop-shadow(2px 4px 6px gray),
   form-field-addon-medium-height: 1.5rem,
 
-
+  swiper-navigation-color: color-basic-600,
+  swiper-pagination-color: color-basic-600,
+  swiper-navigation-size: 22px,
 
 ), 'gray', default);

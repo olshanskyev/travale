@@ -8,6 +8,10 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { ImgSlidersModule } from '../img-slider/Img-sliders.module';
 import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-textarea.module';
+import { PoiItemComponent } from './poi-on-map-popup/poi-item/poi-item.component';
+import { NearbyPoisOnMapPopupComponent } from './nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
+import { SwiperDirective } from '../img-slider/img-slider-directive';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   imports: [
@@ -18,19 +22,23 @@ import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-text
     PipesModule,
     DirectivesModule,
     ImgSlidersModule,
-    ExpandableTextAreaModule
+    ExpandableTextAreaModule,
+    SwiperDirective,
   ],
   declarations: [
     PlaceOnMapPopupComponent,
     PoiOnMapPopupComponent,
+    PoiItemComponent,
+    NearbyPoisOnMapPopupComponent,
   ],
   exports:[
-    PlaceOnMapPopupComponent
+    PlaceOnMapPopupComponent,
   ],
-  schemas:[ ],
+  schemas:[ CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: [
 
-    PoiOnMapPopupComponent
+    PoiOnMapPopupComponent,
+    NearbyPoisOnMapPopupComponent,
   ]
 })
 export class PopupsModule {

@@ -10,7 +10,7 @@
             class="leaflet-div"
             [leafletOptions]="options"
             (leafletMapReady)="onMapReady($event)"
-            (leafletClick)="mapClicked($event)"
+            (leafletClick)="onMapClicked($event)"
             [(leafletZoom)]="zoom"
             #leafletMap
             >

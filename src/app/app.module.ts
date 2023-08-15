@@ -16,6 +16,7 @@ import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
 import {register} from 'swiper/element/bundle';
 import { LocalRouteService } from './@core/service/local.route.service';
 import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
+import { NearbyPoisOnMapPopupComponent } from './custom-components/popups/nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
 
 register();
 
@@ -63,8 +64,11 @@ const dbConfig: DBConfig  = {
 export class AppModule {
 
   constructor(private injector: Injector) {
+
     const PoiOnMapPopupElement = createCustomElement(PoiOnMapPopupComponent, {injector});
+    const NearbyPoiOnMapPopupElement = createCustomElement(NearbyPoisOnMapPopupComponent, {injector});
     // Register the custom element with the browser.
     customElements.define('poi-on-map-element', PoiOnMapPopupElement);
+    customElements.define('nearby-pois-on-map-element', NearbyPoiOnMapPopupElement);
   }
 }

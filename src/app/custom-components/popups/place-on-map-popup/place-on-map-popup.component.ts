@@ -14,9 +14,6 @@ export class PlaceOnMapPopupComponent implements OnChanges {
   @Input() preferredLanguage: string;
 
   feature: CustomFeature;
-  historic?: string;
-  tourism?: string;
-  amenity?: string;
   website?: string;
   openingHours?: string;
   phone?: string;
@@ -32,9 +29,6 @@ export class PlaceOnMapPopupComponent implements OnChanges {
     if (changes['place'] && changes['place'].currentValue) {
 
       this.feature = changes['place'].currentValue.geoJson;
-      this.historic = this.feature.properties?.categories?.['historic'];
-      this.tourism = this.feature.properties?.categories?.['tourism'];
-      this.amenity = this.feature.properties?.categories?.['amenity'];
       this.website = this.feature.properties?.website;
       this.openingHours = this.feature.properties?.openingHours;
       this.phone = this.feature.properties?.phone;

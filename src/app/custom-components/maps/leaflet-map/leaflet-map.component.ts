@@ -3,11 +3,11 @@ import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
-import { NominatimService } from 'src/app/@core/service/nominatim.service';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
 import 'leaflet.locatecontrol';
 import { TranslateService } from '@ngx-translate/core';
+import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
 const iconUrl = 'assets/img/markers/marker-icon.png';
@@ -42,6 +42,7 @@ export class LeafletMapComponent {
   geoJsonInitialized: false;
   cityBoundingBox?: L.LatLngBounds;
   searchPlaceMarker: L.Marker;
+  nearbyPoisMarker: L.Marker;
   popupPlace: Place;
 
   baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -96,7 +97,7 @@ export class LeafletMapComponent {
   };
 
   constructor(
-    private nominatimService: NominatimService,
+    private overpassService: OverpassapiService,
     @Inject(LOCALE_ID) public locale: string,
     private overlayBuilder: LeafletOverlayBuilderService,
     private translateService: TranslateService
@@ -162,8 +163,27 @@ export class LeafletMapComponent {
 
   }
 
-  async mapClicked($event: any) {
-    const address = await this.nominatimService.getAddress($event.latlng.lat, $event.latlng.lng, this.map.getZoom());
+  private placeNearbyPoisMarker(features: CustomFeature[], position: L.LatLng) {
+    if (this.nearbyPoisMarker) {
+      this.nearbyPoisMarker.removeFrom(this.map);
+    }
+
+    this.nearbyPoisMarker = new L.Marker(position);
+
+      this.nearbyPoisMarker.addTo(this.map);
+      this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features),
+      {
+        ...LeafletOverlayBuilderService.popupOptions,
+        className: 'nearbyPopupStyle'
+      });
+      this.nearbyPoisMarker.openPopup();
+
+  }
+
+  onMapClicked(event: any) {
+    this.overpassService.findPoisNearby(event.latlng as L.LatLng, this.locale).subscribe(features => {
+      this.placeNearbyPoisMarker(features, event.latlng as L.LatLng);
+    }); // todo add error handling
   }
 
   public updateRouteLayer(routeId: string, routeTitle: string, routeColor: string, features: CustomFeature[]) {
@@ -253,7 +273,7 @@ export class LeafletMapComponent {
       (showBB)? this.map.addLayer(this.customLayersControl.cityBoundingBoxLayer): this.map.removeLayer(this.customLayersControl.cityBoundingBoxLayer);
   }
 
-  private placeMarker(feature: CustomFeature, centeredOnMarker: boolean) {
+  private placeSearchMarker(feature: CustomFeature, centeredOnMarker: boolean) {
     if (this.searchPlaceMarker) {
       this.searchPlaceMarker.removeFrom(this.map);
     }
@@ -274,11 +294,11 @@ export class LeafletMapComponent {
 
   }
   onPlaceSelect(feature: CustomFeature)  {
-    this.placeMarker(feature, true);
+    this.placeSearchMarker(feature, true);
   }
 
   onMouseOverSearchPlace(feature: CustomFeature)  {
-    this.placeMarker(feature, false);
+    this.placeSearchMarker(feature, false);
   }
 
   onSearchPlaceCleared() {
