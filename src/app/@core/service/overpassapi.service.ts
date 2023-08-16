@@ -66,6 +66,11 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
 
     }
 
+    filterUnique(features: CustomFeature[]): CustomFeature[] {
+      const res =  features.filter((value, index) => features.findIndex(item => item.id === value.id) === index);
+      return res;
+    }
+
     findPoisNearby(point: LatLng, locale: string): Observable<CustomFeature[]> {
       const requestNearby = `[timeout:${this.requestTimeout}][out:json];(
         node(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
@@ -74,7 +79,10 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
       is_in(${point.lat},${point.lng})->.a;way(pivot.a);out center;`;
 
 
-      return this._http.post<any>(environment.overpassapiEndpoint, requestNearby).pipe(map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
+      return this._http.post<any>(environment.overpassapiEndpoint, requestNearby).pipe(
+        map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))),
+        map(items => this.filterUnique(items))
+        );
     }
 
     searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {

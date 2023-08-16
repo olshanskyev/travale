@@ -12,7 +12,7 @@ export class PoiItemComponent implements OnChanges {
 
   @Input() feature: CustomFeature;
   @Input() preferredLanguage: string;
-  @Input() wikiPageRef: WikiPageRef;
+  @Input() wikiPageRef?: WikiPageRef;
   @Input() wikiExtraction?: WikiExtraction;
 
   website?: string;

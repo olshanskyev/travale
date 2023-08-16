@@ -10,7 +10,6 @@ import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
-import { LatLngBounds } from 'leaflet';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { MapFooterService } from 'src/app/@core/service/map-footer.service';
 

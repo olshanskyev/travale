@@ -2,8 +2,9 @@
 
 @include nb-install-component() {
     swiper-container {
-        width: 100%;
+        width: 120%;
         height: 100%;
+        left: 2px;
       }
 
       swiper-slide {
@@ -19,5 +20,6 @@
     .poi-item-container {
         width: 80% !important;
         text-align: left;
+        padding-bottom: 2rem;
     }
 }
