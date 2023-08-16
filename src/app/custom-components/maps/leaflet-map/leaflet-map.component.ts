@@ -1,13 +1,14 @@
-import { Component, Output, EventEmitter, Inject, LOCALE_ID } from '@angular/core';
+import { Component,Inject, LOCALE_ID, OnInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
-import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
+import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
 import 'leaflet.locatecontrol';
 import { TranslateService } from '@ngx-translate/core';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
+import { Subject, takeUntil } from 'rxjs';
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
 const iconUrl = 'assets/img/markers/marker-icon.png';
@@ -30,11 +31,10 @@ Marker.prototype.options.icon = iconDefault;
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent {
-
-  @Output() addToRoute: EventEmitter<AggregatedFeatureInfo> = new EventEmitter();
+export class LeafletMapComponent implements OnInit, OnDestroy {
 
   map!: L.Map;
+  private destroy$: Subject<void> = new Subject<void>();
   zoom = 12;
   minZoom = 7;
   minZoomToShowFeatures = 15;
@@ -43,6 +43,7 @@ export class LeafletMapComponent {
   cityBoundingBox?: L.LatLngBounds;
   searchPlaceMarker: L.Marker;
   nearbyPoisMarker: L.Marker;
+  nearbyItemMarker: L.Marker;
   popupPlace: Place;
 
   baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -102,6 +103,16 @@ export class LeafletMapComponent {
     private overlayBuilder: LeafletOverlayBuilderService,
     private translateService: TranslateService
     ) {}
+
+
+  ngOnInit(): void {
+    this.overlayBuilder.onNearbyPoiSelect().pipe(takeUntil(this.destroy$)).subscribe(res => this.placeNearbyItemMarker(res));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
     if (bbox) {
@@ -163,20 +174,46 @@ export class LeafletMapComponent {
 
   }
 
+  private placeNearbyItemMarker(feature: CustomFeature) {
+    if (this.nearbyItemMarker) {
+      this.nearbyItemMarker.removeFrom(this.map);
+    }
+    if (feature.geometry.type === 'Point') {
+      const position = new L.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+      this.nearbyItemMarker = new L.Marker(position, {interactive: false});
+      this.nearbyItemMarker.addTo(this.map);
+    }
+
+  }
+
   private placeNearbyPoisMarker(features: CustomFeature[], position: L.LatLng) {
     if (this.nearbyPoisMarker) {
       this.nearbyPoisMarker.removeFrom(this.map);
     }
+    this.nearbyPoisMarker = new L.Marker(position, {
+      icon: icon({
+        iconUrl: 'assets/map_icons/placeholder-question-mark-svgrepo-com.svg',
+        shadowUrl: 'assets/img/markers/marker-shadow.png',
+        iconSize: [42,42],
+        iconAnchor: [21, 42],
+        shadowSize: [41,41],
+        shadowAnchor: [12, 42],
+        popupAnchor:  [0, -48],
+        className: 'icon-class',
+      })
+    });
+    this.nearbyPoisMarker.addTo(this.map);
+    this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features, position),
+    {
+      ...LeafletOverlayBuilderService.popupOptions,
+      className: 'nearbyPopupStyle'
+    }).openPopup();
 
-    this.nearbyPoisMarker = new L.Marker(position);
-
-      this.nearbyPoisMarker.addTo(this.map);
-      this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features),
-      {
-        ...LeafletOverlayBuilderService.popupOptions,
-        className: 'nearbyPopupStyle'
-      });
-      this.nearbyPoisMarker.openPopup();
+    this.nearbyPoisMarker.getPopup()?.on('remove', () => {
+      this.nearbyPoisMarker.removeFrom(this.map);
+      if (this.nearbyItemMarker)
+        this.nearbyItemMarker.removeFrom(this.map);
+    });
 
   }
 

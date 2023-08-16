@@ -1,14 +1,22 @@
 <div *ngIf="features" class="main-div">
+    <span *ngIf="features.length; else nothingFound">{{'leafletMap.placesNearby' | translate}}</span>
+    <ng-template #nothingFound>
+        <span>{{'leafletMap.noPlacefound' | translate}}</span>
+    </ng-template>
+    <div class="d-flex w-100 flex-column flex-wrap align-content-center">
+        <swiper-container #swiper
+        [config]="configSwiper" travaleSwiper class="poi-swiper">
+            <swiper-slide *ngFor="let item of features; let i=index">
+                <div class="d-flex poi-item-container">
+                    <travale-poi-item [feature]="item" [preferredLanguage]="preferredLanguage" [wikiPageRef]="wikiPageRefs[i]" [wikiExtraction]="wikiExtractions[i]">
+                    </travale-poi-item>
+                </div>
 
-    <swiper-container [config]="configSwiper" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" travaleSwiper class="poi-swiper">
-        <swiper-slide *ngFor="let item of features; let i=index">
-            <div class="pb-5 d-flex poi-item-container">
-                <travale-poi-item [feature]="item" [preferredLanguage]="preferredLanguage">
-                </travale-poi-item>
-            </div>
+            </swiper-slide>
+        </swiper-container>
+    </div>
 
-        </swiper-slide>
-    </swiper-container>
 
-    <button nbButton [hidden]="isAddedToRoute" (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
+
+    <button nbButton (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
 </div>

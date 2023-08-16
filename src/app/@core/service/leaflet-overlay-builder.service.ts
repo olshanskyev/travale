@@ -55,6 +55,7 @@ export class LeafletOverlayBuilderService {
 
     private addToRoute$ = new Subject<AggregatedFeatureInfo>;
     private routeItemClick$ = new Subject<CustomFeature>;
+    private nearbyPoiSelect$ = new Subject<CustomFeature>;
 
     public static popupOptions = {
         maxWidth: 350
@@ -73,6 +74,10 @@ export class LeafletOverlayBuilderService {
 
     public onRouteItemClick(): Observable<CustomFeature> {
         return this.routeItemClick$;
+    }
+
+    public onNearbyPoiSelect(): Observable<CustomFeature> {
+        return this.nearbyPoiSelect$;
     }
 
     private findPois$ = (bbox: LatLngBounds): Observable<FeaturesMap> => {
@@ -147,13 +152,15 @@ export class LeafletOverlayBuilderService {
         return popupEl;
     }
 
-    public buildNearbyPoiPopup(features: CustomFeature[]): Content {
+    public buildNearbyPoiPopup(features: CustomFeature[], position: LatLng): Content {
         const popupEl: NgElement & WithProperties<NearbyPoisOnMapPopupComponent> = document.createElement('nearby-pois-on-map-element') as any;
         // Listen to the close event
         popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
         popupEl.features = features;
         popupEl.preferredLanguage = this.locale;
+        popupEl.position = position;
         popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        popupEl.nearbyPoiSelectedCallback = (res) => this.nearbyPoiSelect$.next(res);
         // Add to the DOM
         document.body.appendChild(popupEl);
         return popupEl;

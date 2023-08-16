@@ -113,7 +113,10 @@ export class RussianLanguage {
                 showCityBB: 'Показать границы города',
                 routes: 'Маршруты',
                 addToRoute: 'ДОБАВИТЬ В МАРШРУТ',
-                toggleMap: 'Карта'
+                toggleMap: 'Карта',
+                emptyPlaceName: 'Место без названия',
+                placesNearby: 'Места рядом',
+                noPlacefound: 'Места не найдены'
             },
 
             imgSlider: {
