@@ -25,8 +25,8 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
 
   }
 
-  wikiPageRefs: WikiPageRef[] = [];
-  wikiExtractions: WikiExtraction[] = [];
+  wikiPageRefs: WikiPageRef[];
+  wikiExtractions: WikiExtraction[];
 
   activeSlideIndex = 0;
 
@@ -52,12 +52,17 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
           source: 'manually_added'
         }
       };
-      this.addToRouteCallback({feature: feature, wikiExtraction: undefined, wikiPageRef: undefined});
+      this.addToRouteCallback(
+        {
+          feature: feature,
+          wikiExtraction: (this.wikiExtractions)? this.wikiExtractions[this.activeSlideIndex]: undefined,
+          wikiPageRef: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined
+        });
     }
   }
 
   loadWikiData() {
-    this.features.forEach(feature => {
+    this.features.forEach((feature, index) => {
       const wikipedia = feature.properties?.wikipedia;
       const wikidata = feature.properties?.wikidata;
 
@@ -78,9 +83,9 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
               }
           }
           if (wikiPageRef) {
-            this.wikiPageRefs.push(wikiPageRef);
+            this.wikiPageRefs[index] = wikiPageRef;
             this.wikiService.extractTextFromArticle(wikiPageRef.language, wikiPageRef.title, 10).subscribe( wikiRes => {
-              this.wikiExtractions.push(wikiRes);
+              this.wikiExtractions[index] = wikiRes;
           });
           }
 
@@ -105,6 +110,8 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
         });
       if (this.features.length > 0) {
         this.nearbyPoiSelectedCallback(this.features[0]);
+        this.wikiPageRefs = new Array(this.features.length);
+        this.wikiExtractions = new Array(this.features.length);
         this.loadWikiData();
       }
 
