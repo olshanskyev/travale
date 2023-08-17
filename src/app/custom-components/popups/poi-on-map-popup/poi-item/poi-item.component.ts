@@ -14,14 +14,14 @@ export class PoiItemComponent implements OnChanges {
   @Input() preferredLanguage: string;
   @Input() wikiPageRef?: WikiPageRef;
   @Input() wikiExtraction?: WikiExtraction;
+  @Input() website?: string;
 
-  website?: string;
+
   categories: string[];
   openingHours?: string;
   phone?: string;
   name?: string;
   showWikiInfo = false;
-  isAddedToRoute = false;
 
   constructor(
     protected iconsService: IconsService) {
@@ -31,7 +31,9 @@ export class PoiItemComponent implements OnChanges {
 ngOnChanges(changes: SimpleChanges): void {
     if (changes['feature'] && changes['feature'].currentValue) {
       this.feature = changes['feature'].currentValue;
-      this.website = this.feature.properties?.website;
+      if (this.feature.properties.website) {
+        this.website = this.feature.properties.website;
+      }
       this.openingHours = this.feature.properties?.openingHours;
       this.phone = this.feature.properties?.phone;
       this.name = (this.feature.properties?.['name_loc'])? this.feature.properties?.['name_loc']:

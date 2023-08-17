@@ -10,6 +10,7 @@ import { WikiService } from './wiki.service';
 import { LocalRouteService } from './local.route.service';
 import { LeafletOverlayBuilderService } from './leaflet-overlay-builder.service';
 import { MapFooterService } from './map-footer.service';
+import { PhotonService } from './photon.service';
 
 
 const SERVICES = [
@@ -18,6 +19,7 @@ const SERVICES = [
   OverpassapiService,
   IconsService,
   NominatimService,
+  PhotonService,
   MapSidebarService,
   WikiService,
   LocalRouteService,

@@ -4,7 +4,7 @@ import { LeafletMapComponent } from './leaflet-map/leaflet-map.component';
 import { LeafletOfflineMapComponent } from './leaflet-offline-map-component/leaflet-offline-map.component';
 import { SearchPlaceComponent } from './leaflet-map/search-place-control/search-place-control.component';
 import { CommonModule } from '@angular/common';
-import { NbAccordionModule, NbButtonModule, NbCheckboxModule, NbIconModule, NbListModule } from '@nebular/theme';
+import { NbAccordionModule, NbButtonModule, NbCheckboxModule, NbIconModule, NbListModule, NbSpinnerModule } from '@nebular/theme';
 import { SlideOutModule } from '../slide-out/slide-out.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { TranslateModule } from '@ngx-translate/core';
@@ -25,6 +25,7 @@ import { DirectivesModule } from '../directives/directives.module';
         NbCheckboxModule,
         NbListModule,
         InputsModule,
+        NbSpinnerModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
           }),

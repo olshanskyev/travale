@@ -2,9 +2,18 @@ import { Observable } from 'rxjs';
 import { CustomFeature } from './poi.data';
 import { LatLng, LatLngBounds } from 'leaflet';
 
-export interface PlacesServiceData {
-    // search for a places inside cityBounds output sorted by distance from viewBoxCenter
+export interface PlacesInsideBounds {
+    // search for a places inside cityBounds
     searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]>;
+}
+
+export interface PlacesFromPoint {
+    // search for a places from point
+    searchPlace(search: string, point: LatLng, locale: string): Observable<CustomFeature[]>;
+}
+
+export interface PlaceByOSMId {
+    getPlace(osmId: string | number, osmType: string, osmCategory: string, locale: string): Observable<CustomFeature>;
 }
 
 export function sortByDistanceFromCenter(features: CustomFeature[], viewBoxCenter: LatLng) {

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Feature, Geometry } from 'geojson';
 import { WikiExtraction, WikiPageRef } from './wiki.data';
 
-export type JsonFeatureSource = 'nominatim' | 'overpass' | 'manually_added';
+export type JsonFeatureSource = 'nominatim' | 'overpass' | 'photon' | 'manually_added';
 
 export type AggregatedFeatureInfo = {
     feature: CustomFeature,
@@ -26,6 +26,12 @@ export class CustomFeature implements Feature {
         phone?: string;
         wikipedia?: string;
         wikidata?: string;
+        image?: string;
+        address?: {
+            country?: string;
+            city?: string;
+            street?: string;
+        };
         categories?: {
             [category: string]: string | undefined // category: type
         }
