@@ -1,6 +1,6 @@
 <div *ngIf="feature" class="main-div">
 
-    <travale-poi-item [feature]="feature" [preferredLanguage]="preferredLanguage" [wikiPageRef]="wikiPageRef" [wikiExtraction]="wikiExtraction">
+    <travale-poi-item [feature]="feature" [website]="website" [preferredLanguage]="preferredLanguage" [wikiPageRef]="wikiPageRef" [wikiExtraction]="wikiExtraction">
     </travale-poi-item>
     <button nbButton [hidden]="isAddedToRoute" (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
 </div>

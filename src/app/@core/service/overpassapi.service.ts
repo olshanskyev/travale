@@ -5,13 +5,13 @@ import { environment } from '../../../environments/environment';
 import { CustomFeature, HistoricKeyType, PoiServiceData, TourismKeyType } from '../data/poi.data';
 import { Observable, map } from 'rxjs';
 import { LatLng, LatLngBounds } from 'leaflet';
-import { PlacesServiceData } from '../data/places.data';
+import { PlacesInsideBounds } from '../data/places.data';
 
 @Injectable()
-export class OverpassapiService implements PoiServiceData, PlacesServiceData {
+export class OverpassapiService implements PoiServiceData, PlacesInsideBounds {
 
-    private outputLimit = 50;
-    private requestTimeout = 10;
+    private outputLimit = 25;
+    private requestTimeout = 5;
     private aroundMeters = 15;
     constructor(private _http: HttpClient) {
     }
@@ -39,6 +39,10 @@ export class OverpassapiService implements PoiServiceData, PlacesServiceData {
             phone: item.tags?.phone,
             wikipedia: item.tags?.wikipedia,
             wikidata: item.tags?.wikidata,
+            address: {
+              city: item.tags?.['addr:city'],
+              street: item.tags?.['addr:street']
+            },
             categories: {
               'tourism': this.categoryValue(item.tags?.tourism, 'tourism'),
               'historic': this.categoryValue(item.tags?.historic, 'historic'),

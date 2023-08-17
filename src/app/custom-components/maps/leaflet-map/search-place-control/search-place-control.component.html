@@ -6,13 +6,20 @@
       placeholder="{{'searchPlaceControl.searchForPlace' | translate}}"
       class="form-control"
       #input/>
-
+    <div [nbSpinner]="loading" class="spinner-container"
+      nbSpinnerStatus="primary"
+      nbSpinnerSize="large"
+      nbSpinnerMessage="">
+    </div>
     <nb-list *ngIf="foundPlaces" class="scrollable-container">
       <nb-list-item class="ps-2 pe-2" *ngFor="let displayData of foundPlaces" (mouseover)="onMouseOverPlace(displayData)"
       (click)="placeSelected(displayData)">
         <div *ngIf="displayData.feature" class="w-100">
           <div>{{ displayData.displayName }}</div>
-          <div *ngIf="displayData.feature?.properties?.categories" class="d-flex flex-wrap">
+          <div class="caption">
+            {{buildAddressString(displayData.feature)}}
+          </div>
+          <div *ngIf="displayData.feature.properties.categories" class="d-flex flex-wrap">
             <div *ngFor="let category of displayData.feature?.properties?.categories | keyvalue">
               <span *ngIf="category.value" travaleBadge
               [badgeColor]="iconsService.getIconColorByKey(category.value)">
