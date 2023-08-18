@@ -18,7 +18,6 @@ export class PoiOnMapPopupComponent implements OnChanges {
 
   wikiPageRef: WikiPageRef;
   wikiExtraction?: WikiExtraction;
-  website?: string;
   isAddedToRoute = false;
 
   addToRoute() {
@@ -67,8 +66,7 @@ export class PoiOnMapPopupComponent implements OnChanges {
           this.feature.properties.osm_type,
           Object.keys(this.feature.properties.categories)[0],
           this.preferredLanguage).subscribe(gotFeature => {
-            this.website = gotFeature.properties.website;
-            this.feature.properties.website = this.website;
+            this.feature.properties.website = gotFeature.properties.website;
             const wikidata = gotFeature.properties.wikidata;
             const wikipedia = gotFeature.properties.wikipedia;
             this.getWikiData(wikidata, wikipedia);

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 
 import { HomePageComponent } from './home-page/home-page.component';
-import { MapPageComponent } from './map-page/map-page.component';
+
 
 const routes: Routes = [{
   path: '',
@@ -13,10 +13,6 @@ const routes: Routes = [{
     {
       path: 'home',
       component: HomePageComponent,
-    },
-    {
-      path: 'map',
-      component: MapPageComponent,
     },
     {
       path: 'routes',

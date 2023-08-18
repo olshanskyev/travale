@@ -5,15 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ShortUrlPipe implements PipeTransform {
 
-  transform(url: string): any {
+  transform(url: string | undefined): any {
     if (!url || url.length <= 3)
       return url;
-      const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)/img);
-      if (match) {
-        return match[0];
-      } else {
-        return url;
-      }
+    const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?]+)/img);
+    if (match) {
+      return match[0];
+    } else {
+      return url;
+    }
   }
 
 }

@@ -36,14 +36,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
         pack: 'ion'
       },
   },
-  {
-    title: 'Map',
-    link: '/pages/map',
-    icon: {
-      icon: 'ios-map',
-      pack: 'ion'
-    },
-  },
 
   {
     title: 'Management',

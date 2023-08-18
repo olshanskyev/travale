@@ -5,7 +5,6 @@ import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
-import { MapPageComponent } from './map-page/map-page.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardsModule } from '../custom-components/cards/cards.module';
 import { MapsModule } from '../custom-components/maps/maps.module';
@@ -28,8 +27,7 @@ import { WindowsModule } from '../custom-components/windows/windows.module';
   ],
   declarations: [
     PagesComponent,
-    HomePageComponent,
-    MapPageComponent
+    HomePageComponent
   ],
 })
 export class PagesModule {
