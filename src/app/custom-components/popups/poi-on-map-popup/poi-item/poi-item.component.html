@@ -1,4 +1,7 @@
-<div *ngIf="name" class="subtitle w-100">{{name}}</div>
+<div *ngIf="feature.properties?.['name'] || feature.properties?.['name_loc'] || feature.properties?.['name_en']" class="subtitle w-100">{{
+    (feature.properties['name_loc'])? feature.properties['name_loc']:
+        ((this.feature.properties['name_en'])? this.feature.properties['name_en']: this.feature.properties['name'])
+}}</div>
 <div *ngIf="feature?.properties?.categories" class="d-flex flex-wrap row-gap-1">
     <div *ngFor="let category of feature?.properties?.categories | keyvalue">
         <span *ngIf="category.value" travaleBadge
@@ -8,22 +11,22 @@
     </div>
 </div>
 
-<div *ngIf="website" class="subtitle w-100 text-nowrap">
+<div *ngIf="feature.properties?.website" class="subtitle w-100 text-nowrap">
     <small>
         <i class="fa fa-globe color-basic-600 me-1"></i>
-        <a [href]='website'>{{website | shortUrl}}</a>
+        <a [href]='feature.properties.website'>{{feature.properties.website | shortUrl}}</a>
     </small>
 </div>
-<div *ngIf="openingHours" class="subtitle w-100 lh-1 mt-1 mb-1" >
+<div *ngIf="feature.properties?.openingHours" class="subtitle w-100 lh-1 mt-1 mb-1" >
     <small>
         <i class="fa-regular fa-clock color-basic-600 me-1"></i>
-        {{openingHours}}
+        {{feature.properties.openingHours}}
     </small>
 </div>
-<div *ngIf="phone" class="subtitle w-100 lh-1 mt-1 mb-1">
+<div *ngIf="feature.properties?.phone" class="subtitle w-100 lh-1 mt-1 mb-1">
     <small>
         <i class="fa fa-phone color-basic-600 me-1"></i>
-        {{phone}}
+        {{feature.properties.phone}}
     </small>
 </div>
 

@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Place, Route } from 'src/app/@core/data/route.data';
-import { SlideOutComponent } from 'src/app/custom-components/slide-out/slide-out.component';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
 import { NbDialogService } from '@nebular/theme';
 import { Observable, Subject, Subscription, interval, takeUntil } from 'rxjs';
@@ -21,8 +20,7 @@ import { MapFooterService } from 'src/app/@core/service/map-footer.service';
 })
 export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('slideOut', {static: true}) slideOut: SlideOutComponent;
-  @ViewChild('leafletMap', {static: true}) leafletMap: LeafletMapComponent;
+  leafletMap: LeafletMapComponent;
 
   route: Route;
   localId: string;
@@ -92,7 +90,6 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
   onRouteItemClick(feature: CustomFeature) {
     const place = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
     this.mapFooterService.showPlaceInfo(place);
-    //this.leafletMap.showPlaceItem(place);
   }
 
   ngAfterViewInit(): void {
