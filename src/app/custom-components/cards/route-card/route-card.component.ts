@@ -68,9 +68,11 @@ export class RouteCardComponent implements OnChanges {
       },
       dialogClass: 'animated-dialog'
     }).onClose.subscribe(isOk => {
-      if (isOk)
-      this.route?.places.splice(index, 1);
-      this.placesSequenceChanged.emit(this.route);
+      if (isOk) {
+        this.route?.places.splice(index, 1);
+        this.placesSequenceChanged.emit(this.route);
+      }
+
     });
   }
 

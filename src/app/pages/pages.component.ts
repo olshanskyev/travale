@@ -11,13 +11,21 @@ import { MapSidebarService } from '../@core/service/map-sidebar.service';
   selector: 'travale-pages',
   styleUrls: ['pages.component.scss'],
   template: `
-    <travale-one-column-map-sidebar-layout *ngIf="router.url.includes('routes/create'); else simpleLayout">
+    <travale-one-column-map-sidebar-layout *ngIf="router.url.includes('routes/create'); else followMapLayout">
       <nb-menu [items]="menu"></nb-menu>
-      <travale-leaflet-map-component #leafletMap>
+      <travale-leaflet-map-component #leafletMap [mode]="'CREATE_ROUTE'">
       </travale-leaflet-map-component>
       <router-outlet>
       </router-outlet>
     </travale-one-column-map-sidebar-layout>
+    <ng-template #followMapLayout>
+      <travale-one-column-no-footer-layout *ngIf="router.url.includes('routes/follow'); else simpleLayout">
+        <nb-menu [items]="menu"></nb-menu>
+        <router-outlet>
+        </router-outlet>
+      </travale-one-column-no-footer-layout>
+    </ng-template>
+
     <ng-template #simpleLayout>
       <travale-one-column-layout>
         <nb-menu [items]="menu"></nb-menu>

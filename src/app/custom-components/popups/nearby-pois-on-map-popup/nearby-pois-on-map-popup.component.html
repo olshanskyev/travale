@@ -18,5 +18,5 @@
 
 
 
-    <button nbButton (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
+    <button nbButton *ngIf="addToRouteCallback" (click)="addToRoute()" status="primary" size="tiny" shape="round" fullWidth class="mt-2">{{'leafletMap.addToRoute' | translate}}</button>
 </div>

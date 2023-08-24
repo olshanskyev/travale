@@ -1,0 +1,13 @@
+<nb-card>
+    <nb-card-body>
+        <travale-leaflet-map-component #leafletMap [mode]="'FOLLOW_ROUTE'">
+        </travale-leaflet-map-component>
+        <div class="popup-place" [class.popup-show-over]="showPopup">
+            <travale-place-on-map-popup [place]="popupPlace"></travale-place-on-map-popup>
+            <div class="position-absolute top-0 end-0 pt-1 pe-1">
+                <button nbButton size="tiny" shape="round" (click)="showPopup = false"><nb-icon icon="close-outline"></nb-icon></button>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+

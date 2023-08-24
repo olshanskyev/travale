@@ -1,9 +1,9 @@
-import { Component,Inject, LOCALE_ID, OnInit, OnDestroy } from '@angular/core';
+import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input } from '@angular/core';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
-import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
+import { LeafletOverlayBuilderService, MAP_MODE } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
 import 'leaflet.locatecontrol';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,6 +33,7 @@ Marker.prototype.options.icon = iconDefault;
 })
 export class LeafletMapComponent implements OnInit, OnDestroy {
 
+  @Input() mode: MAP_MODE = 'FOLLOW_ROUTE';
   map!: L.Map;
   private destroy$: Subject<void> = new Subject<void>();
   zoom = 12;
@@ -163,7 +164,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.map.on('zoomend', this.onZoomEnd);
     this.map.on('dragend', this.onDragEnd);
 
-    this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers();
+    this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers(this.mode);
     if (this.zoom >= this.minZoomToShowFeatures) {
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
     }
@@ -203,7 +204,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       })
     });
     this.nearbyPoisMarker.addTo(this.map);
-    this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features, position),
+    this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features, position, this.mode),
     {
       ...LeafletOverlayBuilderService.popupOptions,
       className: 'nearbyPopupStyle'
@@ -320,7 +321,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.searchPlaceMarker.on('click', () => {
         if (feature.properties) {
           this.searchPlaceMarker.unbindPopup();
-          this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
+          this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature, this.mode), LeafletOverlayBuilderService.popupOptions);
           this.searchPlaceMarker.openPopup();
         }
       });

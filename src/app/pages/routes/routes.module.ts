@@ -6,6 +6,9 @@ import { CreateRoutePageComponent } from './create-route-page/create-route-page.
 import { NbButtonModule, NbCardModule, NbIconModule } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardsModule } from 'src/app/custom-components/cards/cards.module';
+import { FollowRoutePageComponent } from './follow-route-page/follow-route-page.component';
+import { MapsModule } from 'src/app/custom-components/maps/maps.module';
+import { PopupsModule } from 'src/app/custom-components/popups/popups.module';
 
 
 @NgModule({
@@ -16,12 +19,15 @@ import { CardsModule } from 'src/app/custom-components/cards/cards.module';
     NbIconModule,
     NbButtonModule,
     TranslateModule,
-    CardsModule
+    CardsModule,
+    MapsModule,
+    PopupsModule
 
   ],
   declarations: [
     DraftsPageComponent,
-    CreateRoutePageComponent
+    CreateRoutePageComponent,
+    FollowRoutePageComponent
   ],
 })
 export class RoutesModule {

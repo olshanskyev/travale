@@ -11,6 +11,7 @@ import { OneColumnMapSidebarLayoutComponent } from './layouts/one-column/one-col
 import { MapFooterComponent } from './components/footer/map-footer.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupsModule } from '../custom-components/popups/popups.module';
+import { OneColumnNoFooterLayoutComponent } from './layouts/one-column/one-column-no-footer.layout';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -32,6 +33,7 @@ const COMPONENTS = [
   MapFooterComponent,
   OneColumnLayoutComponent,
   OneColumnMapSidebarLayoutComponent,
+  OneColumnNoFooterLayoutComponent
 ];
 
 

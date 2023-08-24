@@ -12,7 +12,7 @@ import { WikiService } from 'src/app/@core/service/wiki.service';
 export class PoiOnMapPopupComponent implements OnChanges {
   @Input() feature: CustomFeature;
   @Input() preferredLanguage: string;
-  @Input() addToRouteCallback: (featureInfo: AggregatedFeatureInfo)=> void;
+  @Input() addToRouteCallback?: (featureInfo: AggregatedFeatureInfo)=> void;
 
   constructor(private wikiService: WikiService, private nominatimService: NominatimService) {}
 

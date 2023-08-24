@@ -148,7 +148,8 @@ export class RussianLanguage {
                 selectCity: 'Выберите город'
             },
             drafts: {
-                noDrafts: 'Пока нет ни одного черновика'
+                noDrafts: 'Пока нет ни одного черновика',
+                deleteDraft: 'Действительно удалить черновик маршрута "{{route}}"'
             },
             location: {
                 showMeWhereIam: 'Показать мое местоположение',
