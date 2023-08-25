@@ -3,6 +3,8 @@
 
 @include nb-install-component() {
   height: calc(100%);
+  max-height: 100vh;
+  max-height: -webkit-fill-available;
   nb-card {
       height: inherit;
       border: none;
