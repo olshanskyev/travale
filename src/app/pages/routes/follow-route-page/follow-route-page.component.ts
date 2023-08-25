@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LatLng } from 'leaflet';
 import { Subject, takeUntil } from 'rxjs';
@@ -36,11 +36,13 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private localRouteStorage: LocalRouteService,
-    private leafletOverlaysBuilderService: LeafletOverlayBuilderService) { }
+    private leafletOverlaysBuilderService: LeafletOverlayBuilderService,
+    private _renderer: Renderer2 ) { }
 
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this._renderer.removeStyle(document.body, 'overflow');
   }
 
   ngOnInit(): void {
@@ -59,7 +61,9 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['/']); //ToDo add error message?
       }
-    });
+    }
+    );
+    this._renderer.setStyle(document.body, 'overflow', 'hidden'); // workaround for mobile layout
   }
 
   locationChanged(event: {previousLocation?: Location, currentLocation: Location}) {
