@@ -37,6 +37,8 @@ export type FeaturesMap = {
     [name: string]: Feature[];
 }
 
+export type MAP_MODE = 'CREATE_ROUTE' | 'FOLLOW_ROUTE';
+
 
 export declare class CustomLayersConfig {
     baseLayers: CustomLayersMap;
@@ -140,26 +142,32 @@ export class LeafletOverlayBuilderService {
 
     }
 
-    public buildPoiPopup(feature: CustomFeature): Content {
+    public buildPoiPopup(feature: CustomFeature, mapMode: MAP_MODE): Content {
         const popupEl: NgElement & WithProperties<PoiOnMapPopupComponent> = document.createElement('poi-on-map-element') as any;
         // Listen to the close event
         popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
         popupEl.feature = feature;
         popupEl.preferredLanguage = this.locale;
-        popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        if (mapMode === 'CREATE_ROUTE')
+            popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        else
+            popupEl.addToRouteCallback = undefined;
         // Add to the DOM
         document.body.appendChild(popupEl);
         return popupEl;
     }
 
-    public buildNearbyPoiPopup(features: CustomFeature[], position: LatLng): Content {
+    public buildNearbyPoiPopup(features: CustomFeature[], position: LatLng, mapMode: MAP_MODE): Content {
         const popupEl: NgElement & WithProperties<NearbyPoisOnMapPopupComponent> = document.createElement('nearby-pois-on-map-element') as any;
         // Listen to the close event
         popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
         popupEl.features = features;
         popupEl.preferredLanguage = this.locale;
         popupEl.position = position;
-        popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        if (mapMode === 'CREATE_ROUTE')
+            popupEl.addToRouteCallback = (res) => this.addToRoute$.next(res);
+        else
+            popupEl.addToRouteCallback = undefined;
         popupEl.nearbyPoiSelectedCallback = (res) => this.nearbyPoiSelect$.next(res);
         // Add to the DOM
         document.body.appendChild(popupEl);
@@ -168,7 +176,7 @@ export class LeafletOverlayBuilderService {
 
 
 
-    private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string) {
+    private onEachPoiFeature(feature: CustomFeature, layer: Layer, layerKey: string, mapMode: MAP_MODE) {
         if (!this.poiLayersFeaturesMap[layerKey]) {
             this.poiLayersFeaturesMap[layerKey] = {};
         }
@@ -179,7 +187,7 @@ export class LeafletOverlayBuilderService {
             this.enlargeIcon(e, feature);
             if (feature.properties) {
                 layer.unbindPopup();
-                layer.bindPopup(this.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
+                layer.bindPopup(this.buildPoiPopup(feature, mapMode), LeafletOverlayBuilderService.popupOptions);
                 layer.openPopup();
             }
         });
@@ -227,7 +235,7 @@ export class LeafletOverlayBuilderService {
         };
 
     }
-    createEmptyPoiLayers(): CustomGeoJSONLayersMap {
+    createEmptyPoiLayers(mapMode: MAP_MODE): CustomGeoJSONLayersMap {
         const layersMap: CustomGeoJSONLayersMap = {};
         layersMap['select_all_pois'] = this.createSelectAllLayer();
         this.tourismLayersList.forEach( layerName => {
@@ -235,7 +243,7 @@ export class LeafletOverlayBuilderService {
             layersMap[layerName] = {
                 layer: geoJSON(undefined, {
                     pointToLayer: (feature, latlng ) => this.getPoiMarkerByFeature(feature, latlng),
-                    onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName)
+                    onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName, mapMode)
                     }),
                 displayName: translatedLayerName
             };
@@ -247,7 +255,7 @@ export class LeafletOverlayBuilderService {
             layersMap[layerName] = {
                 layer: geoJSON(undefined, {
                     pointToLayer: (feature, latlng ) => this.getPoiMarkerByFeature(feature, latlng),
-                    onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName)
+                    onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName, mapMode)
                     }),
                 displayName: translatedLayerName
             };

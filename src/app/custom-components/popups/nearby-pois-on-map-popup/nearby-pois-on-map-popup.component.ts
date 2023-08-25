@@ -17,7 +17,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
   @Input() features: CustomFeature[];
   @Input() preferredLanguage: string;
   @Input() position: LatLng;
-  @Input() addToRouteCallback: (featureInfo: AggregatedFeatureInfo)=> void;
+  @Input() addToRouteCallback?: (featureInfo: AggregatedFeatureInfo)=> void;
   @Input() nearbyPoiSelectedCallback: (feature: CustomFeature)=> void;
 
   constructor(private translateService: TranslateService,

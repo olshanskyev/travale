@@ -1,9 +1,9 @@
-import { Component,Inject, LOCALE_ID, OnInit, OnDestroy } from '@angular/core';
+import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
-import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
+import { LeafletOverlayBuilderService, MAP_MODE } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
 import 'leaflet.locatecontrol';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,6 +25,10 @@ const iconDefault = icon({
 });
 Marker.prototype.options.icon = iconDefault;
 // workaround marker-shadow not found
+export type Location = {
+  latlng: L.LatLng;
+  accuracy: number;
+}
 
 @Component({
   selector: 'travale-leaflet-map-component',
@@ -33,8 +37,12 @@ Marker.prototype.options.icon = iconDefault;
 })
 export class LeafletMapComponent implements OnInit, OnDestroy {
 
+  @Input() mode: MAP_MODE = 'FOLLOW_ROUTE';
+  @Output() locationChange: EventEmitter<{previousLocation?: Location, currentLocation: Location}> = new EventEmitter();
+
   map!: L.Map;
   private destroy$: Subject<void> = new Subject<void>();
+  private previousLocation?: Location;
   zoom = 12;
   minZoom = 7;
   minZoomToShowFeatures = 15;
@@ -152,8 +160,22 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     });
   }
 
-  locationChanged(event: any) {
-    //todo check near attractions
+  locationFound(event: any) {
+    // check if location changed
+    if (!this.previousLocation ||
+      this.previousLocation.latlng.lat !== event.latitude ||
+      this.previousLocation.latlng.lng !== event.longitude ||
+      this.previousLocation.accuracy !== event.accuracy) { //ToDo reload pois?
+        const currentLocation = {
+          latlng: event.latlng,
+          accuracy: event.accuracy
+        };
+        this.locationChange.emit({
+          previousLocation: this.previousLocation,
+          currentLocation: currentLocation
+        });
+        this.previousLocation = currentLocation;
+      }
   }
 
   onMapReady($event: L.Map) {
@@ -163,14 +185,14 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.map.on('zoomend', this.onZoomEnd);
     this.map.on('dragend', this.onDragEnd);
 
-    this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers();
+    this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers(this.mode);
     if (this.zoom >= this.minZoomToShowFeatures) {
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
     }
 
     //geolocation
     L.control.locate(this.locateOptions).addTo(this.map);
-    this.map.on('locationfound', (event: any) => this.locationChanged(event));
+    this.map.on('locationfound', (event: any) => this.locationFound(event));
 
   }
 
@@ -203,7 +225,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       })
     });
     this.nearbyPoisMarker.addTo(this.map);
-    this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features, position),
+    this.nearbyPoisMarker.bindPopup(this.overlayBuilder.buildNearbyPoiPopup(features, position, this.mode),
     {
       ...LeafletOverlayBuilderService.popupOptions,
       className: 'nearbyPopupStyle'
@@ -218,7 +240,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   }
 
   onMapClicked(event: any) {
-    this.overpassService.findPoisNearby(event.latlng as L.LatLng, this.locale).subscribe(features => {
+    this.overpassService.findPoisNearby(event.latlng as L.LatLng, this.locale).subscribe(features => { //ToDo add spinner
       this.placeNearbyPoisMarker(features, event.latlng as L.LatLng);
     }); // todo add error handling
   }
@@ -320,7 +342,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.searchPlaceMarker.on('click', () => {
         if (feature.properties) {
           this.searchPlaceMarker.unbindPopup();
-          this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature), LeafletOverlayBuilderService.popupOptions);
+          this.searchPlaceMarker.bindPopup(this.overlayBuilder.buildPoiPopup(feature, this.mode), LeafletOverlayBuilderService.popupOptions);
           this.searchPlaceMarker.openPopup();
         }
       });

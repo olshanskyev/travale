@@ -107,6 +107,7 @@ export class RussianLanguage {
                 tower: 'Башня',
                 archaeological_site: 'Археологические раскопки',
                 building: 'Здание',
+                park: 'Парк',
                 select_all: 'Выбрать все',
                 pois: 'Объекты на карте',
                 mapSettings: 'Настройки карты',
@@ -148,10 +149,15 @@ export class RussianLanguage {
                 selectCity: 'Выберите город'
             },
             drafts: {
-                noDrafts: 'Пока нет ни одного черновика'
+                noDrafts: 'Пока нет ни одного черновика',
+                deleteDraft: 'Действительно удалить черновик маршрута "{{route}}"'
             },
             location: {
                 showMeWhereIam: 'Показать мое местоположение',
+            },
+            followRoute: {
+                youAreNearby: 'Вы рядом со следующими местами',
+                openPlace: 'Открыть',
             }
 
 
