@@ -1,4 +1,4 @@
-import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
@@ -25,6 +25,10 @@ const iconDefault = icon({
 });
 Marker.prototype.options.icon = iconDefault;
 // workaround marker-shadow not found
+export type Location = {
+  latlng: L.LatLng;
+  accuracy: number;
+}
 
 @Component({
   selector: 'travale-leaflet-map-component',
@@ -34,8 +38,11 @@ Marker.prototype.options.icon = iconDefault;
 export class LeafletMapComponent implements OnInit, OnDestroy {
 
   @Input() mode: MAP_MODE = 'FOLLOW_ROUTE';
+  @Output() locationChange: EventEmitter<{previousLocation?: Location, currentLocation: Location}> = new EventEmitter();
+
   map!: L.Map;
   private destroy$: Subject<void> = new Subject<void>();
+  private previousLocation?: Location;
   zoom = 12;
   minZoom = 7;
   minZoomToShowFeatures = 15;
@@ -153,8 +160,22 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     });
   }
 
-  locationChanged(event: any) {
-    //todo check near attractions
+  locationFound(event: any) {
+    // check if location changed
+    if (!this.previousLocation ||
+      this.previousLocation.latlng.lat !== event.latitude ||
+      this.previousLocation.latlng.lng !== event.longitude ||
+      this.previousLocation.accuracy !== event.accuracy) { //ToDo reload pois?
+        const currentLocation = {
+          latlng: event.latlng,
+          accuracy: event.accuracy
+        };
+        this.locationChange.emit({
+          previousLocation: this.previousLocation,
+          currentLocation: currentLocation
+        });
+        this.previousLocation = currentLocation;
+      }
   }
 
   onMapReady($event: L.Map) {
@@ -171,7 +192,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 
     //geolocation
     L.control.locate(this.locateOptions).addTo(this.map);
-    this.map.on('locationfound', (event: any) => this.locationChanged(event));
+    this.map.on('locationfound', (event: any) => this.locationFound(event));
 
   }
 

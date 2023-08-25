@@ -2,36 +2,63 @@
 @import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
 @include nb-install-component() {
+  height: 100%;
+  nb-card {
+      height: 100%;
+      border: none;
+  }
+  nb-card-body {
+    padding: 0;
     height: 100%;
-    nb-card {
-        height: 100%;
-        border: none;
-    }
-    nb-card-body {
-        padding: 0;
-        height: 100%;
-        overflow-x: hidden;
-    }
+    overflow-x: hidden;
+  }
 
-    .popup-place {
-        position: absolute;
-        bottom: 0;
-        height: 0;
-        width: 100%;
-        z-index: 1;
-        overflow: hidden;
-        padding: 0;
-        transition: opacity 0.2s ease-out;
-        background-color: var(--color-basic-100);
-        opacity: 0;
-      }
+  .popup-place {
+    position: absolute;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    z-index: 1;
+    overflow: hidden;
+    padding: 0;
+    transition: opacity 0.2s ease-out;
+    background-color: var(--color-basic-100);
+    opacity: 0;
+  }
 
-      .popup-show-over {
-        opacity: 1;
-        height: auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+  .popup-show-over {
+    opacity: 1;
+    height: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .thumb-photo {
+    height: var(--thumb-xl-height);
+    border-radius: var(--picture-border-radius);
+    filter: var(--picture-default-shadow);
+    object-fit: cover;
+  }
+
+  @include media-breakpoint-down(sm) {
+      .thumb-photo {
+          height: var(--thumb-sm-height);
       }
+  }
+
+  .max-height-300 {
+    max-height: 300px;
+  }
+
+
+  .nearby-item:hover {
+    cursor: pointer;
+    background-color: var(--option-active-background-color);
+    border-style: solid;
+    border-radius: var(--picture-border-radius);
+    border-color: var(--color-info-default-border);
+    border-width: 2px;
+  }
 }

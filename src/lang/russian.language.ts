@@ -107,6 +107,7 @@ export class RussianLanguage {
                 tower: 'Башня',
                 archaeological_site: 'Археологические раскопки',
                 building: 'Здание',
+                park: 'Парк',
                 select_all: 'Выбрать все',
                 pois: 'Объекты на карте',
                 mapSettings: 'Настройки карты',
@@ -153,6 +154,10 @@ export class RussianLanguage {
             },
             location: {
                 showMeWhereIam: 'Показать мое местоположение',
+            },
+            followRoute: {
+                youAreNearby: 'Вы рядом со следующими местами',
+                openPlace: 'Открыть',
             }
 
 

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LatLng } from 'leaflet';
 import { Subject, takeUntil } from 'rxjs';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { Place, Route } from 'src/app/@core/data/route.data';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
-import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
+import { LeafletMapComponent, Location } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
 
 @Component({
   selector: 'travale-follow-route-page',
@@ -19,7 +20,9 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
   private route: Route;
   private destroy$: Subject<void> = new Subject<void>();
   showPopup = false;
-  popupPlace: Place;
+  popupPlace?: Place;
+  nearbyPlacesToShow: Place[];
+  distanceToShowPlace = 25;
 
   leafletMapInitState() {
     if (this.route && this.leafletMap) {
@@ -57,6 +60,21 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']); //ToDo add error message?
       }
     });
+  }
+
+  locationChanged(event: {previousLocation?: Location, currentLocation: Location}) {
+    // find nearby places
+    this.nearbyPlacesToShow = this.route.places.filter(itemPlace => {
+      if (itemPlace.geoJson.geometry.type === 'Point') {
+        const itemPlaceLatLng = new LatLng(itemPlace.geoJson.geometry.coordinates[1], itemPlace.geoJson.geometry.coordinates[0]);
+        return (itemPlaceLatLng.distanceTo(event.currentLocation.latlng) < this.distanceToShowPlace);
+      } else {
+        return false;
+      }
+    });
+    if (!this.showPopup) { //already open do not disturb
+      this.showPopup = true;
+    }
   }
 
   onRouteItemClick(feature: CustomFeature) {
