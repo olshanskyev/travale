@@ -2,14 +2,14 @@
 @import '../../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
 @include nb-install-component() {
-  height: 100%;
+  height: calc(100%);
   nb-card {
-      height: 100%;
+      height: calc(100%);
       border: none;
   }
   nb-card-body {
     padding: 0;
-    height: 100%;
+    height: calc(100%);
     overflow-x: hidden;
   }
 
