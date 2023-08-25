@@ -76,7 +76,8 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
         return false;
       }
     });
-    if (!this.showPopup) { //already open do not disturb
+    if (this.nearbyPlacesToShow && this.nearbyPlacesToShow.length > 0 &&
+      !this.showPopup) { //already open do not disturb
       this.showPopup = true;
     }
   }
