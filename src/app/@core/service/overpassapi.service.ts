@@ -77,8 +77,7 @@ export class OverpassapiService implements PoiServiceData, PlacesInsideBounds {
 
     findPoisNearby(point: LatLng, locale: string): Observable<CustomFeature[]> {
       const requestNearby = `[timeout:${this.requestTimeout}][out:json];(
-        node(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
-        way(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
+        nwr(around:${this.aroundMeters},${point.lat},${point.lng})(if:count_tags()>0);
       );out center;
       is_in(${point.lat},${point.lng})->.a;way(pivot.a);out center;`;
 
@@ -91,7 +90,7 @@ export class OverpassapiService implements PoiServiceData, PlacesInsideBounds {
 
     searchPlace(search: string, cityBounds: LatLngBounds, locale: string): Observable<CustomFeature[]> {
         const boxString = this.getBoxStringFromBounds(cityBounds);
-        const request = `[out:json];nwr[~"^name.*$"~"${search}", i](${boxString});out center ${this.outputLimit};`;
+        const request = `[timeout:${this.requestTimeout}][out:json];nwr[~"^name.*$"~"${search}", i](${boxString});out center ${this.outputLimit};`;
         return this._http.post<any>(environment.overpassapiEndpoint, request).pipe(
           map(items => items.elements.map((item: any) => this.mapItemIntoGeoJsonFeature(item, locale))));
     }

@@ -240,7 +240,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   }
 
   onMapClicked(event: any) {
-    this.overpassService.findPoisNearby(event.latlng as L.LatLng, this.locale).subscribe(features => {
+    this.overpassService.findPoisNearby(event.latlng as L.LatLng, this.locale).subscribe(features => { //ToDo add spinner
       this.placeNearbyPoisMarker(features, event.latlng as L.LatLng);
     }); // todo add error handling
   }
