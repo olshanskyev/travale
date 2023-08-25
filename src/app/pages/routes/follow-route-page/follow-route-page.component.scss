@@ -24,6 +24,7 @@
     transition: opacity 0.2s ease-out;
     background-color: var(--color-basic-100);
     opacity: 0;
+    box-shadow: 0 -0.2rem 1rem 0 rgba(44, 51, 73, 0.1) !important;
   }
 
   .popup-show-over {

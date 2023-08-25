@@ -19,8 +19,9 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   private route: Route;
   private destroy$: Subject<void> = new Subject<void>();
-  showPopup = false;
-  popupPlace?: Place;
+  showPlacePopup = false;
+  showNearbyPlacesPopup = false;
+  popupPlace: Place;
   nearbyPlacesToShow: Place[];
   distanceToShowPlace = 25;
 
@@ -76,15 +77,13 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
         return false;
       }
     });
-    if (this.nearbyPlacesToShow && this.nearbyPlacesToShow.length > 0 &&
-      !this.showPopup) { //already open do not disturb
-      this.showPopup = true;
-    }
+    this.showNearbyPlacesPopup =  (this.nearbyPlacesToShow && this.nearbyPlacesToShow.length > 0 &&
+      !this.showPlacePopup); //already open do not disturb
   }
 
   onRouteItemClick(feature: CustomFeature) {
     this.popupPlace = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
-    this.showPopup = true;
+    this.showPlacePopup = true;
   }
 
 }

@@ -90,7 +90,9 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     strings: {
       title: this.translateService.instant('location.showMeWhereIam'),
     },
-    enableHighAccuracy: true
+    locateOptions: {
+      enableHighAccuracy: true
+    }
   };
 
   customLayersControl: CustomLayersConfig = {
