@@ -4,12 +4,12 @@
 @include nb-install-component() {
   height: calc(100%);
   nb-card {
-      height: calc(100%);
+      height: inherit;
       border: none;
   }
   nb-card-body {
     padding: 0;
-    height: calc(100%);
+    height: inherit;
     overflow-x: hidden;
   }
 
