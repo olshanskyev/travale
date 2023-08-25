@@ -3,6 +3,7 @@
 
 @include nb-install-component() {
   height: 100%;
+  overflow-y: none; // the same layout workaround (search input on mobile devices)
   nb-card {
       height: inherit;
       border: none;
@@ -14,7 +15,7 @@
   }
 
   .popup-place {
-    position: sticky;
+    position: absolute;
     bottom: 0;
     height: 0;
     width: 100%;
@@ -47,6 +48,12 @@
           height: var(--thumb-sm-height);
       }
   }
+
+  @include media-breakpoint-down(lg) {
+    .popup-place { // workaround problem with layout on mobile devices: -webkit-fill-available not working?
+      position: fixed;
+    }
+}
 
   .max-height-300 {
     max-height: 300px;
