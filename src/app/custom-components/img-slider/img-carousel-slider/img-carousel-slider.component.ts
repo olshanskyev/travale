@@ -38,8 +38,12 @@ export class ImgCarouselSliderComponent {
   }
 
   openImage(index: number) {
+    // cloning array - workaround. lightbox.open changes
+    // the image caption if it has f.e. cyrillic symbols. why?
+    const clonedArray: ImageType[] = [];
+    this.images?.forEach(item => clonedArray.push(Object.assign({}, item)));
     if (this.images)
-      this._lightbox.open(this.images, index);
+      this._lightbox.open(clonedArray, index, {wrapAround: true});
   }
 
   moveToLeft(index: number) {

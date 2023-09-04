@@ -1,4 +1,5 @@
 @import '../../../@theme/styles/themes';
+@import '../../../@theme/styles/custom_styles.scss';
 
 @include nb-install-component() {
 
@@ -36,6 +37,19 @@
   swiper-slide {
     background-size: cover;
     background-position: center;
+  }
+
+  .image-caption-div {
+    position: absolute;
+    width: 100%;
+    bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    opacity: 0.9;
+  }
+
+  .image-caption-input {
+    background-color: var(--color-basic-100);
   }
 
 }

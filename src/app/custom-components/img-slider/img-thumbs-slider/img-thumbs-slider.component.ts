@@ -26,8 +26,10 @@ export class ImgThumbsSliderComponent {
   };
 
   openImage(index: number) {
+    const clonedArray: ImageType[] = [];
+    this.images?.forEach(item => clonedArray.push(Object.assign({}, item)));
     if (this.images)
-      this._lightbox.open(this.images, index);
+      this._lightbox.open(clonedArray, index, {wrapAround: true});
   }
 
 

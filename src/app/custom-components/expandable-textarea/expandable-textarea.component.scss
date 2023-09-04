@@ -7,6 +7,10 @@
     textarea {
         max-height: var(--max-height);
         min-height: var(--min-height);
+        box-sizing: border-box;
+        padding-left: 0.6rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
     }
 
     ::ng-deep nb-form-field.expandable-textarea {
