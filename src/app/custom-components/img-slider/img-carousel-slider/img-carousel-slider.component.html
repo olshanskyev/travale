@@ -8,6 +8,13 @@
             <swiper-slide
                 *ngFor="let item of images; let i=index">
                     <img [src]="item.src" (click)="openImage(i)" loading="lazy">
+                    <div class="image-caption-div">
+                        <travale-expandable-textarea class="mt-1 w-75"
+                        [readonly]="!editable" placeholder="{{'placeCard.imageDescription' | translate}}"
+                        [(value)]="item.caption">
+                    </travale-expandable-textarea>
+                    </div>
+
                     <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
             </swiper-slide>
         </swiper-container>

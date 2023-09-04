@@ -143,7 +143,8 @@ export class RussianLanguage {
             },
             placeCard: {
                 placeTitle: 'Заголовок места',
-                placeDescription: 'Описание места'
+                placeDescription: 'Описание места',
+                imageDescription: 'Описание Изображения'
             },
             citySelectWindow: {
                 selectCity: 'Выберите город'
