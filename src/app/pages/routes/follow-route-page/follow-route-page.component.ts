@@ -17,13 +17,13 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   @ViewChild('leafletMap', {static: false}) leafletMap: LeafletMapComponent;
 
-  private route: Route;
+  route: Route;
   private destroy$: Subject<void> = new Subject<void>();
   showPlacePopup = false;
   showNearbyPlacesPopup = false;
   popupPlace: Place;
   nearbyPlacesToShow: Place[];
-  distanceToShowPlace = 25;
+  distanceToShowPlace = 2500;
 
   leafletMapInitState() {
     if (this.route && this.leafletMap) {
@@ -83,6 +83,7 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   onRouteItemClick(feature: CustomFeature) {
     this.popupPlace = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
+    this.showNearbyPlacesPopup = false;
     this.showPlacePopup = true;
   }
 
