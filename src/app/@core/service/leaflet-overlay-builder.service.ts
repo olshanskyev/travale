@@ -235,7 +235,7 @@ export class LeafletOverlayBuilderService {
         };
 
     }
-    createEmptyPoiLayers(mapMode: MAP_MODE): CustomGeoJSONLayersMap {
+    public createEmptyPoiLayers(mapMode: MAP_MODE): CustomGeoJSONLayersMap {
         const layersMap: CustomGeoJSONLayersMap = {};
         layersMap['select_all_pois'] = this.createSelectAllLayer();
         this.tourismLayersList.forEach( layerName => {
@@ -263,7 +263,7 @@ export class LeafletOverlayBuilderService {
         return layersMap;
     }
 
-    clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
+    private clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
         Object.keys(this.poiLayersFeaturesMap).forEach(layerName => {
             Object.keys(this.poiLayersFeaturesMap[layerName]).forEach(itemIdDelete => {
                 const feautureToDelete = this.poiLayersFeaturesMap[layerName][itemIdDelete];
@@ -273,7 +273,7 @@ export class LeafletOverlayBuilderService {
         });
     }
 
-    updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap) {
+    public updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap) {
         this.findPois$(bbox).subscribe(layersMap => {
             this.clearPoiLayers(geoJsonLayers);
             Object.keys(layersMap).forEach(layerName => {
@@ -285,7 +285,7 @@ export class LeafletOverlayBuilderService {
 
     }
 
-    createEmptyRouteLayer(routeId: string, displayName: string, routeColor: string): CustomGeoJsonLayer {
+    public createEmptyRouteLayer(routeId: string, displayName: string, routeColor: string): CustomGeoJsonLayer {
         return {
             layer: geoJSON(undefined, {
                 pointToLayer: (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor),
@@ -295,13 +295,13 @@ export class LeafletOverlayBuilderService {
         };
     }
 
-    updateRouteLayerColor(layerToUpdate: GeoJSON, routeId: string, routeColor: string) {
+    public updateRouteLayerColor(layerToUpdate: GeoJSON, routeId: string, routeColor: string) {
         layerToUpdate.options.pointToLayer = (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor);
         this.updateRouteLayer(layerToUpdate, routeId, layerToUpdate.getLayers().map((item: any) => item.feature as CustomFeature));
     }
 
 
-    clearRouteLayer(routeLayer: GeoJSON, layerName: string) {
+    private clearRouteLayer(routeLayer: GeoJSON, layerName: string) {
        if (!this.routesLayersFeaturesMap[layerName]) return;
         Object.keys(this.routesLayersFeaturesMap[layerName]).forEach(itemIdToDelete => {
             const feautureToDelete = this.routesLayersFeaturesMap[layerName][itemIdToDelete];
@@ -310,7 +310,7 @@ export class LeafletOverlayBuilderService {
         });
     }
 
-    updateRouteLayer(layer: GeoJSON, layerName: string, features: CustomFeature[]) {
+    public updateRouteLayer(layer: GeoJSON, layerName: string, features: CustomFeature[]) {
         this.clearRouteLayer(layer, layerName);
         features.forEach(itemfeature => {
             layer.addData(itemfeature);
