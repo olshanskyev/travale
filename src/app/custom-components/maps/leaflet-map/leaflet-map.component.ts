@@ -145,15 +145,12 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDragEnd = () => {
+  private updatePoiLayers() {
     if (this.zoom >= this.minZoomToShowFeatures)
       this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
-  };
-
-  onZoomEnd = () => {
-    if (this.zoom >= this.minZoomToShowFeatures)
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
-  };
+    else
+      this.overlayBuilder.clearPoiLayers(this.customLayersControl.poiOverlays);
+  }
 
   public invalidate() {
     this.map.invalidateSize({
@@ -184,8 +181,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.map = $event;
     this.map.setMinZoom(this.minZoom);
 
-    this.map.on('zoomend', this.onZoomEnd);
-    this.map.on('dragend', this.onDragEnd);
+    this.map.on('zoomend', () => this.updatePoiLayers());
+    this.map.on('dragend', () => this.updatePoiLayers());
 
     this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers(this.mode);
     if (this.zoom >= this.minZoomToShowFeatures) {
@@ -300,9 +297,12 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 
         this.customLayersControl.poiOverlays[itemLayerName].checked = checked;
       });
-      return;
+    } else {
+      this.customLayersControl.poiOverlays[layerName].checked = checked;
+      this.layerToggled(layer, checked);
     }
-    this.layerToggled(layer, checked);
+    if (checked)
+      this.updatePoiLayers();
 
   }
 

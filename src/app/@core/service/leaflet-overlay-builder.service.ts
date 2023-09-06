@@ -82,8 +82,8 @@ export class LeafletOverlayBuilderService {
         return this.nearbyPoiSelect$;
     }
 
-    private findPois$ = (bbox: LatLngBounds): Observable<FeaturesMap> => {
-        return this.overpassapiService.findPois(bbox, this.tourismLayersList, this.historicLayersList, this.locale).pipe(map((allFeatures: CustomFeature[]) => {
+    private findPois$ = (bbox: LatLngBounds, tourismKey: TourismKeyType[], historicKeys: HistoricKeyType[]): Observable<FeaturesMap> => {
+        return this.overpassapiService.findPois(bbox, tourismKey, historicKeys, this.locale).pipe(map((allFeatures: CustomFeature[]) => {
             const featuresMap: FeaturesMap = {};
             allFeatures.forEach(item => {
                 let key = item.properties?.categories?.['historic'];
@@ -263,7 +263,7 @@ export class LeafletOverlayBuilderService {
         return layersMap;
     }
 
-    private clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
+    public clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
         Object.keys(this.poiLayersFeaturesMap).forEach(layerName => {
             Object.keys(this.poiLayersFeaturesMap[layerName]).forEach(itemIdDelete => {
                 const feautureToDelete = this.poiLayersFeaturesMap[layerName][itemIdDelete];
@@ -274,14 +274,30 @@ export class LeafletOverlayBuilderService {
     }
 
     public updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap) {
-        this.findPois$(bbox).subscribe(layersMap => {
-            this.clearPoiLayers(geoJsonLayers);
-            Object.keys(layersMap).forEach(layerName => {
-                layersMap[layerName]?.forEach(itemFeature => {
-                    geoJsonLayers[layerName].layer.addData(itemFeature);
+
+        const tourismKeys: TourismKeyType[] = [];
+        const historicalKeys: HistoricKeyType[] = [];
+        Object.keys(geoJsonLayers).forEach(key => {
+            if (geoJsonLayers[key].checked) {
+                if (this.tourismLayersList.includes(key as TourismKeyType))
+                    tourismKeys.push(key as TourismKeyType);
+                if (this.historicLayersList.includes(key as HistoricKeyType))
+                    historicalKeys.push(key as HistoricKeyType);
+            }
+
+        });
+        // update only if at least 1 layer selected
+        if ((tourismKeys.length + historicalKeys.length) > 0) {
+            this.findPois$(bbox, tourismKeys, historicalKeys).subscribe(layersMap => {
+                this.clearPoiLayers(geoJsonLayers);
+                Object.keys(layersMap).forEach(layerName => {
+                    layersMap[layerName]?.forEach(itemFeature => {
+                        geoJsonLayers[layerName].layer.addData(itemFeature);
+                    });
                 });
             });
-        });
+        }
+
 
     }
 
