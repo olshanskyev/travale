@@ -13,7 +13,8 @@ import { NearbyPoisOnMapPopupComponent } from 'src/app/custom-components/popups/
 export type CustomGeoJsonLayer = {
     layer: GeoJSON,
     displayName: string,
-    checked?: boolean
+    checked?: boolean,
+    minZoomToShowLayer?: number
 }
 
 export type CustomGeoJSONLayersMap = {
@@ -54,7 +55,19 @@ export class LeafletOverlayBuilderService {
 
     tourismLayersList: TourismKeyType[] = ['artwork', 'attraction', 'museum', 'viewpoint', 'gallery', 'theme_park', 'information', 'zoo'];
     historicLayersList: HistoricKeyType[] = ['castle', 'castle_wall', 'church', 'city_gate', 'citywalls', 'memorial', 'monument', 'tower'];
-
+    private defaultMinZoomToShowLayer = 16;
+    private minZoomToShowLayerMap: Map<string, number> = new Map([
+        ['attraction', 15],
+        ['museum', 15],
+        ['gallery', 15],
+        ['theme_park', 15],
+        ['zoo', 15],
+        ['castle', 15],
+        ['castle_wall', 15],
+        ['city_gate', 15],
+        ['citywalls', 15],
+        ['tower', 15],
+    ]);
     private addToRoute$ = new Subject<AggregatedFeatureInfo>;
     private routeItemClick$ = new Subject<CustomFeature>;
     private nearbyPoiSelect$ = new Subject<CustomFeature>;
@@ -245,7 +258,8 @@ export class LeafletOverlayBuilderService {
                     pointToLayer: (feature, latlng ) => this.getPoiMarkerByFeature(feature, latlng),
                     onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName, mapMode)
                     }),
-                displayName: translatedLayerName
+                displayName: translatedLayerName,
+                minZoomToShowLayer: this.minZoomToShowLayerMap.get(layerName)
             };
 
         });
@@ -263,7 +277,7 @@ export class LeafletOverlayBuilderService {
         return layersMap;
     }
 
-    public clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
+    private clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
         Object.keys(this.poiLayersFeaturesMap).forEach(layerName => {
             Object.keys(this.poiLayersFeaturesMap[layerName]).forEach(itemIdDelete => {
                 const feautureToDelete = this.poiLayersFeaturesMap[layerName][itemIdDelete];
@@ -273,12 +287,14 @@ export class LeafletOverlayBuilderService {
         });
     }
 
-    public updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap) {
+    public updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap, currentZoom: number) {
 
         const tourismKeys: TourismKeyType[] = [];
         const historicalKeys: HistoricKeyType[] = [];
         Object.keys(geoJsonLayers).forEach(key => {
-            if (geoJsonLayers[key].checked) {
+            const layerMinZoom = geoJsonLayers[key].minZoomToShowLayer;
+            const zoomToShowLayer: number = (layerMinZoom) ? layerMinZoom : this.defaultMinZoomToShowLayer;
+            if (geoJsonLayers[key].checked && currentZoom >= zoomToShowLayer) {
                 if (this.tourismLayersList.includes(key as TourismKeyType))
                     tourismKeys.push(key as TourismKeyType);
                 if (this.historicLayersList.includes(key as HistoricKeyType))
@@ -296,6 +312,8 @@ export class LeafletOverlayBuilderService {
                     });
                 });
             });
+        } else {
+            this.clearPoiLayers(geoJsonLayers);
         }
 
 
