@@ -17,7 +17,7 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   @ViewChild('leafletMap', {static: false}) leafletMap: LeafletMapComponent;
 
-  private route: Route;
+  route: Route;
   private destroy$: Subject<void> = new Subject<void>();
   showPlacePopup = false;
   showNearbyPlacesPopup = false;
@@ -83,6 +83,7 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   onRouteItemClick(feature: CustomFeature) {
     this.popupPlace = this.route.places.filter(place => place.geoJson.id === feature.id)[0];
+    this.showNearbyPlacesPopup = false;
     this.showPlacePopup = true;
   }
 

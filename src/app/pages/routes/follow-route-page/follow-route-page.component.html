@@ -11,7 +11,8 @@
                     <nb-list-item *ngFor="let place of nearbyPlacesToShow" class="p-2 nearby-item"
                     (click)="popupPlace = place; showNearbyPlacesPopup = false; showPlacePopup = true">
                         <div>
-                            <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo"/>
+                            <travale-marker-icon [markerColor]="route.color" textColor="white">{{place.geoJson.properties.route?.order}}</travale-marker-icon>
+                            <img *ngIf="place.images && place.images.length > 0" [src]="place.images[0].thumb" class="thumb-photo ms-2"/>
                             <span class="subtitle ms-2">{{place.name}}</span>
                         </div>
                     </nb-list-item>

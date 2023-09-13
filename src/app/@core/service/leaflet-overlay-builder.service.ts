@@ -13,7 +13,8 @@ import { NearbyPoisOnMapPopupComponent } from 'src/app/custom-components/popups/
 export type CustomGeoJsonLayer = {
     layer: GeoJSON,
     displayName: string,
-    checked?: boolean
+    checked?: boolean,
+    minZoomToShowLayer?: number
 }
 
 export type CustomGeoJSONLayersMap = {
@@ -54,7 +55,19 @@ export class LeafletOverlayBuilderService {
 
     tourismLayersList: TourismKeyType[] = ['artwork', 'attraction', 'museum', 'viewpoint', 'gallery', 'theme_park', 'information', 'zoo'];
     historicLayersList: HistoricKeyType[] = ['castle', 'castle_wall', 'church', 'city_gate', 'citywalls', 'memorial', 'monument', 'tower'];
-
+    private defaultMinZoomToShowLayer = 16;
+    private minZoomToShowLayerMap: Map<string, number> = new Map([
+        ['attraction', 15],
+        ['museum', 15],
+        ['gallery', 15],
+        ['theme_park', 15],
+        ['zoo', 15],
+        ['castle', 15],
+        ['castle_wall', 15],
+        ['city_gate', 15],
+        ['citywalls', 15],
+        ['tower', 15],
+    ]);
     private addToRoute$ = new Subject<AggregatedFeatureInfo>;
     private routeItemClick$ = new Subject<CustomFeature>;
     private nearbyPoiSelect$ = new Subject<CustomFeature>;
@@ -82,8 +95,8 @@ export class LeafletOverlayBuilderService {
         return this.nearbyPoiSelect$;
     }
 
-    private findPois$ = (bbox: LatLngBounds): Observable<FeaturesMap> => {
-        return this.overpassapiService.findPois(bbox, this.tourismLayersList, this.historicLayersList, this.locale).pipe(map((allFeatures: CustomFeature[]) => {
+    private findPois$ = (bbox: LatLngBounds, tourismKey: TourismKeyType[], historicKeys: HistoricKeyType[]): Observable<FeaturesMap> => {
+        return this.overpassapiService.findPois(bbox, tourismKey, historicKeys, this.locale).pipe(map((allFeatures: CustomFeature[]) => {
             const featuresMap: FeaturesMap = {};
             allFeatures.forEach(item => {
                 let key = item.properties?.categories?.['historic'];
@@ -235,7 +248,7 @@ export class LeafletOverlayBuilderService {
         };
 
     }
-    createEmptyPoiLayers(mapMode: MAP_MODE): CustomGeoJSONLayersMap {
+    public createEmptyPoiLayers(mapMode: MAP_MODE): CustomGeoJSONLayersMap {
         const layersMap: CustomGeoJSONLayersMap = {};
         layersMap['select_all_pois'] = this.createSelectAllLayer();
         this.tourismLayersList.forEach( layerName => {
@@ -245,7 +258,8 @@ export class LeafletOverlayBuilderService {
                     pointToLayer: (feature, latlng ) => this.getPoiMarkerByFeature(feature, latlng),
                     onEachFeature: (feature, layer) => this.onEachPoiFeature(feature, layer, layerName, mapMode)
                     }),
-                displayName: translatedLayerName
+                displayName: translatedLayerName,
+                minZoomToShowLayer: this.minZoomToShowLayerMap.get(layerName)
             };
 
         });
@@ -263,7 +277,7 @@ export class LeafletOverlayBuilderService {
         return layersMap;
     }
 
-    clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
+    private clearPoiLayers(geoJsonLayers: CustomGeoJSONLayersMap) {
         Object.keys(this.poiLayersFeaturesMap).forEach(layerName => {
             Object.keys(this.poiLayersFeaturesMap[layerName]).forEach(itemIdDelete => {
                 const feautureToDelete = this.poiLayersFeaturesMap[layerName][itemIdDelete];
@@ -273,19 +287,39 @@ export class LeafletOverlayBuilderService {
         });
     }
 
-    updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap) {
-        this.findPois$(bbox).subscribe(layersMap => {
-            this.clearPoiLayers(geoJsonLayers);
-            Object.keys(layersMap).forEach(layerName => {
-                layersMap[layerName]?.forEach(itemFeature => {
-                    geoJsonLayers[layerName].layer.addData(itemFeature);
+    public updatePoiLayers(bbox: LatLngBounds, geoJsonLayers: CustomGeoJSONLayersMap, currentZoom: number) {
+
+        const tourismKeys: TourismKeyType[] = [];
+        const historicalKeys: HistoricKeyType[] = [];
+        Object.keys(geoJsonLayers).forEach(key => {
+            const layerMinZoom = geoJsonLayers[key].minZoomToShowLayer;
+            const zoomToShowLayer: number = (layerMinZoom) ? layerMinZoom : this.defaultMinZoomToShowLayer;
+            if (geoJsonLayers[key].checked && currentZoom >= zoomToShowLayer) {
+                if (this.tourismLayersList.includes(key as TourismKeyType))
+                    tourismKeys.push(key as TourismKeyType);
+                if (this.historicLayersList.includes(key as HistoricKeyType))
+                    historicalKeys.push(key as HistoricKeyType);
+            }
+
+        });
+        // update only if at least 1 layer selected
+        if ((tourismKeys.length + historicalKeys.length) > 0) {
+            this.findPois$(bbox, tourismKeys, historicalKeys).subscribe(layersMap => {
+                this.clearPoiLayers(geoJsonLayers);
+                Object.keys(layersMap).forEach(layerName => {
+                    layersMap[layerName]?.forEach(itemFeature => {
+                        geoJsonLayers[layerName].layer.addData(itemFeature);
+                    });
                 });
             });
-        });
+        } else {
+            this.clearPoiLayers(geoJsonLayers);
+        }
+
 
     }
 
-    createEmptyRouteLayer(routeId: string, displayName: string, routeColor: string): CustomGeoJsonLayer {
+    public createEmptyRouteLayer(routeId: string, displayName: string, routeColor: string): CustomGeoJsonLayer {
         return {
             layer: geoJSON(undefined, {
                 pointToLayer: (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor),
@@ -295,13 +329,13 @@ export class LeafletOverlayBuilderService {
         };
     }
 
-    updateRouteLayerColor(layerToUpdate: GeoJSON, routeId: string, routeColor: string) {
+    public updateRouteLayerColor(layerToUpdate: GeoJSON, routeId: string, routeColor: string) {
         layerToUpdate.options.pointToLayer = (feature, latlng ) => this.getRouteMarkerByFeature(feature, latlng, routeColor);
         this.updateRouteLayer(layerToUpdate, routeId, layerToUpdate.getLayers().map((item: any) => item.feature as CustomFeature));
     }
 
 
-    clearRouteLayer(routeLayer: GeoJSON, layerName: string) {
+    private clearRouteLayer(routeLayer: GeoJSON, layerName: string) {
        if (!this.routesLayersFeaturesMap[layerName]) return;
         Object.keys(this.routesLayersFeaturesMap[layerName]).forEach(itemIdToDelete => {
             const feautureToDelete = this.routesLayersFeaturesMap[layerName][itemIdToDelete];
@@ -310,7 +344,7 @@ export class LeafletOverlayBuilderService {
         });
     }
 
-    updateRouteLayer(layer: GeoJSON, layerName: string, features: CustomFeature[]) {
+    public updateRouteLayer(layer: GeoJSON, layerName: string, features: CustomFeature[]) {
         this.clearRouteLayer(layer, layerName);
         features.forEach(itemfeature => {
             layer.addData(itemfeature);

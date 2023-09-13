@@ -8,6 +8,7 @@ import { SelectColorWindowComponent } from '../../windows/select-color-window/se
 import { EditPlaceWindowComponent } from '../../windows/edit-place-window/edit-place-window.component';
 import { ConfirmWindowComponent } from '../../windows/confirm-window/confirm-window.component';
 import { TranslateService } from '@ngx-translate/core';
+import { LatLng } from 'leaflet';
 
 @Component({
   selector: 'travale-route-card',
@@ -80,6 +81,8 @@ export class RouteCardComponent implements OnChanges {
     this.dialogService.open(ImgUploaderWindowComponent, {
       context: {
         uploadMode: 'single',
+        latlng: new LatLng(this.route.cityLatitude, this.route.cityLongitude),
+        searchPhotoDistance: 5000
       },
       dialogClass: 'animated-dialog'
     })

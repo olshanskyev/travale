@@ -12,7 +12,7 @@ export class MapSidebarService {
     this._leafletMap = value;
   }
 
-  public get leafletMap() {
+  public get leafletMap(): LeafletMapComponent {
     return this._leafletMap;
   }
 

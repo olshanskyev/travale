@@ -45,7 +45,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   private previousLocation?: Location;
   zoom = 12;
   minZoom = 7;
-  minZoomToShowFeatures = 15;
   selectPlaceZoom = 16;
   geoJsonInitialized: false;
   cityBoundingBox?: L.LatLngBounds;
@@ -145,16 +144,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDragEnd = () => {
-    if (this.zoom >= this.minZoomToShowFeatures)
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
-  };
-
-  onZoomEnd = () => {
-    if (this.zoom >= this.minZoomToShowFeatures)
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
-  };
-
   public invalidate() {
     this.map.invalidateSize({
       debounceMoveend: true,
@@ -184,13 +173,10 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.map = $event;
     this.map.setMinZoom(this.minZoom);
 
-    this.map.on('zoomend', this.onZoomEnd);
-    this.map.on('dragend', this.onDragEnd);
+    this.map.on('zoomend', () => this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom));
+    this.map.on('dragend', () => this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom));
 
     this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers(this.mode);
-    if (this.zoom >= this.minZoomToShowFeatures) {
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays);
-    }
 
     //geolocation
     L.control.locate(this.locateOptions).addTo(this.map);
@@ -300,9 +286,12 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
 
         this.customLayersControl.poiOverlays[itemLayerName].checked = checked;
       });
-      return;
+    } else {
+      this.customLayersControl.poiOverlays[layerName].checked = checked;
+      this.layerToggled(layer, checked);
     }
-    this.layerToggled(layer, checked);
+    if (checked)
+      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom);
 
   }
 

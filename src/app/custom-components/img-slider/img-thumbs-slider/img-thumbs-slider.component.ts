@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Lightbox } from 'ngx-lightbox';
+import { IAlbum, Lightbox } from 'ngx-lightbox';
 import { ImageType } from 'src/app/@core/data/route.data';
 import { SwiperOptions } from 'swiper';
 
@@ -29,7 +29,7 @@ export class ImgThumbsSliderComponent {
     const clonedArray: ImageType[] = [];
     this.images?.forEach(item => clonedArray.push(Object.assign({}, item)));
     if (this.images)
-      this._lightbox.open(clonedArray, index, {wrapAround: true});
+      this._lightbox.open(clonedArray as IAlbum[], index, {wrapAround: true});
   }
 
 

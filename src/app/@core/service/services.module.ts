@@ -11,6 +11,7 @@ import { LocalRouteService } from './local.route.service';
 import { LeafletOverlayBuilderService } from './leaflet-overlay-builder.service';
 import { MapFooterService } from './map-footer.service';
 import { PhotonService } from './photon.service';
+import { PastvuService } from './pastvu.service';
 
 
 const SERVICES = [
@@ -24,7 +25,8 @@ const SERVICES = [
   WikiService,
   LocalRouteService,
   LeafletOverlayBuilderService,
-  MapFooterService
+  MapFooterService,
+  PastvuService
 ];
 
 @NgModule({
