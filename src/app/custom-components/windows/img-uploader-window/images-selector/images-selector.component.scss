@@ -25,11 +25,10 @@
         top: 5px;
         z-index: 2
     }
-
-    .img-container {
-        position: relative;
+    .img-collection {
+        max-height: 400px;
+        overflow: auto;
     }
-
 
     @include media-breakpoint-down(sm) {
         img {

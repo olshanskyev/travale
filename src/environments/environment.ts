@@ -12,6 +12,7 @@ export const environment = {
   wikipediaEndpoint: 'https://{{lng}}.wikipedia.org/w/api.php',
   wikidataEndpoint: 'https://www.wikidata.org/w/rest.php/wikibase/v0/',
   photonEndpoint: 'https://photon.komoot.io/api/',
+  pastvuEndpoint: 'https://pastvu.com/',
 };
 
 /*

@@ -7,7 +7,7 @@ import { WikiPageRef } from './wiki.data';
 
 export type ImageType = {
     src: string,
-    thumb: string,
+    thumb?: string,
     caption?: string
   }
 

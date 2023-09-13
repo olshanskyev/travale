@@ -1,9 +1,9 @@
 
-<div class="row">
-    <div class="col-6 col-md-4" *ngFor="let itemSrc of imageUrls; let i=index">
-        <div class="img-container">
+<div class="row img-collection scrollable-container pt-1">
+    <div class="col-6 col-md-4" *ngFor="let itemPhoto of images; let i=index">
+        <div class="position-relative">
             <nb-checkbox [disabled]="true" status="info" [checked]="true" class="checkbox-selected" [hidden]="!selectedArray[i]"></nb-checkbox>
-             <img [src]="itemSrc" (click)="onSelectImage(i)"
+             <img [src]="(itemPhoto.thumb)? itemPhoto.thumb: itemPhoto.src" (click)="onSelectImage(i)"
              [class.selected] = "selectedArray[i]"
              />
         </div>

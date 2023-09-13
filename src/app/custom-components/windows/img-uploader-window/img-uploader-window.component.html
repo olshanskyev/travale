@@ -1,22 +1,30 @@
-
-    <nb-card class="mb-0">
-        <nb-card-body>
-            <travale-images-selector (selected)="onImgSelected($event)" [imageUrls]="droppedImgUrls" [selectMode]="uploadMode">
-            </travale-images-selector>
-
-        </nb-card-body>
-        <nb-card-footer>
-            <ngx-file-drop dropZoneLabel="Drop images here" (onFileDrop)="dropped($event)" accept="image/jpeg,image/png,image/webp,image/avif,image/tiff,image/gif,image/svg+xml">
-                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" >
-                    <div class="d-flex flex-column">
-                        <label style="color: var(--text-basic-color)">{{'imgSlider.dropImagesHereOr' | translate}}</label>
-                        <button nbButton class="ms-2" status="info" ghost (click)="openFileSelector()">{{'imgSlider.browseFiles' | translate}}</button>
-                    </div>
-                </ng-template>
-            </ngx-file-drop>
-            <button nbButton fullWidth status="primary" size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">{{'common.done' | translate}}</button>
-        </nb-card-footer>
-    </nb-card>
+<nb-card class="mb-0">
+    <nb-card-body>
+        <nb-tabset (changeTab)="onTabChange($event)">
+            <nb-tab tabId="1" tabTitle="{{'imgUploader.uploadPhotos' | translate}}">
+                <ngx-file-drop dropZoneLabel="Drop images here" (onFileDrop)="dropped($event)" accept="image/jpeg,image/png,image/webp,image/avif,image/tiff,image/gif,image/svg+xml">
+                    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" >
+                        <div class="d-flex flex-column text-center">
+                            <label class="ps-1 pe-1" style="color: var(--text-basic-color)">{{'imgUploader.dropImagesHereOr' | translate}}</label>
+                            <button nbButton class="ms-2" status="info" ghost (click)="openFileSelector()">{{'imgUploader.browseFiles' | translate}}</button>
+                        </div>
+                    </ng-template>
+                </ngx-file-drop>
+            </nb-tab>
+            <nb-tab tabId="2" tabTitle="{{'imgUploader.fromNetwork' | translate}}">
+                {{'imgUploader.photosFrom' | translate}} <a href="https://pastvu.com">pastvu.com</a>
+            </nb-tab>
+        </nb-tabset>
+        <div *ngIf="(tabId === '2') && pastvuPhotoSearched && (uploadedPhotos.length === 0)" >
+            {{'imgUploader.nothingFound' | translate}}
+        </div>
+        <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode">
+        </travale-images-selector>
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton fullWidth status="primary" size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">{{'common.done' | translate}}</button>
+    </nb-card-footer>
+</nb-card>
 
 
 

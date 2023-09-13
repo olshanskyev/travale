@@ -4,7 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageType } from 'src/app/@core/data/route.data';
-import { Observable, Subscriber, forkJoin } from 'rxjs';
+import { Observable, Subscriber, forkJoin, of } from 'rxjs';
+import { PastvuService } from 'src/app/@core/service/pastvu.service';
+import { LatLng } from 'leaflet';
 
 export type Mode = 'multi' | 'single';
 
@@ -16,6 +18,8 @@ export type Mode = 'multi' | 'single';
 export class ImgUploaderWindowComponent {
 
   @Input() uploadMode: Mode = 'multi';
+  @Input() latlng?: LatLng; // for searching nearby photos
+  @Input() searchPhotoDistance = 150;
 
   allowedImgTypes = ['image/jpeg', 'image/png' ,'image/webp' ,'image/avif', 'image/tiff', 'image/gif', 'image/svg+xml'];
   defaultThumbHeight = 120;
@@ -23,15 +27,22 @@ export class ImgUploaderWindowComponent {
   defaultImgType = 'image/jpeg';
   defaultImgQuality = 0.8;
 
+  uploadedPhotos: ImageType[] = [];
+  droppedPhotos: ImageType[] = [];
+  pastvuPhotos: ImageType[] = [];
+  selectedImages: ImageType[] = [];
+  pastvuPhotoSearched = false;
+
+  tabId = '1';
+
   constructor(private toastrService: NbToastrService,
     private translateService: TranslateService,
     protected ref: NbDialogRef<ImgUploaderWindowComponent>,
-    private sanitizer: DomSanitizer) {
+    private sanitizer: DomSanitizer,
+    private pastvuService: PastvuService
+    ) {
 
   }
-
-  droppedImgUrls: string[] = [];
-  selectedImages: string[] = [];
 
   private readBlobAsImage(blob: Blob) {
     const fileReader = new FileReader();
@@ -39,7 +50,7 @@ export class ImgUploaderWindowComponent {
     fileReader.onloadend = () => {
       const src = this.sanitizer.sanitize(SecurityContext.URL, this.sanitizer.bypassSecurityTrustUrl('' + fileReader.result));
       if (src) {
-        this.droppedImgUrls.push(src);
+        this.droppedPhotos.push({src: src});
       }
 
     };
@@ -48,13 +59,13 @@ export class ImgUploaderWindowComponent {
   public dropped(files: NgxFileDropEntry[]) {
     files.forEach(item => {
       if (!item.fileEntry.isFile) {
-        this.toastrService.show(this.translateService.instant('imgSlider.errors.isNotAFile', {name: item.fileEntry.name}), this.translateService.instant('common.warning'), {status: 'warning'});
+        this.toastrService.show(this.translateService.instant('imgUploader.errors.isNotAFile', {name: item.fileEntry.name}), this.translateService.instant('common.warning'), {status: 'warning'});
       }
 
       const fileEntry = item.fileEntry as FileSystemFileEntry;
       fileEntry.file(file => {
         if (!this.allowedImgTypes.includes(file.type)) {
-          this.toastrService.show(this.translateService.instant('imgSlider.errors.notAllowedFileType'), this.translateService.instant('common.error'), {status: 'danger'});
+          this.toastrService.show(this.translateService.instant('imgUploader.errors.notAllowedFileType'), this.translateService.instant('common.error'), {status: 'danger'});
           return;
         }
         this.readBlobAsImage(file.slice(0, file.size, 'string'));
@@ -63,7 +74,7 @@ export class ImgUploaderWindowComponent {
 
   }
 
-  onImgSelected(images: string[]) {
+  onImgSelected(images: ImageType[]) {
     this.selectedImages = images;
   }
 
@@ -83,12 +94,12 @@ export class ImgUploaderWindowComponent {
   }
 
   //create thumbnail and reduce img size
-  private resizeImage(base64Image: string, targetThumbHeight: number, targetImgSize: number): Observable<ImageType> {
+  private resizeImage(uploadedPhoto: ImageType, targetThumbHeight: number, targetImgSize: number): Observable<ImageType> {
     const img = new Image();
-    img.src = base64Image;
+    img.crossOrigin = 'anonymous';
+    img.src = uploadedPhoto.src;
     return new Observable((subscriber: Subscriber<any>): void => {
       img.onload = () => {
-
         const whRatio = img.width/img.height,
               targetThumbWidth = whRatio * targetThumbHeight;
         let targetImgWidth: number;
@@ -103,7 +114,8 @@ export class ImgUploaderWindowComponent {
 
           subscriber.next({
             src: this.imageToDataUri(img, targetImgWidth, targetImgHeight),
-            thumb: this.imageToDataUri(img, targetThumbWidth, targetThumbHeight)
+            thumb: this.imageToDataUri(img, targetThumbWidth, targetThumbHeight),
+            caption: uploadedPhoto.caption
             });
           subscriber.complete();
         };
@@ -111,9 +123,29 @@ export class ImgUploaderWindowComponent {
 
   }
 
+  onTabChange(event: any) {
+    this.selectedImages = [];
+    this.tabId = event.tabId;
+    if (event.tabId === '1') {
+      this.uploadedPhotos = this.droppedPhotos;
+    } else { // tabId === '2' pastvu
+      this.uploadedPhotos = this.pastvuPhotos;
+      if (this.latlng && !this.pastvuPhotoSearched) {
+        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance).subscribe(res => {
+          this.pastvuPhotos = res;
+          this.pastvuPhotoSearched = true;
+          this.uploadedPhotos = this.pastvuPhotos;
+        });
+      }
+
+    }
+  }
+
   close() {
     // resize images
-    const thumbObservables: Observable<ImageType>[] = this.selectedImages.map(item => this.resizeImage(item, this.defaultThumbHeight, this.defaultImgMaxSize));
+    const thumbObservables: Observable<ImageType>[] = this.selectedImages.map(item =>
+      (!item.caption)? this.resizeImage(item, this.defaultThumbHeight, this.defaultImgMaxSize) : of(item)
+      );
     forkJoin(thumbObservables).subscribe(res => {
       this.ref.close({
         uploadedImages: res

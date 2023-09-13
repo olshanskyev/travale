@@ -45,7 +45,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   private previousLocation?: Location;
   zoom = 12;
   minZoom = 7;
-  minZoomToShowFeatures = 15;
   selectPlaceZoom = 16;
   geoJsonInitialized: false;
   cityBoundingBox?: L.LatLngBounds;
@@ -145,13 +144,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*private updatePoiLayers() {
-    //if (this.zoom >= this.minZoomToShowFeatures)
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom);
-    //else
-    //  this.overlayBuilder.clearPoiLayers(this.customLayersControl.poiOverlays);
-  }*/
-
   public invalidate() {
     this.map.invalidateSize({
       debounceMoveend: true,
@@ -185,9 +177,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.map.on('dragend', () => this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom));
 
     this.customLayersControl.poiOverlays = this.overlayBuilder.createEmptyPoiLayers(this.mode);
-    //if (this.zoom >= this.minZoomToShowFeatures) {
-      this.overlayBuilder.updatePoiLayers(this.map.getBounds(), this.customLayersControl.poiOverlays, this.zoom);
-    //}
 
     //geolocation
     L.control.locate(this.locateOptions).addTo(this.map);

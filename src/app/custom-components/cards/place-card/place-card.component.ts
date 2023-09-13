@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { Place } from 'src/app/@core/data/route.data';
 import { ImgUploaderWindowComponent } from '../../windows/img-uploader-window/img-uploader-window.component';
+import { LatLng } from 'leaflet';
 
 
 type ModeType = 'full' | 'compact';
@@ -21,9 +22,15 @@ export class PlaceCardComponent {
 
   }
   openImgUploaderWindow() {
+
+    const placeLatLng = (this.place.geoJson.geometry.type === 'Point') ?
+      new LatLng(this.place.geoJson.geometry.coordinates[1], this.place.geoJson.geometry.coordinates[0]) :
+      undefined;
+
     this.dialogService.open(ImgUploaderWindowComponent, {
       context: {
         uploadMode: 'multi',
+        latlng: placeLatLng
       },
       dialogClass: 'animated-dialog'
     })
