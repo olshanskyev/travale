@@ -82,7 +82,8 @@ export class RouteCardComponent implements OnChanges {
       context: {
         uploadMode: 'single',
         latlng: new LatLng(this.route.cityLatitude, this.route.cityLongitude),
-        searchPhotoDistance: 5000
+        searchPhotoDistance: 5000,
+        placeName: this.route.cityName
       },
       dialogClass: 'animated-dialog'
     })

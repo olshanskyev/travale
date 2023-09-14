@@ -11,14 +11,19 @@
                     </ng-template>
                 </ngx-file-drop>
             </nb-tab>
-            <nb-tab tabId="2" tabTitle="{{'imgUploader.fromNetwork' | translate}}">
-                {{'imgUploader.photosFrom' | translate}} <a href="https://pastvu.com">pastvu.com</a>
+            <nb-tab tabId="2" tabTitle="pastvu.com">
+                <div>
+                    <span>{{'imgUploader.historicalPhotosFrom' | translate}} <a href="https://pastvu.com">pastvu.com</a></span>
+                    <span *ngIf="placeName">
+                        {{'imgUploader.nearTo' | translate}} <b>{{placeName}}</b>
+                    </span>
+                </div>
             </nb-tab>
         </nb-tabset>
         <div *ngIf="(tabId === '2') && pastvuPhotoSearched && (uploadedPhotos.length === 0)" >
             {{'imgUploader.nothingFound' | translate}}
         </div>
-        <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode">
+        <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode" (scrollEnd)="onScrollEnd()">
         </travale-images-selector>
     </nb-card-body>
     <nb-card-footer>

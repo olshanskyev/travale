@@ -30,7 +30,8 @@ export class PlaceCardComponent {
     this.dialogService.open(ImgUploaderWindowComponent, {
       context: {
         uploadMode: 'multi',
-        latlng: placeLatLng
+        latlng: placeLatLng,
+        placeName: this.place.name
       },
       dialogClass: 'animated-dialog'
     })

@@ -128,9 +128,9 @@ export class RussianLanguage {
                     notAllowedFileType: 'Данный тип файла не поддерживается'
                 },
                 uploadPhotos: 'Загрузить фотографии',
-                fromNetwork: 'Из сети',
-                photosFrom: 'Фотографии с сайта',
+                historicalPhotosFrom: 'Исторические фотографии с сайта',
                 nothingFound: 'Ничего не найдено',
+                nearTo: ' рядом с',
             },
 
             createRoute: {

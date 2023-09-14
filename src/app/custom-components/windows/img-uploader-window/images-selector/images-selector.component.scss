@@ -6,7 +6,6 @@
         object-fit: cover;
         width: 100%;
         height: var(--thumb-xl-height);
-        margin-bottom: 0.5rem;
         border-radius: var(--picture-border-radius);
         filter: var(--picture-default-shadow);
     }
@@ -26,7 +25,7 @@
         z-index: 2
     }
     .img-collection {
-        max-height: 400px;
+        max-height: 350px;
         overflow: auto;
     }
 

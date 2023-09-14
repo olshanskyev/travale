@@ -13,7 +13,7 @@ export class ImagesSelectorComponent implements OnChanges {
   @Input() images: ImageType[] = [];
   @Input() selectMode: Mode = 'multi';
   @Output() selected: EventEmitter<ImageType[]> = new EventEmitter();
-
+  @Output() scrollEnd: EventEmitter<void> = new EventEmitter();
   selectedArray: boolean[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,5 +34,11 @@ export class ImagesSelectorComponent implements OnChanges {
     this.selected.emit(this.images.filter((url, index) => this.selectedArray[index]));
   }
 
+  onScroll(event: any) {
+    // visible height + pixel scrolled >= total height
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) {
+      this.scrollEnd.emit();
+    }
+}
 
 }

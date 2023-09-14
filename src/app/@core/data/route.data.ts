@@ -1,14 +1,18 @@
-import { LatLngBounds } from 'leaflet';
+import { LatLng, LatLngBounds } from 'leaflet';
 import { City, CityGeometry } from './cities.data';
 import { CustomFeature } from './poi.data';
 import { Observable } from 'rxjs';
 import { WikiPageRef } from './wiki.data';
 
 
+export type PhotoSource = 'DROPPED'|'PASTVU'|'PIXABAY';
+
 export type ImageType = {
     src: string,
     thumb?: string,
-    caption?: string
+    caption?: string,
+    latlng?: LatLng,
+    source: PhotoSource,
   }
 
 export interface RouteWithLocalId extends Route {

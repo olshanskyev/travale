@@ -19,7 +19,8 @@ export class ImgUploaderWindowComponent {
 
   @Input() uploadMode: Mode = 'multi';
   @Input() latlng?: LatLng; // for searching nearby photos
-  @Input() searchPhotoDistance = 150;
+  @Input() searchPhotoDistance = 600; // for searching nearby photos
+  @Input() placeName: string;
 
   allowedImgTypes = ['image/jpeg', 'image/png' ,'image/webp' ,'image/avif', 'image/tiff', 'image/gif', 'image/svg+xml'];
   defaultThumbHeight = 120;
@@ -31,7 +32,8 @@ export class ImgUploaderWindowComponent {
   droppedPhotos: ImageType[] = [];
   pastvuPhotos: ImageType[] = [];
   selectedImages: ImageType[] = [];
-  pastvuPhotoSearched = false;
+  pastvuPhotoSearched = 0;
+  defaultPageSize = 10;
 
   tabId = '1';
 
@@ -50,7 +52,7 @@ export class ImgUploaderWindowComponent {
     fileReader.onloadend = () => {
       const src = this.sanitizer.sanitize(SecurityContext.URL, this.sanitizer.bypassSecurityTrustUrl('' + fileReader.result));
       if (src) {
-        this.droppedPhotos.push({src: src});
+        this.droppedPhotos.push({src: src, source: 'DROPPED'});
       }
 
     };
@@ -98,7 +100,7 @@ export class ImgUploaderWindowComponent {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = uploadedPhoto.src;
-    return new Observable((subscriber: Subscriber<any>): void => {
+    return new Observable((subscriber: Subscriber<ImageType>): void => {
       img.onload = () => {
         const whRatio = img.width/img.height,
               targetThumbWidth = whRatio * targetThumbHeight;
@@ -111,11 +113,12 @@ export class ImgUploaderWindowComponent {
           targetImgHeight = targetImgSize;
           targetImgWidth = targetImgHeight * whRatio;
         }
-
+          uploadedPhoto.src = this.imageToDataUri(img, targetImgWidth, targetImgHeight);
+          uploadedPhoto.thumb = this.imageToDataUri(img, targetThumbWidth, targetThumbHeight);
           subscriber.next({
+            ...uploadedPhoto,
             src: this.imageToDataUri(img, targetImgWidth, targetImgHeight),
             thumb: this.imageToDataUri(img, targetThumbWidth, targetThumbHeight),
-            caption: uploadedPhoto.caption
             });
           subscriber.complete();
         };
@@ -131,13 +134,22 @@ export class ImgUploaderWindowComponent {
     } else { // tabId === '2' pastvu
       this.uploadedPhotos = this.pastvuPhotos;
       if (this.latlng && !this.pastvuPhotoSearched) {
-        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance).subscribe(res => {
+        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, 1).subscribe(res => {
           this.pastvuPhotos = res;
-          this.pastvuPhotoSearched = true;
+          this.pastvuPhotoSearched = 1;
           this.uploadedPhotos = this.pastvuPhotos;
         });
       }
 
+    }
+  }
+
+  onScrollEnd() {
+    if (this.tabId === '2' && this.latlng && this.pastvuPhotoSearched > 0 && this.pastvuPhotoSearched < 4) { // upload second page for pastvu
+      this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, this.pastvuPhotoSearched + 1).subscribe(res => {
+        this.pastvuPhotos.push(...res);
+        this.pastvuPhotoSearched++;
+      });
     }
   }
 
