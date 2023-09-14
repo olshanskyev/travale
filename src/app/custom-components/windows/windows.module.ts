@@ -4,7 +4,7 @@ import { CitySelectWindowComponent } from './city-select-window/city-select-wind
 import { EditPlaceWindowComponent } from './edit-place-window/edit-place-window.component';
 import { SelectColorWindowComponent } from './select-color-window/select-color-window.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbTabsetModule } from '@nebular/theme';
+import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbSpinnerModule, NbTabsetModule } from '@nebular/theme';
 import { CommonModule } from '@angular/common';
 import { InputsModule } from '../inputs/inputs.module';
 import { NgxFileDropModule } from 'ngx-file-drop';
@@ -29,7 +29,8 @@ import { FormsModule } from '@angular/forms';
         NbTabsetModule,
         FormsModule,
         NbFormFieldModule,
-        NbInputModule
+        NbInputModule,
+        NbSpinnerModule
     ],
     declarations:[
         ImgUploaderWindowComponent,

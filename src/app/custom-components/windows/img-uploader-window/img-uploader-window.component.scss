@@ -20,6 +20,11 @@
     max-height: 85vh;
   }
 
+  nb-card-footer {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   nb-tab {
     padding: 16px;
   }
@@ -27,6 +32,14 @@
   @include media-breakpoint-down(sm) {
     nb-card {
       width: var(--small-window-width);
+    }
+  }
+
+  .spinner-container ::ng-deep {
+    left: -38px;
+    width: 38px;
+    nb-spinner {
+        background: none;
     }
   }
 }
