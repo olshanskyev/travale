@@ -9,5 +9,9 @@ export interface NearbyPhotos {
      * @param distance in meters
      * @param page > 0
      */
-    findNearbyPhotos(latlng: LatLng, distance: number, pageSize: number, page: number): Observable<ImageType[]>;
+    findNearbyPhotos(latlng: LatLng, distance: number, pageSize: number, pageNumber: number): Observable<ImageType[]>;
+}
+
+export interface PhotosByTitle {
+    findPhotosByTitle(title: string, pageSize: number, pageNumber: number): Observable<ImageType[]>;
 }

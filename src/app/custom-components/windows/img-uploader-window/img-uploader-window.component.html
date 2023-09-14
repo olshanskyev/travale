@@ -1,7 +1,7 @@
 <nb-card class="mb-0">
     <nb-card-body>
         <nb-tabset (changeTab)="onTabChange($event)">
-            <nb-tab tabId="1" tabTitle="{{'imgUploader.uploadPhotos' | translate}}">
+            <nb-tab tabId="DROPPED" tabTitle="{{'imgUploader.uploadPhotos' | translate}}" tabIcon="upload-outline" responsive>
                 <ngx-file-drop dropZoneLabel="Drop images here" (onFileDrop)="dropped($event)" accept="image/jpeg,image/png,image/webp,image/avif,image/tiff,image/gif,image/svg+xml">
                     <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" >
                         <div class="d-flex flex-column text-center">
@@ -11,7 +11,7 @@
                     </ng-template>
                 </ngx-file-drop>
             </nb-tab>
-            <nb-tab tabId="2" tabTitle="pastvu.com">
+            <nb-tab tabId="PASTVU" tabTitle="pastvu.com" [tabIcon]="{icon: 'pastvu', pack: 'other'}" responsive>
                 <div>
                     <span>{{'imgUploader.historicalPhotosFrom' | translate}} <a href="https://pastvu.com">pastvu.com</a></span>
                     <span *ngIf="placeName">
@@ -19,8 +19,26 @@
                     </span>
                 </div>
             </nb-tab>
+            <nb-tab tabId="PIXABAY" tabTitle="pixabay.com" [tabIcon]="{icon: 'pixabay', pack: 'other'}" responsive>
+                <div>
+                    <span>{{'imgUploader.photosFrom' | translate}} <a href="https://pixabay.com/">pixabay.com</a></span>
+                    <span>
+                        {{'imgUploader.foundByRequest' | translate}}:
+                    </span>
+                    <nb-form-field class="subtitle-form-field mt-2">
+                        <input nbInput
+                            [(ngModel)]="pixabaySearchString"
+                            type="text"
+                            placeholder="{{'imgUploader.placeSearchingString' | translate}}"
+                            class="subtitle-input"
+                            #input
+                        >
+                        <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
+                    </nb-form-field>
+                </div>
+            </nb-tab>
         </nb-tabset>
-        <div *ngIf="(tabId === '2') && pastvuPhotoSearched && (uploadedPhotos.length === 0)" >
+        <div *ngIf="(tabId !== 'DROPPED' && uploadedPhotos.length === 0)" >
             {{'imgUploader.nothingFound' | translate}}
         </div>
         <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode" (scrollEnd)="onScrollEnd()">

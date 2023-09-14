@@ -4,13 +4,14 @@ import { CitySelectWindowComponent } from './city-select-window/city-select-wind
 import { EditPlaceWindowComponent } from './edit-place-window/edit-place-window.component';
 import { SelectColorWindowComponent } from './select-color-window/select-color-window.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbIconModule, NbTabsetModule } from '@nebular/theme';
+import { NbAccordionModule, NbButtonModule, NbCardModule, NbCheckboxModule, NbDialogModule, NbFormFieldModule, NbIconModule, NbInputModule, NbTabsetModule } from '@nebular/theme';
 import { CommonModule } from '@angular/common';
 import { InputsModule } from '../inputs/inputs.module';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { CardsModule } from '../cards/cards.module';
 import { ImagesSelectorComponent } from './img-uploader-window/images-selector/images-selector.component';
 import { ConfirmWindowComponent } from './confirm-window/confirm-window.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -26,6 +27,9 @@ import { ConfirmWindowComponent } from './confirm-window/confirm-window.componen
         CardsModule,
         NbCheckboxModule,
         NbTabsetModule,
+        FormsModule,
+        NbFormFieldModule,
+        NbInputModule
     ],
     declarations:[
         ImgUploaderWindowComponent,

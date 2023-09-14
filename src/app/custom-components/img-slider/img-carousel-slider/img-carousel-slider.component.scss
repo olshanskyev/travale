@@ -48,6 +48,16 @@
     opacity: 0.9;
   }
 
+  .pixabay-source-div {
+    position: absolute;
+    bottom: 5px;
+    background-color: rgba(255,255,255,0.9);
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
   .image-caption-input {
     background-color: var(--color-basic-100);
   }

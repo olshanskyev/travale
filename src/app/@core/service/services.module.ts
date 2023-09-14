@@ -12,6 +12,7 @@ import { LeafletOverlayBuilderService } from './leaflet-overlay-builder.service'
 import { MapFooterService } from './map-footer.service';
 import { PhotonService } from './photon.service';
 import { PastvuService } from './pastvu.service';
+import { PixabayService } from './pixabay.service';
 
 
 const SERVICES = [
@@ -26,7 +27,8 @@ const SERVICES = [
   LocalRouteService,
   LeafletOverlayBuilderService,
   MapFooterService,
-  PastvuService
+  PastvuService,
+  PixabayService
 ];
 
 @NgModule({

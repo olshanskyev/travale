@@ -9,4 +9,6 @@ export const environment = {
   wikidataEndpoint: 'https://www.wikidata.org/w/rest.php/wikibase/v0/',
   photonEndpoint: 'https://photon.komoot.io/api/',
   pastvuEndpoint: 'https://pastvu.com/',
+  pixabayEndpoint: 'https://pixabay.com/api/',
+  pixabayKey: '39437353-c3c8f978595af484ac5f324c8',
 };

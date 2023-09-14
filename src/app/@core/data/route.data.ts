@@ -13,6 +13,7 @@ export type ImageType = {
     caption?: string,
     latlng?: LatLng,
     source: PhotoSource,
+    originalPageUrl?: string;
   }
 
 export interface RouteWithLocalId extends Route {

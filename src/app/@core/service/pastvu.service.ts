@@ -22,8 +22,8 @@ export class PastvuService implements NearbyPhotos {
     };
   }
 
-  findNearbyPhotos(latlng: LatLng, distance: number, pageSize: number, page: number): Observable<ImageType[]> {
-    const skip = (page - 1 ) * pageSize;
+  findNearbyPhotos(latlng: LatLng, distance: number, pageSize: number, pageNumber: number): Observable<ImageType[]> {
+    const skip = (pageNumber - 1 ) * pageSize;
     const request = environment.pastvuEndpoint +
     `api2?method=photo.giveNearestPhotos&params={"geo":[${latlng.lat},${latlng.lng}],"distance":${distance},"limit":${pageSize}, "skip": ${skip}}`;
     return this._http.get<any>(request).pipe(
