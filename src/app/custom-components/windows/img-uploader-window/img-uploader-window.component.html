@@ -44,8 +44,14 @@
         <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode" (scrollEnd)="onScrollEnd()">
         </travale-images-selector>
     </nb-card-body>
-    <nb-card-footer>
-        <button nbButton fullWidth status="primary" size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">{{'common.done' | translate}}</button>
+    <nb-card-footer class="d-flex justify-content-center">
+        <div [nbSpinner]="isLoading" class="spinner-container"
+            nbSpinnerStatus="primary"
+            nbSpinnerSize="large"
+            nbSpinnerMessage="">
+        </div>
+        <button nbButton status="primary" size="small" shape="round" class="mt-3 mb-3" (click)="close()" [disabled]="selectedImages.length === 0">{{'common.done' | translate}}</button>
+        <button nbButton status="info" size="small" shape="round" class="m-3" (click)="ref.close()">{{'common.cancel' | translate}}</button>
     </nb-card-footer>
 </nb-card>
 

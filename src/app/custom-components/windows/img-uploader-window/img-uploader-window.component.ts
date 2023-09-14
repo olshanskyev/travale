@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImageType, PhotoSource } from 'src/app/@core/data/route.data';
-import { Observable, Subscriber, Subscription, debounceTime, distinctUntilChanged, filter, forkJoin, fromEvent, map, of } from 'rxjs';
+import { Observable, Subscriber, Subscription, debounceTime, distinctUntilChanged, filter, finalize, forkJoin, fromEvent, map, of } from 'rxjs';
 import { PastvuService } from 'src/app/@core/service/pastvu.service';
 import { LatLng } from 'leaflet';
 import { PixabayService } from 'src/app/@core/service/pixabay.service';
@@ -24,6 +24,7 @@ export class ImgUploaderWindowComponent implements OnInit {
   @Input() placeName: string;
   @ViewChild('input', { static: true }) input: ElementRef;
   private pixabaySearchSubscription$: Subscription;
+  isLoading = false;
 
   allowedImgTypes = ['image/jpeg', 'image/png' ,'image/webp' ,'image/avif', 'image/tiff', 'image/gif', 'image/svg+xml'];
   defaultThumbHeight = 120;
@@ -73,7 +74,6 @@ export class ImgUploaderWindowComponent implements OnInit {
       this.firstPixabaySearch(text);
     });
   }
-
 
   private readBlobAsImage(blob: Blob) {
     const fileReader = new FileReader();
@@ -188,7 +188,10 @@ export class ImgUploaderWindowComponent implements OnInit {
   private firstPixabaySearch(pattern: string) {
     if (this.pixabaySearchSubscription$) //unsubscribe if there is still no response
       this.pixabaySearchSubscription$.unsubscribe();
-    this.pixabayService.findPhotosByTitle(pattern, this.defaultPageSize, 1).subscribe(res => {
+    this.isLoading = true;
+    this.pixabayService.findPhotosByTitle(pattern, this.defaultPageSize, 1)
+    .pipe(finalize(() => this.isLoading = false))
+    .subscribe(res => {
       this.pixabayPhotos = res;
       this.pixabayPhotoSearched = 1;
       this.uploadedPhotos = this.pixabayPhotos;
@@ -204,7 +207,10 @@ export class ImgUploaderWindowComponent implements OnInit {
     } else if (this.tabId === 'PASTVU') {
       this.uploadedPhotos = this.pastvuPhotos;
       if (this.latlng && !this.pastvuPhotoSearched) {
-        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, 1).subscribe(res => {
+        this.isLoading = true;
+        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, 1)
+        .pipe(finalize(() => this.isLoading = false))
+        .subscribe(res => {
           this.pastvuPhotos = res;
           this.pastvuPhotoSearched = 1;
           this.uploadedPhotos = this.pastvuPhotos;
@@ -221,15 +227,23 @@ export class ImgUploaderWindowComponent implements OnInit {
 
   onScrollEnd() {
     // upload further pages
+    if (this.isLoading) // multiple events on mobile devices
+      return;
     if (this.tabId === 'PASTVU' && this.latlng && this.pastvuPhotoSearched > 0 && this.pastvuPhotoSearched < 4) {
-      this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, this.pastvuPhotoSearched + 1).subscribe(res => {
-        this.pastvuPhotos.push(...res);
-        this.pastvuPhotoSearched++;
+      this.isLoading = true;
+      this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, this.pastvuPhotoSearched + 1)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(res => {
+          this.pastvuPhotos.push(...res);
+          this.pastvuPhotoSearched++;
       });
     }
 
     if (this.tabId === 'PIXABAY' && this.pixabaySearchString && this.pixabayPhotoSearched > 0 && this.pixabayPhotoSearched < 4) {
-      this.pixabayService.findPhotosByTitle(this.pixabaySearchString, this.defaultPageSize, this.pixabayPhotoSearched + 1).subscribe(res => {
+      this.isLoading = true;
+      this.pixabayService.findPhotosByTitle(this.pixabaySearchString, this.defaultPageSize, this.pixabayPhotoSearched + 1)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe(res => {
         this.pixabayPhotos.push(...res);
         this.pixabayPhotoSearched++;
       });
@@ -239,11 +253,14 @@ export class ImgUploaderWindowComponent implements OnInit {
 
   close() {
     // resize images
+    this.isLoading = true;
     const thumbObservables: Observable<ImageType>[] = this.selectedImages.map(item =>
       // pastvu images cannot be converted into base64 in a such way (CORS restrictions)
       (item.source !== 'PASTVU')? this.resizeImageAndConvertIntoBase64(item) : of(item)
       );
-    forkJoin(thumbObservables).subscribe(res => {
+    forkJoin(thumbObservables)
+    .pipe(finalize(() => this.isLoading = false))
+    .subscribe(res => {
       this.ref.close({
         uploadedImages: res
       });
