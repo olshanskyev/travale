@@ -127,10 +127,13 @@ export class RussianLanguage {
                     isNotAFile: '{{name}} не является файлом',
                     notAllowedFileType: 'Данный тип файла не поддерживается'
                 },
-                uploadPhotos: 'Загрузить фотографии',
-                fromNetwork: 'Из сети',
-                photosFrom: 'Фотографии с сайта',
+                uploadPhotos: 'Загрузить',
+                historicalPhotosFrom: 'Исторические фотографии с сайта',
                 nothingFound: 'Ничего не найдено',
+                nearTo: ' рядом с',
+                photosFrom: 'Фотографии с сайта',
+                foundByRequest: ' найденные по запросу',
+                placeSearchingString: 'Строка для поиска изображений'
             },
 
             createRoute: {
@@ -149,7 +152,8 @@ export class RussianLanguage {
                 placeTitle: 'Заголовок места',
                 placeDescription: 'Описание места',
                 imageDescription: 'Описание Изображения',
-                addImages: 'Добавить изображения'
+                addImages: 'Добавить изображения',
+                imageFrom: 'Источник изображения',
             },
             citySelectWindow: {
                 selectCity: 'Выберите город'

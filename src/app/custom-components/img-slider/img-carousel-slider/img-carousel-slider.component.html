@@ -16,6 +16,9 @@
                     </div>
 
                     <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                    <div class="caption pixabay-source-div" *ngIf="item.source === 'PIXABAY'">{{'placeCard.imageFrom' | translate}}
+                        <a [href]="item.originalPageUrl" class="ms-2">Pixabay.com</a>
+                    </div>
             </swiper-slide>
         </swiper-container>
 

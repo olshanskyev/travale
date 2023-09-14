@@ -1,11 +1,12 @@
 
-<div class="row img-collection scrollable-container pt-1">
+<div class="row img-collection scrollable-container pt-1" (scroll)="onScroll($event)">
     <div class="col-6 col-md-4" *ngFor="let itemPhoto of images; let i=index">
-        <div class="position-relative">
+        <div class="position-relative mb-2">
             <nb-checkbox [disabled]="true" status="info" [checked]="true" class="checkbox-selected" [hidden]="!selectedArray[i]"></nb-checkbox>
              <img [src]="(itemPhoto.thumb)? itemPhoto.thumb: itemPhoto.src" (click)="onSelectImage(i)"
              [class.selected] = "selectedArray[i]"
              />
+             <label *ngIf="itemPhoto.caption" class="caption">{{itemPhoto.caption}}</label>
         </div>
     </div>
 </div>
