@@ -11,8 +11,6 @@ import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.dat
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { MapFooterService } from 'src/app/@core/service/map-footer.service';
-import { latLngBounds } from 'leaflet';
-
 
 @Component({
   selector: 'travale-create-route-page',
