@@ -82,8 +82,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.baseLayerJawgSunny
     ],
     zoom: this.zoom,
-    dragging: !L.Browser.mobile,
-    tap: !L.Browser.mobile
   };
 
   locateOptions = {
