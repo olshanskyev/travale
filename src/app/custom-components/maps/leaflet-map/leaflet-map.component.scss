@@ -18,10 +18,7 @@
     white-space: nowrap;
     max-height: 500px;
   }
-  ::ng-deep .leaflet-div-icon {
-    background: none;
-    border: none;
-  }
+
   ::ng-deep .leaflet-control-zoom a {
     text-decoration: none;
   }

@@ -1,4 +1,4 @@
-import { Layer, GeoJSON, Polygon } from 'leaflet';
+import { Layer, GeoJSON, Rectangle } from 'leaflet';
 import { Feature } from 'geojson';
 
 export type CustomGeoJsonLayer = {
@@ -33,5 +33,5 @@ export declare class CustomLayersConfig {
     baseLayers: CustomLayersMap;
     poiOverlays: CustomGeoJSONLayersMap;
     routeOverlays?: CustomGeoJSONLayersMap;
-    cityBoundingBoxLayer?: Polygon;
+    cityBoundingBoxLayer?: Rectangle;
 }

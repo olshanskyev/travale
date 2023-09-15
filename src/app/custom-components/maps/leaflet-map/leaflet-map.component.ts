@@ -6,8 +6,8 @@ import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { LeafletOverlayBuilderService, MAP_MODE } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { Place } from 'src/app/@core/data/route.data';
 import 'leaflet.locatecontrol';
-import 'leaflet-path-transform';
-import 'leaflet-path-drag';
+import 'leaflet-editable';
+import 'leaflet.path.drag';
 import { TranslateService } from '@ngx-translate/core';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -46,6 +46,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   map!: L.Map;
   private destroy$: Subject<void> = new Subject<void>();
   private previousLocation?: Location;
+
   zoom = 12;
   minZoom = 7;
   selectPlaceZoom = 16;
@@ -82,6 +83,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.baseLayerJawgSunny
     ],
     zoom: this.zoom,
+    editable: true,
   };
 
   locateOptions = {
@@ -127,21 +129,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   }
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
-    const polygonOptions: L.PathTransformPolylineOptions = (this.mode === 'FOLLOW_ROUTE') ?
-      { interactive: false, draggable: false, transform: false } :
-      { interactive: true, draggable: true, transform: true };
     if (bbox) {
       this.cityBoundingBox = bbox;
-      this.customLayersControl.cityBoundingBoxLayer = L.polygon([
-          this.cityBoundingBox.getNorthWest(),
-          this.cityBoundingBox.getNorthEast(),
-          this.cityBoundingBox.getSouthEast(),
-          this.cityBoundingBox.getSouthWest(),
-        ], polygonOptions);
-      this.customLayersControl.cityBoundingBoxLayer.on('transformed', () => {
-        this.cityBoundingBox = this.customLayersControl.cityBoundingBoxLayer?.getBounds();
-        this.cityBoundingBoxChange.emit(this.cityBoundingBox);
-      });
     }
 
   }
@@ -328,19 +317,29 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.layerToggled(layer, checked);
   }
 
+
   private addBbLayerToMap() {
-    if (this.customLayersControl.cityBoundingBoxLayer) {
+    if (this.cityBoundingBox) {
+      this.customLayersControl.cityBoundingBoxLayer = L.rectangle([
+        [this.cityBoundingBox.getNorthEast().lat, this.cityBoundingBox.getNorthEast().lng],
+        [this.cityBoundingBox.getSouthWest().lat, this.cityBoundingBox.getSouthWest().lng]
+      ]);
       this.map.addLayer(this.customLayersControl.cityBoundingBoxLayer);
-      if (this.customLayersControl.cityBoundingBoxLayer.transform)
-        this.customLayersControl.cityBoundingBoxLayer.transform.enable({scaling: true, rotation: false, uniformScaling: false});
+      if (this.mode === 'CREATE_ROUTE') {
+        this.customLayersControl.cityBoundingBoxLayer.enableEdit();
+        this.customLayersControl.cityBoundingBoxLayer.on('editable:dragend editable:editing', () => {
+          this.cityBoundingBox = this.customLayersControl.cityBoundingBoxLayer?.getBounds();
+          this.cityBoundingBoxChange.emit(this.cityBoundingBox);
+        });
+      }
+
     }
+
   }
 
   private removeBbLayerFromMap() {
     if (this.customLayersControl.cityBoundingBoxLayer) {
       this.map.removeLayer(this.customLayersControl.cityBoundingBoxLayer);
-      if (this.customLayersControl.cityBoundingBoxLayer.transform)
-        this.customLayersControl.cityBoundingBoxLayer.transform.setOptions({scaling: false});
     }
 
   }

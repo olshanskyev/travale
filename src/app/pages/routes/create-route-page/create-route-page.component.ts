@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Place, Route } from 'src/app/@core/data/route.data';
 import { LeafletMapComponent } from 'src/app/custom-components/maps/leaflet-map/leaflet-map.component';
 import { NbDialogService } from '@nebular/theme';
-import { Observable, Subject, Subscription, interval, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscription, interval, takeUntil, debounceTime } from 'rxjs';
 import { CitySelectWindowComponent } from 'src/app/custom-components/windows/city-select-window/city-select-window.component';
 import { City, CityGeometry } from 'src/app/@core/data/cities.data';
 import { MapSidebarService } from 'src/app/@core/service/map-sidebar.service';
@@ -11,6 +11,7 @@ import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.dat
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { MapFooterService } from 'src/app/@core/service/map-footer.service';
+import { latLngBounds } from 'leaflet';
 
 
 @Component({
@@ -95,7 +96,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
       this.leafletMap = this.mapSidebarService.leafletMap;
-      this.leafletMap.cityBoundingBoxChange.subscribe(citybbox => {
+      this.leafletMap.cityBoundingBoxChange.pipe(debounceTime(300), takeUntil(this.destroy$)).subscribe(citybbox => {
         this.route.boundingBox = citybbox;
       });
       this.leafletMapInitState();
