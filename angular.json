@@ -21,7 +21,8 @@
               "eva-icons",
               "leaflet",
               "leaflet.offline",
-              "file-saver"
+              "file-saver",
+              "leaflet-path-drag"
             ],
             "outputPath": "dist/travale",
             "index": "src/index.html",
