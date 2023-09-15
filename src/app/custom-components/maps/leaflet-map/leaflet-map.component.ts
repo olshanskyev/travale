@@ -82,6 +82,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.baseLayerJawgSunny
     ],
     zoom: this.zoom,
+    dragging: !L.Browser.mobile,
+    tap: !L.Browser.mobile
   };
 
   locateOptions = {
@@ -127,7 +129,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   }
 
   public setBoundingBox(bbox?: L.LatLngBounds) {
-    const polygonOptions = (this.mode === 'FOLLOW_ROUTE') ?
+    const polygonOptions: L.PathTransformPolylineOptions = (this.mode === 'FOLLOW_ROUTE') ?
       { interactive: false, draggable: false, transform: false } :
       { interactive: true, draggable: true, transform: true };
     if (bbox) {
@@ -138,7 +140,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
           this.cityBoundingBox.getSouthEast(),
           this.cityBoundingBox.getSouthWest(),
         ], polygonOptions);
-
       this.customLayersControl.cityBoundingBoxLayer.on('transformed', () => {
         this.cityBoundingBox = this.customLayersControl.cityBoundingBoxLayer?.getBounds();
         this.cityBoundingBoxChange.emit(this.cityBoundingBox);
