@@ -124,6 +124,7 @@ export class IconsService extends IconsSericeData {
         </span>`;
 
         return divIcon({
+            className: 'my-custom-pin',
             iconSize: [43,43],
             html: html,
             shadowUrl: 'assets/img/markers/marker-shadow.png',
