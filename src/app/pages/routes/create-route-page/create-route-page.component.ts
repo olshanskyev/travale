@@ -95,6 +95,9 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
   ngAfterViewInit(): void {
     setTimeout(() => { // init leaflet map
       this.leafletMap = this.mapSidebarService.leafletMap;
+      this.leafletMap.cityBoundingBoxChange.subscribe(citybbox => {
+        this.route.boundingBox = citybbox;
+      });
       this.leafletMapInitState();
     }, 0);
   }
