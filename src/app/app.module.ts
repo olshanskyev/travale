@@ -19,7 +19,7 @@ import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-po
 import { NearbyPoisOnMapPopupComponent } from './custom-components/popups/nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
 import { UserNotificationsService } from './@core/service/user-notifications.service';
 
-register();
+register(); //swiperjs
 
 registerLocaleData(localeRu, 'ru');
 const dbConfig: DBConfig  = {
