@@ -50,6 +50,7 @@ export interface Route {
     image?: ImageType;
     color: string;
     boundingBox?: LatLngBounds;
+    boundingBoxManuallySet: boolean;
     lastModifiedAt: number;
     creator: string;
 }

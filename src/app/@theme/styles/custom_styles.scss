@@ -114,3 +114,23 @@
   row-gap: 0.075rem;
 }
 
+.accept-bb-div {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-info-400);
+  border-style: solid;
+  border-radius: 50%;
+  border-color: var(--color-info-400);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.accept-bb-div:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: var(--color-info-500);
+  color: var(--color-info-500);
+  cursor: pointer;
+}

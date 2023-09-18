@@ -17,18 +17,26 @@ import {register} from 'swiper/element/bundle';
 import { LocalRouteService } from './@core/service/local.route.service';
 import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
 import { NearbyPoisOnMapPopupComponent } from './custom-components/popups/nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
+import { UserNotificationsService } from './@core/service/user-notifications.service';
 
 register();
 
 registerLocaleData(localeRu, 'ru');
 const dbConfig: DBConfig  = {
   name: 'Travale',
-  version: 1,
-  objectStoresMeta: [{
+  version: 1.0,
+  objectStoresMeta: [
+  {
     store: LocalRouteService.store(),
     storeConfig: LocalRouteService.storeConfig(),
     storeSchema: LocalRouteService.storeSchema()
-  }]
+  },
+  {
+    store: UserNotificationsService.store(),
+    storeConfig: UserNotificationsService.storeConfig(),
+    storeSchema: UserNotificationsService.storeSchema()
+  }
+]
 };
 
 @NgModule({

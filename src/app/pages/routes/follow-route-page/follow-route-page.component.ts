@@ -27,8 +27,7 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
 
   leafletMapInitState() {
     if (this.route && this.leafletMap) {
-      this.leafletMap.setBoundingBox(this.route.boundingBox);
-      this.leafletMap.setCenterLatLong(this.route.cityLatitude, this.route.cityLongitude);
+      this.leafletMap.initGeometry(this.route.cityLatitude, this.route.cityLongitude, false, this.route.boundingBox);
       this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
     }
   }

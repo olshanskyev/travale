@@ -29,7 +29,7 @@ export class MapFooterComponent implements OnDestroy {
   constructor(
     private sidebarService: NbSidebarService,
     private mapSidebarService: MapSidebarService,
-    mapFooterService: MapFooterService) {
+    private mapFooterService: MapFooterService) {
       mapFooterService.onShowPlaceInfo().pipe(takeUntil(this.destroy$)).subscribe(place => {
         this.popupPlace = place;
         this.showPopup = true;
@@ -40,6 +40,7 @@ export class MapFooterComponent implements OnDestroy {
     this.sidebarService.toggle(false, 'map-sidebar');
     setTimeout(() => { this.mapSidebarService.leafletMap.invalidate();}, 10);
     this.showPopup = false;
+    this.mapFooterService.mapToggled();
   }
 
   ngOnDestroy() {

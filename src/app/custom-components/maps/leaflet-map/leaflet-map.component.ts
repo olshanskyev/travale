@@ -1,4 +1,4 @@
-import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component,Inject, LOCALE_ID, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
 import { icon, Marker } from 'leaflet';
 import { CustomLayersConfig } from './types';
@@ -11,6 +11,7 @@ import 'leaflet.path.drag';
 import { TranslateService } from '@ngx-translate/core';
 import { OverpassapiService } from 'src/app/@core/service/overpassapi.service';
 import { Subject, takeUntil } from 'rxjs';
+import { IconsService } from 'src/app/@core/service/icons.service';
 // workaround marker-shadow not found
 const iconRetinaUrl = 'assets/img/markers/marker-icon-2x.png';
 const iconUrl = 'assets/img/markers/marker-icon.png';
@@ -37,7 +38,7 @@ export type Location = {
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent implements OnInit, OnDestroy {
+export class LeafletMapComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() mode: MAP_MODE = 'FOLLOW_ROUTE';
   @Output() locationChange: EventEmitter<{previousLocation?: Location, currentLocation: Location}> = new EventEmitter();
@@ -55,7 +56,9 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   searchPlaceMarker: L.Marker;
   nearbyPoisMarker: L.Marker;
   nearbyItemMarker: L.Marker;
+  acceptBbMarker: L.Marker;
   popupPlace: Place;
+  showBB = false;
 
   baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -115,7 +118,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     private overpassService: OverpassapiService,
     @Inject(LOCALE_ID) public locale: string,
     private overlayBuilder: LeafletOverlayBuilderService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private iconService: IconsService,
     ) {}
 
 
@@ -128,20 +132,19 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public setBoundingBox(bbox?: L.LatLngBounds) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showBB'] && changes['showBB'].currentValue) {
+      this.showBB = changes['showBB'].currentValue;
+    }
+  }
+
+  public initGeometry(latCenter: number, lonCenter: number, showBoundingBox: boolean, bbox?: L.LatLngBounds) {
     if (bbox) {
       this.cityBoundingBox = bbox;
     }
-
-  }
-
-  public setCenterLatLong(lat: number, lon: number) {
-
-    if (lat && lon) {
-      if (this.map) {
-        this.map.panTo(L.latLng(lat, lon));
-      }
-    }
+    this.showBB = showBoundingBox;
+    this.map.panTo(L.latLng(latCenter, lonCenter));
+    this.showBondingBoxToggled();
   }
 
   public invalidate() {
@@ -181,6 +184,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     //geolocation
     L.control.locate(this.locateOptions).addTo(this.map);
     this.map.on('locationfound', (event: any) => this.locationFound(event));
+
   }
 
   private placeNearbyItemMarker(feature: CustomFeature) {
@@ -317,6 +321,33 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
     this.layerToggled(layer, checked);
   }
 
+  private hideAcceptBbMarker() {
+    if (this.acceptBbMarker)
+      this.acceptBbMarker.removeFrom(this.map);
+  }
+
+  private setAcceptBbMarker() {
+    const position = this.cityBoundingBox?.getCenter();
+    if (position) {
+      if (!this.acceptBbMarker) {
+        this.acceptBbMarker = new L.Marker(position, {
+          icon: this.iconService.craeteBoundingBoxIcon()
+        });
+        this.acceptBbMarker.addTo(this.map);
+        this.acceptBbMarker.on('click', () => {
+          this.showBB = false;
+          this.removeBbLayerFromMap();
+          this.cityBoundingBoxChange.emit(this.cityBoundingBox);
+        });
+      } else { // change position
+        this.acceptBbMarker.setLatLng(position);
+        if (!this.map.hasLayer(this.acceptBbMarker)) {
+          this.acceptBbMarker.addTo(this.map);
+        }
+
+      }
+    }
+  }
 
   private addBbLayerToMap() {
     if (this.cityBoundingBox) {
@@ -327,10 +358,17 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
       this.map.addLayer(this.customLayersControl.cityBoundingBoxLayer);
       if (this.mode === 'CREATE_ROUTE') {
         this.customLayersControl.cityBoundingBoxLayer.enableEdit();
+        this.setAcceptBbMarker();
         this.customLayersControl.cityBoundingBoxLayer.on('editable:dragend editable:editing', () => {
           this.cityBoundingBox = this.customLayersControl.cityBoundingBoxLayer?.getBounds();
           this.cityBoundingBoxChange.emit(this.cityBoundingBox);
+          this.setAcceptBbMarker();
         });
+
+        this.customLayersControl.cityBoundingBoxLayer.on('editable:dragstart', () => {
+          this.hideAcceptBbMarker();
+        });
+
       }
 
     }
@@ -340,12 +378,13 @@ export class LeafletMapComponent implements OnInit, OnDestroy {
   private removeBbLayerFromMap() {
     if (this.customLayersControl.cityBoundingBoxLayer) {
       this.map.removeLayer(this.customLayersControl.cityBoundingBoxLayer);
+      this.hideAcceptBbMarker();
     }
 
   }
 
-  showBondingBoxToggled(showBB: boolean) {
-      (showBB)? this.addBbLayerToMap() : this.removeBbLayerFromMap();
+  showBondingBoxToggled() {
+      (this.showBB)? this.addBbLayerToMap() : this.removeBbLayerFromMap();
   }
 
   private placeSearchMarker(feature: CustomFeature, centeredOnMarker: boolean) {
