@@ -13,6 +13,7 @@ import { MapFooterService } from './map-footer.service';
 import { PhotonService } from './photon.service';
 import { PastvuService } from './pastvu.service';
 import { PixabayService } from './pixabay.service';
+import { UserNotificationsService } from './user-notifications.service';
 
 
 const SERVICES = [
@@ -28,7 +29,8 @@ const SERVICES = [
   LeafletOverlayBuilderService,
   MapFooterService,
   PastvuService,
-  PixabayService
+  PixabayService,
+  UserNotificationsService
 ];
 
 @NgModule({

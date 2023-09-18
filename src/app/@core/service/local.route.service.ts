@@ -55,6 +55,7 @@ export class LocalRouteService implements RouteInitializer, RouteServiceData {
       country: city.country,
       color: 'rgb(52, 152, 219)',
       boundingBox: cityBoundingBox,
+      boundingBoxManuallySet: false,
       lastModifiedAt: Date.now(),
       creator: 'not_set'
     };

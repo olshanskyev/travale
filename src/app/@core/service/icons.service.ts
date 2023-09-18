@@ -92,7 +92,7 @@ export class IconsService extends IconsSericeData {
         return this.iconsMouseOver[key];
     }
 
-    getDefaultRouteIcon(text: number | undefined, textColor: any, markerColor: any): DivIcon {
+    override getDefaultRouteIcon(text: number | undefined, textColor: any, markerColor: any): DivIcon {
         const html = `
         <span style="
             font-size: 2rem;
@@ -148,6 +148,18 @@ export class IconsService extends IconsSericeData {
         } else {
             return 'var(--color-basic-700)';
         }
+    }
+
+    override craeteBoundingBoxIcon(): DivIcon {
+        return divIcon({
+            className: 'accept-bbicon',
+                iconSize: [40,40],
+                html: `
+                <div class="accept-bb-div">
+                  &#10003;
+                </div>`,
+                iconAnchor: [20, 20],
+        });
     }
 
 

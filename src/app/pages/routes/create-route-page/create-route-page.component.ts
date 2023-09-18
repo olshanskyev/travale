@@ -11,6 +11,8 @@ import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.dat
 import { LocalRouteService } from 'src/app/@core/service/local.route.service';
 import { LeafletOverlayBuilderService } from 'src/app/@core/service/leaflet-overlay-builder.service';
 import { MapFooterService } from 'src/app/@core/service/map-footer.service';
+import { UserNotificationsService } from 'src/app/@core/service/user-notifications.service';
+import { NOTIFICATION_ITEM } from 'src/app/@core/data/one-time-notification.data';
 
 @Component({
   selector: 'travale-create-route-page',
@@ -36,8 +38,8 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
     private mapFooterService: MapFooterService,
     private localRouteService: LocalRouteService,
     private router: Router,
-    private leafletOverlaysBuilderService: LeafletOverlayBuilderService
-
+    private leafletOverlaysBuilderService: LeafletOverlayBuilderService,
+    private userNotificationsService: UserNotificationsService,
     ) {
   }
 
@@ -61,8 +63,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
 
   leafletMapInitState() {
     if (this.route && this.leafletMap) {
-      this.leafletMap.setBoundingBox(this.route.boundingBox);
-      this.leafletMap.setCenterLatLong(this.route.cityLatitude, this.route.cityLongitude);
+      this.leafletMap.initGeometry(this.route.cityLatitude, this.route.cityLongitude, !this.route.boundingBoxManuallySet, this.route.boundingBox);
       this.leafletMap.updateRouteLayer(this.route.id, this.route.title, this.route.color, this.route.places.map(item => item.geoJson));
     }
   }
@@ -96,6 +97,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
       this.leafletMap = this.mapSidebarService.leafletMap;
       this.leafletMap.cityBoundingBoxChange.pipe(debounceTime(300), takeUntil(this.destroy$)).subscribe(citybbox => {
         this.route.boundingBox = citybbox;
+        this.route.boundingBoxManuallySet = true;
       });
       this.leafletMapInitState();
     }, 0);
@@ -136,6 +138,7 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
           if (gotRoute) {
             this.route = gotRoute;
             this.leafletMapInitState();
+            this.userNotificationsService.showNotificationIfNotShown(NOTIFICATION_ITEM.SET_CITY_BOUNDING_BOX);
           }
           else {
             // route note found navigate to create new route

@@ -12,7 +12,8 @@ export class RussianLanguage {
                 back: 'Назад',
                 color: 'Цвет',
                 showMore: 'Показать больше',
-                hide: 'Скрыть'
+                hide: 'Скрыть',
+                training: 'Обучение'
             },
 
             login: {
@@ -168,9 +169,11 @@ export class RussianLanguage {
             followRoute: {
                 youAreNearby: 'Вы рядом со следующими местами',
                 openPlace: 'Открыть',
+            },
+
+            oneTimeNotifications: {
+                setCityBoundingBox: 'Установите границы города на карте. Это необходимо для точного поиска мест в черте города'
             }
-
-
         };
     }
 }

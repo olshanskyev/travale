@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef,
   Inject, LOCALE_ID } from '@angular/core';
 import { LatLng, LatLngBounds } from 'leaflet';
-import { Subscription, debounceTime, filter, forkJoin, fromEvent, map } from 'rxjs';
+import { Subscription, debounceTime, filter, forkJoin, fromEvent, map, finalize } from 'rxjs';
 import { sortByCategoryPriority, sortByDistanceFromCenter } from 'src/app/@core/data/places.data';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
 import { IconsService } from 'src/app/@core/service/icons.service';
@@ -87,8 +87,8 @@ export class SearchPlaceComponent implements OnInit {
         this.overpassapiService.searchPlace(pattern, this.bounds, this.locale),
         this.nominatimService.searchPlace(pattern, this.bounds, this.locale)
       ]
-    ).subscribe(([foundByPhoton, foundByOverpass, foundByNominatim]) => { // ToDo error handling if 1 is not available
-      this.loading = false;
+    ).pipe(finalize( () => this.loading = false))
+    .subscribe(([foundByPhoton, foundByOverpass, foundByNominatim]) => { // ToDo error handling if 1 is not available
       const foundAll = foundByOverpass.concat(foundByPhoton.concat(foundByNominatim));
       sortByDistanceFromCenter(foundAll, this.viewBoxCenter);
       sortByCategoryPriority(foundAll, this.defaultCategoryPrioList);

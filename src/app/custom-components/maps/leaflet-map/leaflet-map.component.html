@@ -62,7 +62,8 @@
                 <nb-accordion-item-body class="accordion-checkbox-body">
                     <div class="layers-checkbox-container">
                         <nb-checkbox
-                        (checkedChange)="showBondingBoxToggled($event)"
+                        [(checked)]="showBB"
+                        (checkedChange)="showBondingBoxToggled()"
                         >
                             <div>{{'leafletMap.showCityBB' | translate}}</div>
                         </nb-checkbox>
