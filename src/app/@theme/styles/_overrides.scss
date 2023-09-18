@@ -20,6 +20,13 @@
     background-color: rgba(255,255,255, 0.7);
 }
 
+.leaflet-div-icon {
+  margin-left: -4px !important;
+  margin-top: -4px !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
 @mixin nb-overrides() {
   nb-select.size-medium button {
     padding: 0.4375rem 2.2rem 0.4375rem 1.125rem !important;
