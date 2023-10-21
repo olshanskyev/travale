@@ -21,14 +21,17 @@ export class PoiOnMapPopupComponent implements OnChanges {
   wikiExtraction?: WikiExtraction;
   wikiImages: ImageType[]= [];
   isAddedToRoute = false;
+  wikiDataId?: string;
 
   addToRoute() {
     if (this.addToRouteCallback)
       this.addToRouteCallback({feature: this.feature, wikiExtraction: this.wikiExtraction,
-      wikiData: {
-        wikiArticle: this.wikiPageRef,
-        images: this.wikiImages
-      }
+      wikiData: (this.wikiDataId)? {
+          wikiDataId: this.wikiDataId,
+          wikiArticle: this.wikiPageRef,
+          images: this.wikiImages
+        }
+        : undefined
     });
     this.isAddedToRoute = true;
   }
@@ -64,7 +67,7 @@ export class PoiOnMapPopupComponent implements OnChanges {
       this.feature = changes['feature'].currentValue;
 
       const wikipedia = this.feature.properties?.wikipedia;
-      const wikidata = this.feature.properties?.wikidata;
+      this.wikiDataId = this.feature.properties?.wikidata;
       if (this.feature.properties.source === 'photon' &&
       this.feature.id &&
       this.feature.properties.osm_type &&
@@ -76,13 +79,13 @@ export class PoiOnMapPopupComponent implements OnChanges {
           Object.keys(this.feature.properties.categories)[0],
           this.preferredLanguage).subscribe(gotFeature => {
             this.feature.properties.website = gotFeature.properties.website;
-            const wikidata = gotFeature.properties.wikidata;
+            this.wikiDataId = gotFeature.properties.wikidata;
             const wikipedia = gotFeature.properties.wikipedia;
-            this.getWikiData(wikidata, wikipedia);
+            this.getWikiData(this.wikiDataId, wikipedia);
 
           });
       } else {
-        this.getWikiData(wikidata, wikipedia);
+        this.getWikiData(this.wikiDataId, wikipedia);
       }
     }
   }

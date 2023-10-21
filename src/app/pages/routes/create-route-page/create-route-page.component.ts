@@ -73,6 +73,9 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
       order: this.route.places.length + 1,
 
     };
+    if (featureInfo.wikiData?.wikiDataId) {
+      geoJson.properties.wikidata = featureInfo.wikiData?.wikiDataId;
+    }
     const name = (featureInfo.feature.properties?.['name_loc'])? featureInfo.feature.properties?.['name_loc']:
             ((featureInfo.feature.properties?.['name_en'])? featureInfo.feature.properties?.['name_en']: featureInfo.feature.properties?.['name']);
     const newPlace: Place = {
