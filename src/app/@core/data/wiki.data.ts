@@ -7,6 +7,7 @@ export type WikiExtraction = {
 }
 
 export type WikiData = {
+    wikiDataId: string,
     wikiArticle?: WikiPageRef,
     images: ImageType[],
 }

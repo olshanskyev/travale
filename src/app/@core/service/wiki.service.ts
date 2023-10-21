@@ -48,6 +48,7 @@ export class WikiService implements WikiServiceData {
             });
         }
         return {
+            wikiDataId: item.id,
             wikiArticle: wikiArticle,
             images: images
         };

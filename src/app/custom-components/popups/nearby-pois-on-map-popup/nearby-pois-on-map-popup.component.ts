@@ -27,6 +27,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
 
   wikiPageRefs: WikiPageRef[];
   wikiExtractions: WikiExtraction[];
+  wikiDataIds: string[];
   wikiImages: Array<ImageType[]>;
   activeSlideIndex = 0;
 
@@ -56,10 +57,12 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
         {
           feature: feature,
           wikiExtraction: (this.wikiExtractions)? this.wikiExtractions[this.activeSlideIndex]: undefined,
-          wikiData: {
-            wikiArticle: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined,
-            images: (this.wikiImages)? this.wikiImages[this.activeSlideIndex]: []
-          }
+          wikiData: (this.wikiDataIds[this.activeSlideIndex])? {
+              wikiDataId: this.wikiDataIds[this.activeSlideIndex],
+              wikiArticle: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined,
+              images: (this.wikiImages)? this.wikiImages[this.activeSlideIndex]: []
+            }
+          : undefined
         });
     }
   }
@@ -85,6 +88,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
                 };
               }
           }
+          this.wikiDataIds[index] = wikidata;
           this.wikiImages[index] = wikiData.images;
           if (wikiPageRef) {
             this.wikiPageRefs[index] = wikiPageRef;
@@ -115,6 +119,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
       if (this.features.length > 0) {
         this.nearbyPoiSelectedCallback(this.features[0]);
         this.wikiPageRefs = new Array(this.features.length);
+        this.wikiDataIds = new Array(this.features.length);
         this.wikiExtractions = new Array(this.features.length);
         this.wikiImages = new Array(this.features.length);
         this.loadWikiData();
