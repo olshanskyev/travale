@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
+import { ImageType } from 'src/app/@core/data/route.data';
 import { WikiExtraction, WikiPageRef } from 'src/app/@core/data/wiki.data';
 import { NominatimService } from 'src/app/@core/service/nominatim.service';
 import { WikiService } from 'src/app/@core/service/wiki.service';
@@ -18,11 +19,17 @@ export class PoiOnMapPopupComponent implements OnChanges {
 
   wikiPageRef: WikiPageRef;
   wikiExtraction?: WikiExtraction;
+  wikiImages: ImageType[]= [];
   isAddedToRoute = false;
 
   addToRoute() {
     if (this.addToRouteCallback)
-      this.addToRouteCallback({feature: this.feature, wikiExtraction: this.wikiExtraction, wikiPageRef: this.wikiPageRef});
+      this.addToRouteCallback({feature: this.feature, wikiExtraction: this.wikiExtraction,
+      wikiData: {
+        wikiArticle: this.wikiPageRef,
+        images: this.wikiImages
+      }
+    });
     this.isAddedToRoute = true;
   }
 
@@ -31,9 +38,9 @@ export class PoiOnMapPopupComponent implements OnChanges {
     if (wikidata && wikipedia) { // if wikipedia tag presents in reply, we can find wikipedia page on wikidata
       const defLangPrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
 
-      this.wikiService.getWikiPageByWikiData([this.preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( article => {
-        if (article) {
-            this.wikiPageRef = article;
+      this.wikiService.getWikiDataByWikiDataItem([this.preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( wikiData => {
+        if (wikiData.wikiArticle) {
+            this.wikiPageRef = wikiData.wikiArticle;
         } else {  //article not found, take wikipedia string and parse
             const wikiName = wikipedia?.substring(wikipedia.indexOf(':') + 1, wikipedia.length);
             if (wikiName) {
@@ -44,6 +51,8 @@ export class PoiOnMapPopupComponent implements OnChanges {
               };
             }
         }
+        this.wikiImages = wikiData.images;
+
         this.wikiService.extractTextFromArticle(this.wikiPageRef.language, this.wikiPageRef.title, 10).subscribe( wikiRes => {
             this.wikiExtraction = wikiRes;
         });

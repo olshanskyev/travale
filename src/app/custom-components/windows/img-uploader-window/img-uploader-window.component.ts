@@ -1,4 +1,5 @@
 import { Component, Input, SecurityContext, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Inject, LOCALE_ID } from '@angular/core';
 import { NbDialogRef, NbIconConfig, NbToastrService } from '@nebular/theme';
 import { TranslateService } from '@ngx-translate/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
@@ -8,6 +9,7 @@ import { Observable, Subscriber, Subscription, debounceTime, distinctUntilChange
 import { PastvuService } from 'src/app/@core/service/pastvu.service';
 import { LatLng } from 'leaflet';
 import { PixabayService } from 'src/app/@core/service/pixabay.service';
+import { WikiService } from 'src/app/@core/service/wiki.service';
 
 export type Mode = 'multi' | 'single';
 
@@ -22,6 +24,7 @@ export class ImgUploaderWindowComponent implements OnInit {
   @Input() latlng?: LatLng; // for searching nearby photos
   @Input() searchPhotoDistance = 600; // for searching nearby photos
   @Input() placeName: string;
+  @Input() wikiDataId?: string;
   @ViewChild('input', { static: true }) input: ElementRef;
   private pixabaySearchSubscription$: Subscription;
   isLoading = false;
@@ -36,9 +39,11 @@ export class ImgUploaderWindowComponent implements OnInit {
   droppedPhotos: ImageType[] = [];
   pastvuPhotos: ImageType[] = [];
   pixabayPhotos: ImageType[] = [];
+  wikidataPhotos: ImageType[] = [];
   selectedImages: ImageType[] = [];
   pastvuPhotoSearched = 0;
   pixabayPhotoSearched = 0;
+  wikiDataPhotoSearched = 0;
   defaultPageSize = 10;
 
   tabId: PhotoSource = 'DROPPED';
@@ -52,6 +57,8 @@ export class ImgUploaderWindowComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private pastvuService: PastvuService,
     private pixabayService: PixabayService,
+    private wikiService: WikiService,
+    @Inject(LOCALE_ID) private locale: string
     ) {
 
   }
@@ -202,25 +209,44 @@ export class ImgUploaderWindowComponent implements OnInit {
   onTabChange(event: any) {
     this.selectedImages = [];
     this.tabId = event.tabId;
-    if (event.tabId === 'DROPPED') {
-      this.uploadedPhotos = this.droppedPhotos;
-    } else if (this.tabId === 'PASTVU') {
-      this.uploadedPhotos = this.pastvuPhotos;
-      if (this.latlng && !this.pastvuPhotoSearched) {
-        this.isLoading = true;
-        this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, 1)
-        .pipe(finalize(() => this.isLoading = false))
-        .subscribe(res => {
-          this.pastvuPhotos = res;
-          this.pastvuPhotoSearched = 1;
-          this.uploadedPhotos = this.pastvuPhotos;
-        });
+    switch (event.tabId) {
+      case 'DROPPED': {
+        this.uploadedPhotos = this.droppedPhotos;
+        break;
       }
-
-    } else { // PIXABAY
-      this.uploadedPhotos = this.pixabayPhotos;
-      if (!this.pixabayPhotoSearched && this.pixabaySearchString) {
-        this.firstPixabaySearch(this.pixabaySearchString);
+      case 'PASTVU': {
+        this.uploadedPhotos = this.pastvuPhotos;
+        if (this.latlng && !this.pastvuPhotoSearched) {
+          this.isLoading = true;
+          this.pastvuService.findNearbyPhotos(this.latlng, this.searchPhotoDistance, this.defaultPageSize, 1)
+          .pipe(finalize(() => this.isLoading = false))
+          .subscribe(res => {
+            this.pastvuPhotos = res;
+            this.pastvuPhotoSearched = 1;
+            this.uploadedPhotos = this.pastvuPhotos;
+          });
+        }
+        break;
+      }
+      case 'PIXABAY': {
+        this.uploadedPhotos = this.pixabayPhotos;
+        if (!this.pixabayPhotoSearched && this.pixabaySearchString) {
+          this.firstPixabaySearch(this.pixabaySearchString);
+        }
+        break;
+      }
+      case 'WIKIDATA': {
+        this.uploadedPhotos = this.wikidataPhotos;
+        if (this.wikiDataId && !this.wikiDataPhotoSearched) {
+          this.isLoading = true;
+          this.wikiService.getWikiDataByWikiDataItem([this.locale, 'en'], this.wikiDataId)
+          .pipe(finalize(() => this.isLoading = false))
+          .subscribe(res => {
+            this.wikidataPhotos = res.images;
+            this.wikiDataPhotoSearched = 1;
+            this.uploadedPhotos = this.wikidataPhotos;
+          });
+        }
       }
     }
   }
@@ -255,8 +281,8 @@ export class ImgUploaderWindowComponent implements OnInit {
     // resize images
     this.isLoading = true;
     const thumbObservables: Observable<ImageType>[] = this.selectedImages.map(item =>
-      // pastvu images cannot be converted into base64 in a such way (CORS restrictions)
-      (item.source !== 'PASTVU')? this.resizeImageAndConvertIntoBase64(item) : of(item)
+      // pastvu and wikidata images cannot be converted into base64 in a such way (CORS restrictions)
+      (item.source === 'PASTVU' || item.source === 'WIKIDATA')? of(item): this.resizeImageAndConvertIntoBase64(item)
       );
     forkJoin(thumbObservables)
     .pipe(finalize(() => this.isLoading = false))

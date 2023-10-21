@@ -1,5 +1,5 @@
 <div *ngIf="features" class="main-div">
-    <span *ngIf="features.length; else nothingFound">{{'leafletMap.placesNearby' | translate}}</span>
+    <div class="pb-1" *ngIf="features.length; else nothingFound">{{'leafletMap.placesNearby' | translate}}:</div>
     <ng-template #nothingFound>
         <span>{{'leafletMap.noPlacefound' | translate}}</span>
     </ng-template>
@@ -8,7 +8,7 @@
         [config]="configSwiper" travaleSwiper class="poi-swiper">
             <swiper-slide *ngFor="let item of features; let i=index">
                 <div class="d-flex poi-item-container">
-                    <travale-poi-item [feature]="item" [preferredLanguage]="preferredLanguage" [wikiPageRef]="wikiPageRefs[i]" [wikiExtraction]="wikiExtractions[i]">
+                    <travale-poi-item [feature]="item" [preferredLanguage]="preferredLanguage" [wikiPageRef]="wikiPageRefs[i]" [wikiExtraction]="wikiExtractions[i]" [wikiImages]="wikiImages[i]">
                     </travale-poi-item>
                 </div>
 

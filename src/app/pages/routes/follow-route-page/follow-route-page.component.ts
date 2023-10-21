@@ -23,7 +23,7 @@ export class FollowRoutePageComponent implements OnInit, OnDestroy {
   showNearbyPlacesPopup = false;
   popupPlace: Place;
   nearbyPlacesToShow: Place[];
-  distanceToShowPlace = 25;
+  distanceToShowPlace = 50;
 
   leafletMapInitState() {
     if (this.route && this.leafletMap) {

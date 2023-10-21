@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { WikiPageRef } from './wiki.data';
 
 
-export type PhotoSource = 'DROPPED'|'PASTVU'|'PIXABAY';
+export type PhotoSource = 'DROPPED'|'PASTVU'|'PIXABAY'|'WIKIDATA';
 
 export type ImageType = {
     src: string,

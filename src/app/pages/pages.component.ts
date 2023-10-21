@@ -57,7 +57,8 @@ export class PagesComponent implements OnInit {
     iconsLibrary.registerFontPack('fa', { packClass: 'fa', iconClassPrefix: 'fa' });
     iconsLibrary.registerSvgPack('other', {
       'pastvu': '<img style="display: block" src="../../assets/pastvu_logo.png" width="20px">',
-      'pixabay': '<img style="display: block" src="../../assets/pixabay_logo.png" width="20px">'
+      'pixabay': '<img style="display: block" src="../../assets/pixabay_logo.png" width="20px">',
+      'wiki': '<img style="display: block" src="../../assets/wiki_logo.png" width="20px">'
     });
   }
 

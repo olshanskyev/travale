@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CustomFeature } from 'src/app/@core/data/poi.data';
+import { ImageType } from 'src/app/@core/data/route.data';
 import { WikiExtraction, WikiPageRef } from 'src/app/@core/data/wiki.data';
 import { IconsService } from 'src/app/@core/service/icons.service';
 
@@ -14,6 +15,7 @@ export class PoiItemComponent {
   @Input() preferredLanguage: string;
   @Input() wikiPageRef?: WikiPageRef;
   @Input() wikiExtraction?: WikiExtraction;
+  @Input() wikiImages?: ImageType[];
 
   showWikiInfo = false;
 

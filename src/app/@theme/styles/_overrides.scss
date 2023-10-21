@@ -15,6 +15,10 @@
   z-index: 1080 !important;
 }
 
+.tabset { // image uploader
+  justify-content: space-between;
+}
+
 .nearbyPopupStyle .leaflet-popup-content-wrapper,
 .nearbyPopupStyle .leaflet-popup-tip {
     background-color: rgba(255,255,255, 0.7);
@@ -27,6 +31,14 @@
   height: 8px !important;
 }
 
+@include media-breakpoint-down(lg) {
+  .leaflet-div-icon {
+    margin-left: -6px !important;
+    margin-top: -6px !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+}
 @mixin nb-overrides() {
   nb-select.size-medium button {
     padding: 0.4375rem 2.2rem 0.4375rem 1.125rem !important;

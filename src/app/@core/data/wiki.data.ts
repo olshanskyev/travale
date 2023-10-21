@@ -1,10 +1,15 @@
 import { Observable } from 'rxjs';
+import { ImageType } from './route.data';
 
 export type WikiExtraction = {
     title: string;
     extract: string
 }
 
+export type WikiData = {
+    wikiArticle?: WikiPageRef,
+    images: ImageType[],
+}
 export type WikiPageRef = {
     language: string;
     title: string;
@@ -13,5 +18,5 @@ export type WikiPageRef = {
 
 export interface WikiServiceData {
     extractTextFromArticle(language: string, title: string, sentences: number): Observable<WikiExtraction>;
-    getWikiPageByWikiData(preferredLanguages: string[], wikidataItem: string): Observable<WikiPageRef | null>;
+    getWikiDataByWikiDataItem(preferredLanguages: string[], wikidataItem: string): Observable<WikiData>;
 }

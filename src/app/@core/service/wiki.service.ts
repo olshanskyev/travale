@@ -1,8 +1,9 @@
 import { Observable, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WikiExtraction, WikiPageRef, WikiServiceData } from '../data/wiki.data';
+import { WikiData, WikiExtraction, WikiServiceData } from '../data/wiki.data';
 import { environment } from 'src/environments/environment';
+import { ImageType } from '../data/route.data';
 
 
 
@@ -11,6 +12,8 @@ export class WikiService implements WikiServiceData {
 
     constructor(private _http: HttpClient) {
     }
+    private defaultImageWidth = 1024;
+    private defaultThumbWidth = 180;
 
     private mapExtractReply(item: any): {title: string; extract: string} {
         return {
@@ -24,20 +27,35 @@ export class WikiService implements WikiServiceData {
         return this._http.get<any>(wikiUrl).pipe(map(item => this.mapExtractReply(item)));
     }
 
-    private mapWikiDataIntoWikipediaPage(preferredLanguages: string[], item: any): WikiPageRef | null {
+    private mapWikiData(preferredLanguages: string[], item: any): WikiData {
         const foundLang = preferredLanguages.find(lang => item.sitelinks?.[lang + 'wiki']);
-        return (foundLang)?
+        const wikiArticle = (foundLang)?
             {
                 language: foundLang,
                 title: item.sitelinks?.[foundLang + 'wiki'].title,
                 url: item.sitelinks?.[foundLang + 'wiki'].url,
             }
-        : null;
+        : undefined;
+
+        let images: ImageType[] = [];
+        if (item.statements?.P18) {
+            images = item.statements?.P18.map((itemP18: any) => {
+                return {
+                    src: `${environment.wikimediaEndpiint}thumb.php?width=${this.defaultImageWidth}&f=${itemP18.value?.content}`,
+                    thumb: `${environment.wikimediaEndpiint}thumb.php?width=${this.defaultThumbWidth}&f=${itemP18.value?.content}`,
+                    source: 'WIKIDATA'
+                } as ImageType;
+            });
+        }
+        return {
+            wikiArticle: wikiArticle,
+            images: images
+        };
     }
 
-    getWikiPageByWikiData(preferredLanguages: string[], wikidataItem: string): Observable<WikiPageRef | null> {
+    getWikiDataByWikiDataItem(preferredLanguages: string[], wikidataItem: string): Observable<WikiData> {
         const url = environment.wikidataEndpoint + 'entities/items/' + wikidataItem;
-        return this._http.get<any>(url).pipe(map( item => this.mapWikiDataIntoWikipediaPage(preferredLanguages, item)));
+        return this._http.get<any>(url).pipe(map( item => this.mapWikiData(preferredLanguages, item)));
     }
 
 

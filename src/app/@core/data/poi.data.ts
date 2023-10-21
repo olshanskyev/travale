@@ -1,14 +1,14 @@
 import { LatLng, LatLngBounds } from 'leaflet';
 import { Observable } from 'rxjs';
 import { Feature, Geometry } from 'geojson';
-import { WikiExtraction, WikiPageRef } from './wiki.data';
+import { WikiData, WikiExtraction } from './wiki.data';
 
 export type JsonFeatureSource = 'nominatim' | 'overpass' | 'photon' | 'manually_added';
 
 export type AggregatedFeatureInfo = {
     feature: CustomFeature,
     wikiExtraction?: WikiExtraction,
-    wikiPageRef?: WikiPageRef
+    wikiData?: WikiData
 }
 
 export class CustomFeature implements Feature {

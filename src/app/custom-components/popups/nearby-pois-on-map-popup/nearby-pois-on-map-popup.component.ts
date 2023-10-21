@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LatLng } from 'leaflet';
 import { AggregatedFeatureInfo, CustomFeature } from 'src/app/@core/data/poi.data';
 import Swiper, { SwiperOptions } from 'swiper';
-import genUniqueId from '../../../@core/data/route.data';
+import genUniqueId, { ImageType } from '../../../@core/data/route.data';
 import { WikiService } from 'src/app/@core/service/wiki.service';
 import { WikiExtraction, WikiPageRef } from 'src/app/@core/data/wiki.data';
 
@@ -27,7 +27,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
 
   wikiPageRefs: WikiPageRef[];
   wikiExtractions: WikiExtraction[];
-
+  wikiImages: Array<ImageType[]>;
   activeSlideIndex = 0;
 
   public configSwiper: SwiperOptions = {
@@ -56,7 +56,10 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
         {
           feature: feature,
           wikiExtraction: (this.wikiExtractions)? this.wikiExtractions[this.activeSlideIndex]: undefined,
-          wikiPageRef: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined
+          wikiData: {
+            wikiArticle: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined,
+            images: (this.wikiImages)? this.wikiImages[this.activeSlideIndex]: []
+          }
         });
     }
   }
@@ -69,9 +72,9 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
       if (wikidata && wikipedia) { // if wikipedia tag presents in reply, we can find wikipedia page on wikidata
         const defLangPrefix = wikipedia?.substring(0, wikipedia.indexOf(':'));
         let wikiPageRef: WikiPageRef;
-        this.wikiService.getWikiPageByWikiData([this.preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( article => {
-          if (article) {
-            wikiPageRef = article;
+        this.wikiService.getWikiDataByWikiDataItem([this.preferredLanguage, 'en', defLangPrefix], wikidata).subscribe( wikiData => {
+          if (wikiData.wikiArticle) {
+            wikiPageRef = wikiData.wikiArticle;
           } else {  //article not found, take wikipedia string and parse
               const wikiName = wikipedia?.substring(wikipedia.indexOf(':') + 1, wikipedia.length);
               if (wikiName) {
@@ -82,6 +85,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
                 };
               }
           }
+          this.wikiImages[index] = wikiData.images;
           if (wikiPageRef) {
             this.wikiPageRefs[index] = wikiPageRef;
             this.wikiService.extractTextFromArticle(wikiPageRef.language, wikiPageRef.title, 10).subscribe( wikiRes => {
@@ -112,6 +116,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
         this.nearbyPoiSelectedCallback(this.features[0]);
         this.wikiPageRefs = new Array(this.features.length);
         this.wikiExtractions = new Array(this.features.length);
+        this.wikiImages = new Array(this.features.length);
         this.loadWikiData();
       }
 
