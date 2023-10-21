@@ -79,7 +79,9 @@ export class CreateRoutePageComponent implements OnInit, OnDestroy, AfterViewIni
       id: featureInfo.feature.id,
       name: (name)? name: '',
       description: featureInfo.wikiExtraction?.extract,
-      wikiPageRef: featureInfo.wikiPageRef,
+      wikiPageRef: featureInfo.wikiData?.wikiArticle,
+      // only first image from wiki
+      images: (featureInfo.wikiData?.images && featureInfo.wikiData?.images.length > 0)? [featureInfo.wikiData?.images[0]]: [],
       geoJson: geoJson,
     };
     this.route.places.push(newPlace);

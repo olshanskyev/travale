@@ -1,3 +1,5 @@
+<travale-img-thumbs-slider *ngIf="wikiImages && wikiImages.length > 0" [images]="wikiImages"></travale-img-thumbs-slider>
+
 <div *ngIf="feature.properties?.['name'] || feature.properties?.['name_loc'] || feature.properties?.['name_en']" class="subtitle w-100">{{
     (feature.properties['name_loc'])? feature.properties['name_loc']:
         ((this.feature.properties['name_en'])? this.feature.properties['name_en']: this.feature.properties['name'])

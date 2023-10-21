@@ -11,6 +11,7 @@ export const environment = {
   nominatimEndpoint: 'https://nominatim.openstreetmap.org/',
   wikipediaEndpoint: 'https://{{lng}}.wikipedia.org/w/api.php',
   wikidataEndpoint: 'https://www.wikidata.org/w/rest.php/wikibase/v0/',
+  wikimediaEndpiint: 'https://commons.wikimedia.org/w/',
   photonEndpoint: 'https://photon.komoot.io/api/',
   pastvuEndpoint: 'https://pastvu.com/',
   pixabayEndpoint: 'https://pixabay.com/api/',

@@ -31,7 +31,8 @@ export class PlaceCardComponent {
       context: {
         uploadMode: 'multi',
         latlng: placeLatLng,
-        placeName: this.place.name
+        placeName: this.place.name,
+        wikiDataId: this.place.geoJson.properties.wikidata
       },
       dialogClass: 'animated-dialog'
     })

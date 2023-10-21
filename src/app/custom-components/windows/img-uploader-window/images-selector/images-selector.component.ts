@@ -36,7 +36,7 @@ export class ImagesSelectorComponent implements OnChanges {
 
   onScroll(event: any) {
     // visible height + pixel scrolled >= total height
-    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) {
+    if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight - 1) {
       this.scrollEnd.emit();
     }
 }

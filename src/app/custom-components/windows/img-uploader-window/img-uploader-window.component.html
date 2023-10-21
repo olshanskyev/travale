@@ -11,7 +11,7 @@
                     </ng-template>
                 </ngx-file-drop>
             </nb-tab>
-            <nb-tab tabId="PASTVU" tabTitle="pastvu.com" [tabIcon]="{icon: 'pastvu', pack: 'other'}" responsive>
+            <nb-tab tabId="PASTVU" tabTitle="pastvu" [tabIcon]="{icon: 'pastvu', pack: 'other'}" responsive>
                 <div>
                     <span>{{'imgUploader.historicalPhotosFrom' | translate}} <a href="https://pastvu.com">pastvu.com</a></span>
                     <span *ngIf="placeName">
@@ -19,7 +19,7 @@
                     </span>
                 </div>
             </nb-tab>
-            <nb-tab tabId="PIXABAY" tabTitle="pixabay.com" [tabIcon]="{icon: 'pixabay', pack: 'other'}" responsive>
+            <nb-tab tabId="PIXABAY" tabTitle="pixabay" [tabIcon]="{icon: 'pixabay', pack: 'other'}" responsive>
                 <div>
                     <span>{{'imgUploader.photosFrom' | translate}} <a href="https://pixabay.com/">pixabay.com</a></span>
                     <span>
@@ -35,6 +35,11 @@
                         >
                         <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
                     </nb-form-field>
+                </div>
+            </nb-tab>
+            <nb-tab *ngIf="wikiDataId" tabId="WIKIDATA" tabTitle="wiki" [tabIcon]="{icon: 'wiki', pack: 'other'}" responsive>
+                <div>
+                    <span>{{'imgUploader.photosFrom' | translate}} <a href="https://wikidata.org/">wikidata.org</a></span>
                 </div>
             </nb-tab>
         </nb-tabset>
