@@ -18,6 +18,7 @@ export class PlaceCardComponent {
   @Input() editable = false;
   @Input() place: Place;
 
+  private defaultImgUploadLimit = 10;
   constructor(private dialogService: NbDialogService) {
 
   }
@@ -30,6 +31,7 @@ export class PlaceCardComponent {
     this.dialogService.open(ImgUploaderWindowComponent, {
       context: {
         uploadMode: 'multi',
+        uploadLimit: this.defaultImgUploadLimit - ((this.place.images)? this.place.images.length: 0),
         latlng: placeLatLng,
         placeName: this.place.name,
         wikiDataId: this.place.geoJson.properties.wikidata

@@ -46,7 +46,9 @@
         <div *ngIf="(tabId !== 'DROPPED' && uploadedPhotos.length === 0)" >
             {{'imgUploader.nothingFound' | translate}}
         </div>
-        <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode" (scrollEnd)="onScrollEnd()">
+        <travale-images-selector (selected)="onImgSelected($event)" [images]="uploadedPhotos" [selectMode]="uploadMode" (scrollEnd)="onScrollEnd()"
+        [selectLimit]="(uploadMode === 'multi' && uploadLimit !== undefined)? uploadLimit: undefined"
+        >
         </travale-images-selector>
     </nb-card-body>
     <nb-card-footer class="d-flex justify-content-center">

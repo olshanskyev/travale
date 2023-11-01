@@ -134,7 +134,8 @@ export class RussianLanguage {
                 nearTo: ' рядом с',
                 photosFrom: 'Фотографии с сайта',
                 foundByRequest: ' найденные по запросу',
-                placeSearchingString: 'Строка для поиска изображений'
+                placeSearchingString: 'Строка для поиска изображений',
+                maxNumberOfImgsSelected: 'Выбрано максимальное количество изображений для одного места'
             },
 
             createRoute: {
