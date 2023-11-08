@@ -45,6 +45,18 @@ export class PlaceCardComponent {
         else
           this.place.images = result.uploadedImages;
     });
-    }
   }
+
+  recordingFinished(audioRecord: string) {
+    this.place.audio = {
+      base64: audioRecord,
+      source: 'RECORD'
+    };
+  }
+
+  clearAudio() {
+    this.place.audio = undefined;
+  }
+
+}
 

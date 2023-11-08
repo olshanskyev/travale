@@ -12,6 +12,7 @@ import { PoiItemComponent } from './poi-on-map-popup/poi-item/poi-item.component
 import { NearbyPoisOnMapPopupComponent } from './nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
 import { SwiperDirective } from '../img-slider/img-slider-directive';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AudioPlayerModule } from '../audio-player/audio-player.module';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     ImgSlidersModule,
     ExpandableTextAreaModule,
     SwiperDirective,
+    AudioPlayerModule,
   ],
   declarations: [
     PlaceOnMapPopupComponent,

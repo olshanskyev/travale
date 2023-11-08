@@ -25,7 +25,7 @@ export class ImgUploaderWindowComponent implements OnInit {
   @Input() searchPhotoDistance = 600; // for searching nearby photos
   @Input() placeName: string;
   @Input() wikiDataId?: string;
-  @Input() uploadLimit?: number
+  @Input() uploadLimit?: number;
   @ViewChild('input', { static: true }) input: ElementRef;
   private pixabaySearchSubscription$: Subscription;
   isLoading = false;

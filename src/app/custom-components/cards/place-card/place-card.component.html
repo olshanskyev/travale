@@ -32,6 +32,39 @@
                     <nb-icon nbSuffix class="edit-icon" icon="edit-outline" pack="eva"></nb-icon>
                 </nb-form-field>
                 <travale-expandable-textarea class="w-100 mt-1" [(value)]="place.description" placeholder="{{'placeCard.placeDescription' | translate}}"></travale-expandable-textarea>
+
+                <nb-accordion>
+                    <nb-accordion-item>
+                     <nb-accordion-item-header class="p-1 audion-accordion-header">
+                      <div class="subtitle">
+                        {{'placeCard.audio' | translate}}
+                      </div>
+                      <nb-icon icon="music-outline" pack="eva" class="ps-1 ms-2 ghost-color"></nb-icon>
+                     </nb-accordion-item-header>
+                     <nb-accordion-item-body>
+                        <div *ngIf="place.audio" class="d-flex align-items-center">
+                            <div class="caption">
+                                {{(place.audio.source === 'RECORD') ?
+                                ('placeCard.voiceRecord' | translate) :
+                                ('placeCard.audionFile' | translate)
+                            }}
+                            </div>
+                            <button class="ms-2" size="tiny" nbButton (click)="clearAudio()">
+                                <nb-icon class="edit-icon" icon="close-outline" pack="eva"></nb-icon>
+                            </button>
+                        </div>
+
+
+                        <travale-audio-player [recordingEnabled]="!place.audio"
+                        (recordingFinished)="recordingFinished($event)"
+                        [audioBase64]="place.audio?.base64"
+                        class="mt-1 d-block"></travale-audio-player>
+
+                     </nb-accordion-item-body>
+                    </nb-accordion-item>
+                  </nb-accordion>
+
+
             </nb-card-body>
         </nb-card>
     </ng-template>
