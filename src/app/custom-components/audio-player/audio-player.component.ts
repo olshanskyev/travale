@@ -47,23 +47,27 @@ export class AudioPlayerComponent implements OnChanges {
     return new Promise(resolve => {
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
-          this.toastrService.warning('after getUserMedia');
+          let mimeType: string;
+          this.toastrService.warning('audio/webm ' + MediaRecorder.isTypeSupported('audio/webm'));
+          this.toastrService.warning('video/mp4 ' + MediaRecorder.isTypeSupported('video/mp4'));
+          if (MediaRecorder.isTypeSupported('audio/webm')) {
+            mimeType = 'audio/webm';
+          } else {
+            mimeType = 'video/mp4'; // for iOs
+          }
           const mediaRecorder = new MediaRecorder(stream, {
-            mimeType: 'audio/webm',
+            mimeType: mimeType,
             //numberOfAudioChannels: 1,
             audioBitsPerSecond : 8000,
           });
-          this.toastrService.warning(mediaRecorder.stream.id);
           const audioChunks: any[] = [];
           let recordDuration = 0; // seconds
           let recordTimer: NodeJS.Timer;
           mediaRecorder.addEventListener('dataavailable', event => {
             audioChunks.push(event.data);
-            this.toastrService.warning('chunks');
           });
 
           const start = () => {
-            this.toastrService.warning('recording');
             this.state = 'recording';
             this.recordSaved = false;
             if (!recordTimer) {
