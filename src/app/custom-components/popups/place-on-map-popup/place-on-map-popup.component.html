@@ -37,6 +37,11 @@
             </small>
         </div>
         <travale-expandable-textarea class="mt-1" *ngIf="place.description" [readonly]="true" [value]="place.description"></travale-expandable-textarea>
+        <travale-audio-player *ngIf="place.audio?.base64"
+            [recordingEnabled]="false"
+            [showProgress]="true"
+            [audioBase64]="place.audio?.base64"
+            class="mt-1 d-block"></travale-audio-player>
     </div>
 
 

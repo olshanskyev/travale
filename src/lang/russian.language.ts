@@ -134,7 +134,8 @@ export class RussianLanguage {
                 nearTo: ' рядом с',
                 photosFrom: 'Фотографии с сайта',
                 foundByRequest: ' найденные по запросу',
-                placeSearchingString: 'Строка для поиска изображений'
+                placeSearchingString: 'Строка для поиска изображений',
+                maxNumberOfImgsSelected: 'Выбрано максимальное количество изображений для одного места'
             },
 
             createRoute: {
@@ -155,6 +156,9 @@ export class RussianLanguage {
                 imageDescription: 'Описание Изображения',
                 addImages: 'Добавить изображения',
                 imageFrom: 'Источник изображения',
+                audio: 'Аудио',
+                voiceRecord: 'Запись голоса',
+                audioFile: 'Аудио файл',
             },
             citySelectWindow: {
                 selectCity: 'Выберите город'
@@ -170,7 +174,13 @@ export class RussianLanguage {
                 youAreNearby: 'Вы рядом со следующими местами',
                 openPlace: 'Открыть',
             },
-
+            player: {
+                recording: 'Идет запись...',
+                maxRecordLength: 'максимум',
+                seconds: 'секунд',
+                maxAudioLengthExceeded: 'Превышена максимальная длина',
+                maxAudioLengthExceededSec: 'Превышена максимальная длина аудиозаписи: {{length}} секунд',
+            },
             oneTimeNotifications: {
                 setCityBoundingBox: 'Установите границы города на карте. Это необходимо для точного поиска мест в черте города'
             }

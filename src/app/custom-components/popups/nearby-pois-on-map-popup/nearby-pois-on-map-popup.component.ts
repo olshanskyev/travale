@@ -57,7 +57,7 @@ export class NearbyPoisOnMapPopupComponent implements OnChanges {
         {
           feature: feature,
           wikiExtraction: (this.wikiExtractions)? this.wikiExtractions[this.activeSlideIndex]: undefined,
-          wikiData: (this.wikiDataIds[this.activeSlideIndex])? {
+          wikiData: (this.wikiDataIds && this.wikiDataIds[this.activeSlideIndex])? {
               wikiDataId: this.wikiDataIds[this.activeSlideIndex],
               wikiArticle: (this.wikiPageRefs)? this.wikiPageRefs[this.activeSlideIndex]: undefined,
               images: (this.wikiImages)? this.wikiImages[this.activeSlideIndex]: []

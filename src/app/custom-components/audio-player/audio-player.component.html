@@ -1,0 +1,36 @@
+<div>
+    <button *ngIf="recordingEnabled" [status]="(state === 'recording')? 'danger': 'info'" nbButton (click)="(state === 'recording')? stopRecord(): startRecord()"
+        class="me-2">
+        <nb-icon [icon]="(state === 'recording')? 'stop-circle-outline': 'mic-outline'" pack="eva"></nb-icon>
+    </button>
+
+    <button [disabled]="!audio || state === 'recording'" status="primary" nbButton
+    (click)="(state === 'playing')? pause(): play()"
+    >
+        <nb-icon [icon]="(state === 'playing')? 'pause-circle-outline': 'play-circle-outline'" pack="eva"></nb-icon>
+    </button>
+    <button nbButton shape="round" status="primary" class="ms-4" [hidden]="!recorder || state === 'recording' || recordSaved" (click)="acceptRecord()">
+        <nb-icon icon="checkmark-outline" pack="eva"></nb-icon>
+    </button>
+
+    <div *ngIf="state === 'recording'" class="caption mt-1 d-flex">
+        <div>{{'player.recording' | translate}}</div>
+        <div *ngIf="recorder" class="ms-2">{{recorder.getDuration() / 10 | number: '1.1-1'}}</div>
+        <div class="ms-2">{{'player.maxRecordLength' | translate}}: {{maxRecordDuration}} {{'player.seconds' | translate}}</div>
+    </div>
+
+    <div class="progress-wrap pb-4" *ngIf="showProgress && audio && state !== 'recording'">
+        <input dir="ltr" type="range" class="progress" [value]="progress" min="0" max="100" step="0.01"
+               (input)="setProgress(duration.value)" #duration>
+        <div class="progress-foreground" [style.width.%]="progress"></div>
+
+    </div>
+    <div class="d-flex w-100 justify-content-between caption" *ngIf="showProgress && audio && state !== 'recording'">
+        <div>0</div>
+        <div>{{audio.currentTime | number: '1.1-1'}}</div>
+        <div>{{getAudioDuration() | number: '1.0-0'}}</div>
+    </div>
+
+</div>
+
+

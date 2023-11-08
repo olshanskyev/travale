@@ -6,6 +6,7 @@ import { WikiPageRef } from './wiki.data';
 
 
 export type PhotoSource = 'DROPPED'|'PASTVU'|'PIXABAY'|'WIKIDATA';
+export type AudioSource = 'RECORD'|'FILE';
 
 export type ImageType = {
     src: string,
@@ -62,6 +63,10 @@ export interface Place {
     images?: ImageType[];
     wikiPageRef?: WikiPageRef;
     geoJson: CustomFeature;
+    audio?: {
+        base64: string;
+        source: AudioSource;
+    };
 }
 
 export interface RouteInitializer {

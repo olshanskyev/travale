@@ -12,6 +12,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MarkerIconComponent } from '../marker-icon/marker-icon.component';
 import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-textarea.module';
+import { AudioPlayerModule } from '../audio-player/audio-player.module';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { ExpandableTextAreaModule } from '../expandable-textarea/expandable-text
         NbListModule,
         NgxFileDropModule,
         DragDropModule,
-        ExpandableTextAreaModule
+        ExpandableTextAreaModule,
+        AudioPlayerModule
     ],
     declarations: [
         CountryInfoCardComponent,
