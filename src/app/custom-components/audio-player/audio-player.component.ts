@@ -43,20 +43,17 @@ export class AudioPlayerComponent implements OnChanges {
     }
   }
 
+  // 'video/mp4' for ios
+  private getMimeType(): string {
+    return (MediaRecorder.isTypeSupported('audio/webm'))? 'audio/webm': 'video/mp4'; // for iOs
+  }
+
   private startRecording(): Promise<Recorder> {
     return new Promise(resolve => {
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(stream => {
-          let mimeType: string;
-          this.toastrService.warning('audio/webm ' + MediaRecorder.isTypeSupported('audio/webm'));
-          this.toastrService.warning('video/mp4 ' + MediaRecorder.isTypeSupported('video/mp4'));
-          if (MediaRecorder.isTypeSupported('audio/webm')) {
-            mimeType = 'audio/webm';
-          } else {
-            mimeType = 'video/mp4'; // for iOs
-          }
           const mediaRecorder = new MediaRecorder(stream, {
-            mimeType: mimeType,
+            mimeType: this.getMimeType(),
             //numberOfAudioChannels: 1,
             audioBitsPerSecond : 8000,
           });
@@ -91,7 +88,7 @@ export class AudioPlayerComponent implements OnChanges {
           const stop = () => {
             return new Promise<Blob>(resolve => {
               mediaRecorder.addEventListener('stop', () => {
-                const audioBlob = new Blob(audioChunks, { 'type' : 'audio/wav; codecs=MS_PCM' });
+                const audioBlob = new Blob(audioChunks, { 'type' : this.getMimeType() });
                 const audioUrl = URL.createObjectURL(audioBlob);
                 recordedAudio = new Audio(audioUrl);
                 this.state = 'stopped';
