@@ -93,7 +93,7 @@ export class SearchDestinationInputComponent implements OnInit {
           } as DisplayData;
         })),
       ): of([]),
-      (this.mode !== 'only_countries')? this.citiesService.findCitiesByPattern(pattern).pipe(
+      (this.mode !== 'only_countries')? this.citiesService.findCitiesByPattern(pattern, this.locale).pipe(
         map(cities => cities.map(city => {
           return {
             displayName: city.fullName,
@@ -104,10 +104,10 @@ export class SearchDestinationInputComponent implements OnInit {
     ]
 
     ).subscribe(([countries, cities]) => {
+      this.foundDestinations = null;
       this.foundDestinations = countries.concat(cities);
       if (this.foundDestinations.length === 0)
         this.foundDestinations = [this.popularDestinations];
-      //this.filteredOptions$ = of(this.foundDestinations);
       });
   }
 

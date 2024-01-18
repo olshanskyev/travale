@@ -1,10 +1,12 @@
 import { Observable } from 'rxjs';
 import { Destination } from './destination.data';
 
+export interface CitiesSearch {
+    findCitiesByPattern(pattern: string, locale?: string): Observable<City[]>;
+}
 
-export abstract class CitiesServiceData {
-    abstract findCitiesByPattern(pattern: string): Observable<City[]>;
-    abstract getCityGeometry(city: City): Observable<CityGeometry>;
+export interface CitiesGeometry {
+    getCityGeometry(city: City): Observable<CityGeometry>;
 }
 
 export interface CityGeometry {
@@ -17,7 +19,9 @@ export class City extends Destination {
     constructor() {
         super('city');
     }
-    selfLink: string;
+    selfLink?: string; // comes from teleport api used to get city geometry
+    lat?: number;
+    lon?: number;
     name: string;
     fullName: string;
     country: string;

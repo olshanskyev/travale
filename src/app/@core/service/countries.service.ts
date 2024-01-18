@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Country, CountriesServiceData } from '../data/countries.data';
+import { NbToastrService } from '@nebular/theme';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable()
@@ -33,7 +35,9 @@ export class CountriesService extends CountriesServiceData {
     ['zh', 'zho'],
   ]);
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient,
+    private toastrService: NbToastrService,
+    private translateService: TranslateService) {
     super();
   }
 
@@ -47,10 +51,16 @@ export class CountriesService extends CountriesServiceData {
     return this._http.get<Country[]>(url).pipe(map(countries => countries[0]));
   }
 
-
   override findCountriesByPattern(pattern: string): Observable<Country[]> {
     const url = environment.countriesEndpoint + 'translation/' + pattern;
-    return this._http.get<Country[]>(url).pipe(catchError(() => {
+    return this._http.get<Country[]>(url).pipe(catchError((error) => {
+      if (error.error.status !== 404) { // no entries found. not an error
+        this.toastrService.danger(
+          this.translateService.instant('restServices.errors.countiresServiceNotAvailable'),
+          this.translateService.instant('common.error')
+        );
+      }
+
       return of([]);
     }));
   }

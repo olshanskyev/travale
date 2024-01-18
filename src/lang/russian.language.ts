@@ -183,6 +183,12 @@ export class RussianLanguage {
             },
             oneTimeNotifications: {
                 setCityBoundingBox: 'Установите границы города на карте. Это необходимо для точного поиска мест в черте города'
+            },
+            restServices: {
+                errors : {
+                    citiesServiceNotAvailable: 'Сервис поиска городов временно недоступен',
+                    countiresServiceNotAvailable: 'Сервис поиска стран временно недоступен',
+                }
             }
         };
     }

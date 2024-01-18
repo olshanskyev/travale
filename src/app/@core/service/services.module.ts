@@ -14,6 +14,8 @@ import { PhotonService } from './photon.service';
 import { PastvuService } from './pastvu.service';
 import { PixabayService } from './pixabay.service';
 import { UserNotificationsService } from './user-notifications.service';
+import { TeleportCitiesSearchService } from './teleport.cities.search.service';
+import { QweatherCitiesSearchService } from './qweather.cities.search.service';
 
 
 const SERVICES = [
@@ -30,7 +32,9 @@ const SERVICES = [
   MapFooterService,
   PastvuService,
   PixabayService,
-  UserNotificationsService
+  UserNotificationsService,
+  TeleportCitiesSearchService,
+  QweatherCitiesSearchService,
 ];
 
 @NgModule({
