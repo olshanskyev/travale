@@ -140,7 +140,12 @@ export class SelectDestinationMapComponent implements OnDestroy {
       case 'city': {
         const city: City = destination as City;
         this.citySelect.emit(city);
-        this.selectCountryOnMap(city.country);
+        // to select country on map. country name can be in local name
+        this.countriesService.findCountriesByPattern(city.country).subscribe(res => {
+          if (res[0])
+            this.selectCountryOnMap(res[0].name.common);
+        });
+
         break;
       }
       case 'popular_destinations': {
