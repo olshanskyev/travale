@@ -15,6 +15,13 @@ export class RussianLanguage {
                 hide: 'Скрыть',
                 training: 'Обучение'
             },
+            errors: {
+                serverCommunicationError: 'Ошибка связи с сервером',
+                Unauthorized: 'Пользователь не авторизован',
+                Forbidden: 'Доступ запрещен',
+                badCredentials: 'Неверные логин/пароль',
+                userNotFound: 'Пользователь {{user}} не найден',
+            },
 
             login: {
                 email: 'Электронная почта',

@@ -90,6 +90,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "sslKey": "certs/travale.pem",
+            "sslCert": "certs/travale.crt",
+            "browserTarget": "travale:build"
+          },
           "configurations": {
             "production": {
               "browserTarget": "travale:build:production"

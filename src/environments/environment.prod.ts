@@ -1,6 +1,6 @@
 export const environment = {
-  production: false,
-  baseEndpoint: 'http://localhost:8081/',
+  production: true,
+  baseEndpoint: 'https://<ENDPOINT_IP>:8199/travale/api/v1/',
   countriesEndpoint: 'https://restcountries.com/v3.1/',
   citiesTeleportEndpoint: 'https://api.teleport.org/api/',
   citiesQWeatherEndpoint: 'https://geoapi.qweather.com/v2/',
@@ -13,4 +13,5 @@ export const environment = {
   pastvuEndpoint: 'https://pastvu.com/',
   pixabayEndpoint: 'https://pixabay.com/api/',
   pixabayKey: '39437353-c3c8f978595af484ac5f324c8',
+  qWeatherKey: '719622e018634c71b4ec313e851a494a'
 };

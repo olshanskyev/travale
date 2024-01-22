@@ -11,13 +11,15 @@ import { createCustomElement } from '@angular/elements';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { TranslateModule } from '@ngx-translate/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxIndexedDBModule, DBConfig } from 'ngx-indexed-db';
 import {register} from 'swiper/element/bundle';
 import { LocalRouteService } from './@core/service/local.route.service';
 import { PoiOnMapPopupComponent } from './custom-components/popups/poi-on-map-popup/poi-on-map-popup.component';
 import { NearbyPoisOnMapPopupComponent } from './custom-components/popups/nearby-pois-on-map-popup/nearby-pois-on-map-popup.component';
 import { UserNotificationsService } from './@core/service/user-notifications.service';
+import { ErrorsInterceptor } from './auth/ErrorsInterceptor';
+import { NB_AUTH_TOKEN_INTERCEPTOR_FILTER, NbAuthJWTInterceptor } from '@nebular/auth';
 
 register(); //swiperjs
 
@@ -64,6 +66,25 @@ const dbConfig: DBConfig  = {
   providers: [
     {
       provide: LOCALE_ID, useValue: 'ru'
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NbAuthJWTInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorsInterceptor,
+      multi: true,
+    },
+    {
+      provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
+      useValue: function (req: HttpRequest<any>) {
+        return (
+          !req.url.includes('travale/api') || // only add Authorization header by calling intern api
+          req.url.includes('travale/api/auth') // do not add Authorization header by calling auth api
+          );
+     },
     },
   ],
   bootstrap: [AppComponent],
