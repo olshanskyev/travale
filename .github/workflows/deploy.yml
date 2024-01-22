@@ -16,6 +16,16 @@ jobs:
           - uses: actions/setup-node@v3
             with:
                 node-version: 18
+          - name: Replace <ENDPOINT_IP> in environment.prod.ts
+            uses: acobtomlinson/gha-find-replace@v3
+            with:
+              find: "<ENDPOINT_IP>"
+              replace: ${{ secrets.AWS_PUBLIC_IP }}
+              include: "./src/environments/environment.prod.ts"
+              regex: false
+          - name: Check <ENDPOINT_IP> replacement
+            run: |              
+              cat ./src/environments/environment.prod.ts
           - name: NPM install
             run: npm ci          
           - name: NPM build
