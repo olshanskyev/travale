@@ -10,6 +10,7 @@ import { CardsModule } from '../custom-components/cards/cards.module';
 import { MapsModule } from '../custom-components/maps/maps.module';
 import { SlideOutModule } from '../custom-components/slide-out/slide-out.module';
 import { WindowsModule } from '../custom-components/windows/windows.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { WindowsModule } from '../custom-components/windows/windows.module';
     CardsModule,
     MapsModule,
     SlideOutModule,
-    WindowsModule
+    WindowsModule,
+    LoginModule
   ],
   declarations: [
     PagesComponent,

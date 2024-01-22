@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --ssl",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -28,6 +28,7 @@
     "@nebular/auth": "^10.0.0",
     "@nebular/eva-icons": "10.0.0",
     "@nebular/theme": "^10.0.0",
+    "@nebular/security": "^10.0.0",
     "@ngx-translate/core": "^11.0.1",
     "bootstrap": "5.2.3",
     "echarts": "^5.4.2",

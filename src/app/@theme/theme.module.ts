@@ -12,6 +12,7 @@ import { MapFooterComponent } from './components/footer/map-footer.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupsModule } from '../custom-components/popups/popups.module';
 import { OneColumnNoFooterLayoutComponent } from './layouts/one-column/one-column-no-footer.layout';
+import { RouterModule } from '@angular/router';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -24,7 +25,8 @@ const NB_MODULES = [
   NbIconModule,
   NbButtonModule,
   TranslateModule,
-  PopupsModule
+  PopupsModule,
+  RouterModule
 ];
 
 const COMPONENTS = [

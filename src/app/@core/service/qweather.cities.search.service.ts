@@ -11,14 +11,13 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable()
 export class QweatherCitiesSearchService implements CitiesSearch {
 
-    private apiKey = '719622e018634c71b4ec313e851a494a';
     constructor(private _http: HttpClient,
         private toastrService: NbToastrService,
         private translateService: TranslateService) {
     }
 
     findCitiesByPattern(pattern: string, locale?: string): Observable<City[]> {
-        const url = environment.citiesQWeatherEndpoint + `city/lookup?location=${pattern}&lang=${locale}&key=${this.apiKey}`;
+        const url = environment.citiesQWeatherEndpoint + `city/lookup?location=${pattern}&lang=${locale}&key=${environment.qWeatherKey}`;
         return this._http.get<any>(url).pipe(
             catchError(() => {
                 this.toastrService.danger(
@@ -28,12 +27,12 @@ export class QweatherCitiesSearchService implements CitiesSearch {
                 return of(undefined);
               }),
             map((item: any) => {
-                if (item.location) {
+                if (item && item.location) {
                     item.location.sort((a: any, b: any) => {
                         return (a.rank > b.rank)? 1: -1;
                     });
                 }
-                return (!item || item.code === '404')? []:
+                return (!item || !item.location || item.code === '404')? []:
                     item.location.map((itemMatch: any) => {
                         return {
                             type: 'city',

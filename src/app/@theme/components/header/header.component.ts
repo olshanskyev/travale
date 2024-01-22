@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbMediaBreakpointsService, NbMenuItem, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import { NbAuthOAuth2JWTToken, NbAuthService, NbAuthToken } from '@nebular/auth';
+import { UsersService } from 'src/app/@core/service/users.service';
 
 @Component({
   selector: 'travale-header',
@@ -15,12 +17,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly = false;
   isLessThanSm = false;
+  authorized = false;
   user: {
     name: string,
-    picture: string
-  } = {
-    name: 'Evgenii Olshanskii',
-    picture: ''
+    picture: string,
   };
 
   themes = [
@@ -36,13 +36,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu: NbMenuItem[] = [ { title: 'Profile' ,  link: 'profile'}, { title: 'Log out', link: 'auth/logout'} ];
 
   constructor(private sidebarService: NbSidebarService,
               private router: Router,
               private themeService: NbThemeService,
               private breakpointService: NbMediaBreakpointsService,
-              private menuService: NbMenuService) {
+              private menuService: NbMenuService,
+              private authService: NbAuthService,
+              private usersService: UsersService) {
   }
 
   ngOnInit() {
@@ -76,6 +78,31 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.sidebarService.collapse('menu-sidebar');
         }
       });
+
+      this.authService.onTokenChange()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((token: NbAuthToken) => {
+        if (token.isValid()) {
+            this.authorized = true;
+            this.user = {
+              name: (token as NbAuthOAuth2JWTToken).getAccessTokenPayload().sub,
+              picture: '' // ToDo use default picture
+            };
+            this.usersService.getUserInfo().subscribe(
+              userInfo => {
+                if (userInfo) {
+                  if (userInfo.firstName || userInfo.lastName) {
+                    this.user.name = userInfo.firstName + ' ' + userInfo.lastName;
+                  }
+                  this.user.picture = userInfo.picture;
+                }
+              }
+            );
+        } else {
+          this.authorized = false;
+        }
+      });
+
   }
 
   ngOnDestroy() {
