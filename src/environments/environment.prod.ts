@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseEndpoint: 'https://<ENDPOINT_IP>:8199/travale/api/v1/',
+  baseEndpoint: 'https://<ENDPOINT_IP>/travale/api/v1/',
   countriesEndpoint: 'https://restcountries.com/v3.1/',
   citiesTeleportEndpoint: 'https://api.teleport.org/api/',
   citiesQWeatherEndpoint: 'https://geoapi.qweather.com/v2/',
