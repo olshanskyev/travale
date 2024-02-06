@@ -19,7 +19,7 @@ jobs:
           - name: Setup WARP
             uses: fscarmen/warp-on-actions@v1.0         
           - name: Replace <ENDPOINT_IP> in environment.prod.ts
-            run: sed -i 's\<ENDPOINT_IP>\${{ secrets.AWS_PUBLIC_IP }}\g' ./src/environments/environment.prod.ts
+            run: sed -i 's\<ENDPOINT_IP>\[${{ secrets.AWS_PUBLIC_IP }}]\g' ./src/environments/environment.prod.ts
           - name: NPM install
             run: npm ci          
           - name: NPM build
