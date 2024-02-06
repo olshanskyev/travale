@@ -18,12 +18,8 @@ jobs:
                 node-version: 18   
           - name: Setup WARP
             uses: fscarmen/warp-on-actions@v1.0
-          - name: ipv6
-            run: |
-              curl -m 9 --ipv6 --verbose https://google.com
-              curl -m 9 -6 https://ifconfig.co
           - name: Test scp
-            run: sshpass -p "${{ secrets.AWS_SSH_PWD }}" rsync -6 -avz -e 'ssh -o StrictHostKeyChecking=no -p 22' --progress ./pakcage.json ec2-user@[2a05:d012:a01:5000:1c38:e6ad:1b02:daae]:${{ env.REMOTE_FOLDER }}            
+            run: sshpass -p "${{ secrets.AWS_SSH_PWD }}" rsync -6 -avz -e 'ssh -o StrictHostKeyChecking=no -p 22' --progress ./package.json ec2-user@[2a05:d012:a01:5000:1c38:e6ad:1b02:daae]:${{ env.REMOTE_FOLDER }}
           - name: Replace <ENDPOINT_IP> in environment.prod.ts
             run: sed -i 's\<ENDPOINT_IP>\${{ secrets.AWS_PUBLIC_IP }}\g' ./src/environments/environment.prod.ts
           - name: NPM install
