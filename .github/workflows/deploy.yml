@@ -15,11 +15,9 @@ jobs:
           - uses: actions/checkout@v3
           - uses: actions/setup-node@v3
             with:
-                node-version: 18
-          - name: Install xmllint
-            run: sudo apt-get install -y sshpass      
+                node-version: 18   
           - name: Test scp
-            run: sshpass -p ${{ secrets.AWS_SSH_PWD }} scp -6 ./package.json ${{ secrets.AWS_SSH_USER }}@[${{ secrets.AWS_PUBLIC_IP }}]:${{ env.REMOTE_FOLDER }}
+            run: sshpass -p ${{ secrets.AWS_SSH_PWD }} scp -6 ./package.json ec2-user@[2a05:d012:a01:5000:1c38:e6ad:1b02:daae]:${{ env.REMOTE_FOLDER }}
           - name: Replace <ENDPOINT_IP> in environment.prod.ts
             run: sed -i 's\<ENDPOINT_IP>\${{ secrets.AWS_PUBLIC_IP }}\g' ./src/environments/environment.prod.ts
           - name: NPM install
