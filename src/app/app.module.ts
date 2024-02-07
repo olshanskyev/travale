@@ -80,10 +80,12 @@ const dbConfig: DBConfig  = {
     {
       provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER,
       useValue: function (req: HttpRequest<any>) {
-        return (
-          !req.url.includes('travale/api') || // only add Authorization header by calling intern api
-          req.url.includes('travale/api/auth') // do not add Authorization header by calling auth api
-          );
+          return (
+            !req.url.includes('travale/api') || // only add Authorization header by calling intern api
+            req.url.includes('login') || req.url.includes('refresh-token') || req.url.includes('register') ||
+            req.url.includes('reset-pass') || req.url.includes('request-pass')
+
+        );
      },
     },
   ],

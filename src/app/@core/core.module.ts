@@ -27,7 +27,7 @@ export const NB_CORE_PROVIDERS = [
             success: '/pages/home',
             failure: '/auth/login',
           },
-          defaultMessages: ['login.successMessage']
+          defaultMessages: ['login.successMessage'],
         },
         logout: {
           endpoint: 'logout',
@@ -63,7 +63,7 @@ export const NB_CORE_PROVIDERS = [
   ...<[]>NbSecurityModule.forRoot({
     accessControl: {
       ROLE_USER: {
-        view_page: [''],
+        view_page: ['*'],
       },
       ROLE_ADMIN: {
         parent: 'ROLE_USER',

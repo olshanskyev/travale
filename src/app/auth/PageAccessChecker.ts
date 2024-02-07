@@ -13,7 +13,7 @@ export class PageAccessChecker implements CanActivate {
         return this.accessChecker.isGranted(route.data['permission'], route.data['resource']).
         pipe(tap(granted => {
           if (!granted) {
-            this.router.navigate(['pages/news']);
+            this.router.navigate(['pages/home']);
           }
         }));
   }
