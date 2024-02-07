@@ -79,6 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       });
 
+      this.authService.isAuthenticatedOrRefresh().subscribe();
       this.authService.onTokenChange()
       .pipe(takeUntil(this.destroy$))
       .subscribe((token: NbAuthToken) => {
